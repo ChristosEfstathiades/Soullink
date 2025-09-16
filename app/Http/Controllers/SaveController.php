@@ -33,6 +33,13 @@ class SaveController extends Controller
             'p1' => 'nullable|string|max:30',
             'p2' => 'nullable|string|max:30',
         ]);
+
+        $save = Save::create([
+            'name' => $request->name,
+            'player_one_name' => $request->p1,
+            'player_two_name' => $request->p2,
+            'user_id' => auth()->id(),
+        ]);
         return to_route('tracker');
     }
 
