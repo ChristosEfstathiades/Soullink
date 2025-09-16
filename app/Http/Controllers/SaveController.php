@@ -28,7 +28,12 @@ class SaveController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'p1' => 'nullable|string|max:30',
+            'p2' => 'nullable|string|max:30',
+        ]);
+        return to_route('tracker');
     }
 
     /**

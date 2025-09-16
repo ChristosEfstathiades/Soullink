@@ -4,6 +4,7 @@ import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import PokemonBox from '@/components/soullink/pokemon-box';
+import SavesMenu from "@/components/soullink/saves-menu";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -16,7 +17,7 @@ export default function Dashboard() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Saves" />
-            
+            <SavesMenu />
         </AppLayout>
     );
 }

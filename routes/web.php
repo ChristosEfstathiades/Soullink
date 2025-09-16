@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\SaveController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -19,6 +20,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('saves', SaveController::class)->only([
         'store', 'destroy', 'show'
     ]);
+
 });
 
 
