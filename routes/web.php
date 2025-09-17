@@ -10,15 +10,11 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
+        return to_route('saves.index');
     })->name('dashboard');
 
-    Route::get('tracker', function () {
-        return Inertia::render('tracker');
-    })->name('tracker');
-
     Route::resource('saves', SaveController::class)->only([
-        'store', 'destroy', 'show'
+        'store', 'destroy', 'show', 'index'
     ]);
 
 });

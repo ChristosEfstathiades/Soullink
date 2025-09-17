@@ -11,12 +11,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import InputError  from '@/components/input-error';
 import { store } from '@/actions/App/Http/Controllers/SaveController';
-import { Form } from '@inertiajs/react';
+// import { saves } from '@/routes';
+import { Form, Link } from '@inertiajs/react';
 
 
-export default function SavesMenu() {
+export default function SavesMenu({ saves }: { saves: any[] }) {
   return (
-    <section className="">
+    <section className="text-center">
         <Dialog>
         <DialogTrigger className="bg-white/75 p-4 rounded-full cursor-pointer">New Game</DialogTrigger>
         <DialogContent>
@@ -41,6 +42,12 @@ export default function SavesMenu() {
             </Form>
         </DialogContent>
         </Dialog>
+        <div className="flex flex-col gap-2 mt-4 text-center">
+          <p className="text-center">Load Save</p>
+          {saves.map((save) => (
+            <Link key={save.id} href={`/saves/${save.id}`}>{save.name}</Link>
+          ))}
+        </div>
     </section>
     
   );

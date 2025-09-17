@@ -13,11 +13,11 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Dashboard() {
+export default function Dashboard({saves}: {saves: any[]}) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Saves" />
-            <SavesMenu />
+            <SavesMenu saves={saves} />
         </AppLayout>
     );
 }

@@ -5,6 +5,15 @@ import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import PokemonBox from '@/components/soullink/pokemon-box';
 
+interface TrackerProps {
+    save: {
+        id: number;
+        name: string;
+        player_one_name: string | null;
+        player_two_name: string | null;
+    };
+}
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Dashboard',
@@ -12,10 +21,10 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Tracker() {
+export default function Tracker({ save }: TrackerProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Soullink Tracker" />
+            <Head title={`${save.name} - Soullink Tracker`} />
             <section></section>
             <PokemonBox boxPokemon={[]}/>
             <section></section>

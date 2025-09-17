@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Save;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class SaveController extends Controller
 {
@@ -12,7 +14,10 @@ class SaveController extends Controller
      */
     public function index()
     {
-        //
+        $saves = Save::where('user_id', auth()->id())->get();
+        return Inertia::render('dashboard', [
+            'saves' => $saves,
+        ]);
     }
 
     /**
@@ -40,7 +45,7 @@ class SaveController extends Controller
             'player_two_name' => $request->p2,
             'user_id' => auth()->id(),
         ]);
-        return to_route('tracker');
+        return to_route('saves.show', $save);
     }
 
     /**
@@ -48,7 +53,9 @@ class SaveController extends Controller
      */
     public function show(Save $save)
     {
-        //
+        return Inertia::render('tracker', [
+            'save' => $save,
+        ]);
     }
 
     /**
