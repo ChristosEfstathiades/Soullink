@@ -79,6 +79,7 @@ class SaveController extends Controller
      */
     public function destroy(Save $save)
     {
-        //
+        $save->delete();
+        return to_route('saves.index');
     }
 }

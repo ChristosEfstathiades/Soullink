@@ -13,7 +13,7 @@ import InputError  from '@/components/input-error';
 import { store } from '@/actions/App/Http/Controllers/SaveController';
 // import { saves } from '@/routes';
 import { Form, Link } from '@inertiajs/react';
-
+import {Trash} from 'lucide-react';
 
 export default function SavesMenu({ saves }: { saves: any[] }) {
   return (
@@ -45,7 +45,10 @@ export default function SavesMenu({ saves }: { saves: any[] }) {
         <div className="flex flex-col gap-2 mt-4 text-center">
           <p className="text-center">Load Save</p>
           {saves.map((save) => (
-            <Link key={save.id} href={`/saves/${save.id}`}>{save.name}</Link>
+            <div className="flex items-center justify-between min-w-md" key={save.id}>
+              <Link href={`/saves/${save.id}`}>{save.name}</Link>
+              <Link className="cursor-pointer" method="delete" href={`/saves/${save.id}`}><Trash size={16} /></Link>
+            </div>
           ))}
         </div>
     </section>
