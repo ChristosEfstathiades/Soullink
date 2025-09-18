@@ -14,7 +14,7 @@ interface PokemonBoxProps {
 
 export default function PokemonBox({ boxPokemon }: PokemonBoxProps) {
   return (
-    <section className="w-md px-4 bg-contain bg-[url('https://archives.bulbagarden.net/media/upload/a/a7/Box_Forest_FRLG.png')] bg-no-repeat border-x-1 border-x-black border-x-solid">
+    <section className="w-md px-4 bg-contain bg-[url('https://raw.githubusercontent.com/domtronn/nuzlocke/refs/heads/master/src/assets/img/boxes/Grass.JPG')] bg-no-repeat border-x-1 border-x-black border-x-solid">
         <Dialog>
         <DialogTrigger className="bg-white/75 p-4 rounded-full cursor-pointer"><Plus /></DialogTrigger>
         <DialogContent>
