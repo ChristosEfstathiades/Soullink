@@ -19,7 +19,7 @@ export default function SavesMenu({ saves }: { saves: any[] }) {
   return (
     <section className="text-center">
         <Dialog>
-        <DialogTrigger className="bg-white/75 p-4 rounded-full cursor-pointer">New Game</DialogTrigger>
+        <DialogTrigger className="p-4 rounded-full cursor-pointer">New Game</DialogTrigger>
         <DialogContent>
             <DialogHeader>
             <DialogTitle>Create a New Soullink Save</DialogTitle>
