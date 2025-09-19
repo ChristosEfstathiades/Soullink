@@ -17,9 +17,9 @@ import {Trash} from 'lucide-react';
 
 export default function SavesMenu({ saves }: { saves: any[] }) {
   return (
-    <section className="text-center">
+    <section className="text-center text-lg">
         <Dialog>
-        <DialogTrigger className="p-4 rounded-full cursor-pointer">New Game</DialogTrigger>
+        <DialogTrigger className="p-4 rounded-full cursor-pointer hover:text-[#3B4CCA]">New Game</DialogTrigger>
         <DialogContent>
             <DialogHeader>
             <DialogTitle>Create a New Soullink Save</DialogTitle>
@@ -45,9 +45,9 @@ export default function SavesMenu({ saves }: { saves: any[] }) {
         <div className="flex flex-col gap-2 mt-4 text-center">
           <p className="text-center">Load Save</p>
           {saves.map((save) => (
-            <div className="flex items-center justify-between min-w-md" key={save.id}>
-              <Link href={`/saves/${save.id}`}>{save.name}</Link>
-              <Link className="cursor-pointer" method="delete" href={`/saves/${save.id}`}><Trash size={16} /></Link>
+            <div className="flex items-center justify-between min-w-md " key={save.id}>
+              <Link prefetch className="hover:text-[#CC0000]" href={`/saves/${save.id}`}>{save.name}</Link>
+              <Link className="hover:text-[#CC0000] cursor-pointer" method="delete" href={`/saves/${save.id}`}><Trash size={16} /></Link>
             </div>
           ))}
         </div>

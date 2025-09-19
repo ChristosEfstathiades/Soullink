@@ -36,7 +36,7 @@ export default function Tracker({ save }: TrackerProps) {
             <Head title={`${save.name} - Soullink Tracker`} />
             <section>
             </section>
-            <PokemonBox boxPokemon={[]} />
+            <PokemonBox save={save} pokemonNames={pokemonNames} boxPokemon={[]} />
             <section></section>
         </AppLayout>
     );
