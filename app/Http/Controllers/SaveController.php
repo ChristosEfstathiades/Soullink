@@ -6,6 +6,7 @@ use App\Models\Save;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\Pair;
 
 class SaveController extends Controller
 {
@@ -53,8 +54,10 @@ class SaveController extends Controller
      */
     public function show(Save $save)
     {
+        $pairs = Pair::where('save_id', $save->id)->orderBy('created_at', 'asc')->get();
         return Inertia::render('tracker', [
             'save' => $save,
+            'boxPokemon' => $pairs,
         ]);
     }
 

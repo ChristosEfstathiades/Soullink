@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\SaveController;
+use App\Http\Controllers\PairController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -15,6 +16,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('saves', SaveController::class)->only([
         'store', 'destroy', 'show', 'index'
+    ]);
+
+    Route::resource('saves.pairs', PairController::class)->only([
+        'store', 'destroy', 'update'
     ]);
 
 });

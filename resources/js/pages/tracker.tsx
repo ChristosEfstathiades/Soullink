@@ -12,6 +12,7 @@ interface TrackerProps {
         player_one_name: string | null;
         player_two_name: string | null;
     };
+    boxPokemon: any[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -21,7 +22,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Tracker({ save }: TrackerProps) {
+export default function Tracker({ save, boxPokemon }: TrackerProps) {
     const [pokemonNames, setPokemonNames] = useState<string[]>([]);
     useEffect(() => {
         fetch('https://pokeapi.co/api/v2/pokemon?limit=1301').then(response => response.json()).then(
@@ -34,9 +35,8 @@ export default function Tracker({ save }: TrackerProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`${save.name} - Soullink Tracker`} />
-            <section>
-            </section>
-            <PokemonBox save={save} pokemonNames={pokemonNames} boxPokemon={[]} />
+            <section></section>
+            <PokemonBox save={save} pokemonNames={pokemonNames} boxPokemon={boxPokemon} />
             <section></section>
         </AppLayout>
     );
