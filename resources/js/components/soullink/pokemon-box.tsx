@@ -15,12 +15,14 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { store } from '@/actions/App/Http/Controllers/PairController';
 import InputError  from '@/components/input-error';
+import PokemonPair from '@/components/soullink/pokemon-pair';
 
 
 
 
 interface PokemonBoxProps {
   boxPokemon: any[];
+  setLoadedPair?: (pair: any) => void;
   pokemonNames?: string[];
   save: {
     id: number;
@@ -30,18 +32,15 @@ interface PokemonBoxProps {
   };
 }
 
-export default function PokemonBox({ boxPokemon, pokemonNames, save }: PokemonBoxProps) {
+export default function PokemonBox({boxPokemon, pokemonNames, save, setLoadedPair }: PokemonBoxProps) {
   return (
-    <section className="w-md px-4 bg-contain bg-[url('https://raw.githubusercontent.com/domtronn/nuzlocke/refs/heads/master/src/assets/img/boxes/Grass.JPG')] bg-no-repeat border-x-1 border-x-black border-x-solid">
-      <div className="flex gap-4">
+    <section className="w-2xl bg-center bg-[url('https://s3.pokeos.com/pokeos-uploads/art-archive/Games/Pok%C3%A9mon%20HOME/Profile%20Wallpapers/0011.png')] bg-no-repeat">
+      <div className="flex p-[22px] gap-4 flex-wrap">
         { boxPokemon.map((pair: any) => (
-          <div className="flex bg-white rounded-2xl" key={pair.id}>
-            <img className="w-25" src={`https://img.pokemondb.net/artwork/${pair.player_one_pokemon_name}.jpg`} alt={pair.player_one_pokemon_name} />
-            <img className="w-25" src={`https://img.pokemondb.net/artwork/${pair.player_two_pokemon_name}.jpg`} alt={pair.player_two_pokemon_name} />
-          </div>
+          <PokemonPair pair={pair} key={pair.id} setLoadedPair={setLoadedPair} />
         ))}
         <Dialog>
-        <DialogTrigger className="bg-white/75 p-4 rounded-full cursor-pointer"><Plus /></DialogTrigger>
+        <DialogTrigger className="bg-white/75 p-4 rounded-full cursor-pointer self-center"><Plus /></DialogTrigger>
         <DialogContent>
             <DialogHeader>
             <DialogTitle className="text-center">Add New Soullink Pair</DialogTitle>

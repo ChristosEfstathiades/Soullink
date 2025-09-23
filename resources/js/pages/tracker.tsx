@@ -3,7 +3,8 @@ import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import PokemonBox from '@/components/soullink/pokemon-box';
-import { useEffect, useState } from 'react';
+import PokemonPairEditor from '@/components/soullink/pokemon-pair-editor';
+import { useEffect, useState, useContext } from 'react';
 
 interface TrackerProps {
     save: {
@@ -24,6 +25,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function Tracker({ save, boxPokemon }: TrackerProps) {
     const [pokemonNames, setPokemonNames] = useState<string[]>([]);
+    const [loadedPair, setLoadedPair] = useState<any | null>(null);
+    // TODO: replace with react-query
     useEffect(() => {
         fetch('https://pokeapi.co/api/v2/pokemon?limit=1301').then(response => response.json()).then(
             data => {
@@ -36,8 +39,8 @@ export default function Tracker({ save, boxPokemon }: TrackerProps) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`${save.name} - Soullink Tracker`} />
             <section></section>
-            <PokemonBox save={save} pokemonNames={pokemonNames} boxPokemon={boxPokemon} />
-            <section></section>
+            <PokemonBox setLoadedPair={setLoadedPair} save={save} pokemonNames={pokemonNames} boxPokemon={boxPokemon} />
+            <PokemonPairEditor pair={loadedPair} />
         </AppLayout>
     );
 }
