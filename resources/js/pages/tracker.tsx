@@ -5,6 +5,7 @@ import { Head } from '@inertiajs/react';
 import PokemonBox from '@/components/soullink/pokemon-box';
 import PokemonPairEditor from '@/components/soullink/pokemon-pair-editor';
 import { useEffect, useState, useContext } from 'react';
+import { index } from '@/routes/saves';
 
 interface TrackerProps {
     save: {
@@ -19,7 +20,7 @@ interface TrackerProps {
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Dashboard',
-        href: dashboard().url,
+        href: index().url,
     },
 ];
 

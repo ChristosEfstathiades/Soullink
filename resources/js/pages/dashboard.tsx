@@ -5,11 +5,13 @@ import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import PokemonBox from '@/components/soullink/pokemon-box';
 import SavesMenu from "@/components/soullink/saves-menu";
+import { index } from '@/routes/saves';
+
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Dashboard',
-        href: dashboard().url,
+        href: index().url,
     },
 ];
 
