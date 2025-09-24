@@ -77,7 +77,7 @@ class PairController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Pair $pair)
+    public function destroy(Save $save, Pair $pair)
     {
         $pair->delete();
         return back();
