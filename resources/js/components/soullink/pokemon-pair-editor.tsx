@@ -3,6 +3,7 @@ import { LoaderCircle } from 'lucide-react';
 import { log } from "console";
 import { destroy } from "@/actions/App/Http/Controllers/PairController";
 import { Link } from '@inertiajs/react';
+import PokemonData from '@/components/soullink/pokemon-data';
 
 
 export default function PokemonPairEditor({pair, saveID, setLoadedPair}: {pair: any, saveID: number, setLoadedPair: (pair: any) => void}) {
@@ -44,47 +45,21 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair}: {pair: 
     return (
       <section className="grow">
               <div>
-                  <div>
-                    <h2 className="text-center text-xl font-bold border-b border-black">
+                  <div className="px-4 pb-4 border-b border-black/20 flex justify-between">
+                    <h2 className="text-center text-xl font-bold">
                       {pair.player_one_pokemon_nickname ? pair.player_one_pokemon_nickname : pair.player_one_pokemon_name} and {pair.player_two_pokemon_nickname ? pair.player_two_pokemon_nickname : pair.player_two_pokemon_name}
                     </h2>
                     <Link onClick={() => setLoadedPair(null)} className="hover:text-[#CC0000] cursor-pointer" method="delete" href={`/saves/${saveID}/pairs/${pair.id}`}>Kill Pair</Link>
-
                   </div>
-                  {/* <LoaderCircle className="h-16 w-16 animate-spin" /> */}
-                  <div>
-                    <div className="flex items-center">
-                      <img draggable="false" className="w-40 mr-4" src={`/storage/${pair.player_one_pokemon_name}.png`} alt={pair.player_one_pokemon_name} />
-                      <ul className="text-xs">
-                        <li>hp {pokemonData?.pokemon_one.bst[0]}</li>
-                        <li>atk</li>
-                        <li>def</li>
-                        <li>spa</li>
-                        <li>spd</li>
-                        <li>spe</li>
-                      </ul>
-                    </div>
-
-                  </div>
-
-                  <div className="flex items-center">
-                      <img draggable="false" className="w-40 mr-4" src={`/storage/${pair.player_two_pokemon_name}.png`} alt={pair.player_two_pokemon_name} />
-                      <ul className="text-xs">
-                        <li>hp</li>
-                        <li>atk</li>
-                        <li>def</li>
-                        <li>spa</li>
-                        <li>spd</li>
-                        <li>spe</li>
-                      </ul>
-                    </div>
+                  <PokemonData name={pair.player_one_pokemon_name} data={pokemonData?.pokemon_one!} />
+                  <PokemonData name={pair.player_two_pokemon_name} data={pokemonData?.pokemon_two!} />
               </div>
       </section>
     );
   } else {
     return (
       <section className="grow flex items-center justify-center">
-        <p className="text-center">Click a pair to edit it</p>
+        <p className="text-center">Click a pair to view/edit it</p>
       </section>
     );
   }

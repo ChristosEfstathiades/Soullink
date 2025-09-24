@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Save;
+use App\Models\User;
 
 class PairController extends Controller
 {
@@ -79,6 +80,13 @@ class PairController extends Controller
      */
     public function destroy(Save $save, Pair $pair)
     {
+        // TODO: go over all authorization with https://laravel.com/docs/12.x/authorization
+        if ($pair->save_id !== $save->id) {
+            abort(404);
+        } else if ($save->user_id !== auth()->id()) {
+            abort(403);
+        }
+
         $pair->delete();
         return back();
     }

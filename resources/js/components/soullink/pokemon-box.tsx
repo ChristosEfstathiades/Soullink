@@ -40,7 +40,7 @@ export default function PokemonBox({boxPokemon, pokemonNames, save, setLoadedPai
           <PokemonPair pair={pair} key={pair.id} setLoadedPair={setLoadedPair} />
         ))}
         <Dialog>
-        <DialogTrigger className="bg-white/75 p-4 rounded-full cursor-pointer self-center"><Plus /></DialogTrigger>
+        <DialogTrigger className="bg-white/75 p-4 rounded-full cursor-pointer self-center shadow-md"><Plus /></DialogTrigger>
         <DialogContent>
             <DialogHeader>
             <DialogTitle className="text-center">Add New Soullink Pair</DialogTitle>
@@ -54,12 +54,14 @@ export default function PokemonBox({boxPokemon, pokemonNames, save, setLoadedPai
                       <Select tabIndex={1} required id="playerOnePokemon" name="playerOnePokemon" options={pokemonNames?.map(name => ({ value: name, label: name }))} />
                       <InputError message={errors.playerOnePokemon} className="mt-2" />
                       <Input tabIndex={2} placeholder="Nickname" id="playerOneNickname" type="text" name="playerOneNickname"></Input>
+                      <InputError message={errors.playerOneNickname} className="mt-2" />
                     </div>
                     <div className="p-4 flex flex-col gap-3">
                       <h3 className="text-[#3B4CCA]">{save.player_two_name ? save.player_two_name : 'Player Two'}</h3>
                       <Select tabIndex={3} required id="playerTwoPokemon" name="playerTwoPokemon" options={pokemonNames?.map(name => ({ value: name, label: name }))} />
                       <InputError message={errors.playerTwoPokemon} className="mt-2" />
                       <Input tabIndex={4} placeholder="Nickname" id="playerTwoNickname" type="text" name="playerTwoNickname"></Input>
+                      <InputError message={errors.playerTwoNickname} className="mt-2" />
                     </div>
                   </div>
                   <Button tabIndex={5} type="submit" className="self-center">Add Pair</Button>
