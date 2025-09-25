@@ -6,15 +6,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import Select from 'react-select'
 import {Plus} from 'lucide-react';
 import { useState } from "react";
 import { Form } from '@inertiajs/react';
+import Select from 'react-select'
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { store } from '@/actions/App/Http/Controllers/PairController';
 import InputError  from '@/components/input-error';
+import { store } from '@/actions/App/Http/Controllers/PairController';
 import PokemonPair from '@/components/soullink/pokemon-pair';
 
 

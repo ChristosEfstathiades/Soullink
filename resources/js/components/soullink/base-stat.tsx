@@ -16,7 +16,7 @@ export default function BaseStat({ category, stat }: { category: number, stat: n
             <p className="w-8">{categories[category]}</p>
             <p className="w-6.5">{stat}</p>
             <div className="min-w-25">
-                <div style={{ width: `${statPercentage}%` }} className={`border border-black/15 h-2 bg-[${range?.color}] rounded`}></div>
+                <div style={{ width: `${statPercentage}%`, backgroundColor: range?.color }} className={`border border-black/15 h-2 rounded`}></div>
             </div>
         </li>
     )

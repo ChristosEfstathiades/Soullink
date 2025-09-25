@@ -41,7 +41,7 @@ export default function Tracker({ save, boxPokemon }: TrackerProps) {
             <Head title={`${save.name} - Soullink Tracker`} />
             <section></section>
             <PokemonBox setLoadedPair={setLoadedPair} save={save} pokemonNames={pokemonNames} boxPokemon={boxPokemon} />
-            <PokemonPairEditor setLoadedPair={setLoadedPair} saveID={save.id} pair={loadedPair} />
+            <PokemonPairEditor setLoadedPair={setLoadedPair} saveID={save.id} pair={loadedPair} pokemonNames={pokemonNames} />
         </AppLayout>
     );
 }

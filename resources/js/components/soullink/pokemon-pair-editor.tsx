@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import { LoaderCircle } from 'lucide-react';
-import { log } from "console";
-import { destroy } from "@/actions/App/Http/Controllers/PairController";
-import { Link } from '@inertiajs/react';
+import { Link, Form } from '@inertiajs/react';
 import PokemonData from '@/components/soullink/pokemon-data';
+import { update } from "@/routes/saves/pairs";
+import Select from 'react-select'
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import InputError  from '@/components/input-error';
 
 
-export default function PokemonPairEditor({pair, saveID, setLoadedPair}: {pair: any, saveID: number, setLoadedPair: (pair: any) => void}) {
+export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonNames}: {pair: any, saveID: number, setLoadedPair: (pair: any) => void, pokemonNames?: string[]}) {
   type pokemonDataType = {
     pokemon_one: {
       bst: number[];
@@ -44,16 +48,39 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair}: {pair: 
   if (pair) {
     return (
       <section className="grow">
-              <div>
-                  <div className="px-4 pb-4 border-b border-black/20 flex justify-between">
-                    <h2 className="text-center text-xl font-bold">
-                      {pair.player_one_pokemon_nickname ? pair.player_one_pokemon_nickname : pair.player_one_pokemon_name} and {pair.player_two_pokemon_nickname ? pair.player_two_pokemon_nickname : pair.player_two_pokemon_name}
-                    </h2>
-                    <Link onClick={() => setLoadedPair(null)} className="hover:text-[#CC0000] cursor-pointer" method="delete" href={`/saves/${saveID}/pairs/${pair.id}`}>Kill Pair</Link>
+        <div>
+            <div className="px-4 pb-4 border-b border-black/20 flex justify-between">
+              <h2 className="text-center text-xl font-bold">
+                {pair.player_one_pokemon_nickname ? pair.player_one_pokemon_nickname : pair.player_one_pokemon_name} and {pair.player_two_pokemon_nickname ? pair.player_two_pokemon_nickname : pair.player_two_pokemon_name}
+              </h2>
+              <Link onClick={() => setLoadedPair(null)} className="hover:text-[#CC0000] cursor-pointer" method="delete" href={`/saves/${saveID}/pairs/${pair.id}`}>Kill Pair</Link>
+            </div>
+            <PokemonData name={pair.player_one_pokemon_name} data={pokemonData?.pokemon_one!} />
+            <PokemonData name={pair.player_two_pokemon_name} data={pokemonData?.pokemon_two!} />
+            <Form className="flex flex-col justify-around" method="put" action={update([saveID, pair.id])}>
+              {({ errors }) => (
+                <>
+                  <div className="flex flex-row">
+                    <div className="p-4 mr-4 flex flex-col gap-3">
+                      <h3 className="text-[#CC0000]">{pair.player_one_name}</h3>
+                      <Select tabIndex={1} defaultValue={pair.player_one_pokemon_name} required id="playerOnePokemon" name="playerOnePokemon" options={pokemonNames?.map(name => ({ value: name, label: name }))} />
+                      <InputError message={errors.playerOnePokemon} className="mt-2" />
+                      <Input tabIndex={2} placeholder="Nickname" id="playerOneNickname" type="text" name="playerOneNickname"></Input>
+                      <InputError message={errors.playerOneNickname} className="mt-2" />
+                    </div>
+                    <div className="p-4 flex flex-col gap-3">
+                      <h3 className="text-[#3B4CCA]">{pair.player_two_name}</h3>
+                      <Select tabIndex={3} defaultValue={pair.player_two_pokemon_name} required id="playerTwoPokemon" name="playerTwoPokemon" options={pokemonNames?.map(name => ({ value: name, label: name }))} />
+                      <InputError message={errors.playerTwoPokemon} className="mt-2" />
+                      <Input tabIndex={4} placeholder="Nickname" id="playerTwoNickname" type="text" name="playerTwoNickname"></Input>
+                      <InputError message={errors.playerTwoNickname} className="mt-2" />
+                    </div>
                   </div>
-                  <PokemonData name={pair.player_one_pokemon_name} data={pokemonData?.pokemon_one!} />
-                  <PokemonData name={pair.player_two_pokemon_name} data={pokemonData?.pokemon_two!} />
-              </div>
+                  <Button tabIndex={5} type="submit" className="self-center">Update Pair</Button>
+                </>
+              )}
+            </Form>
+        </div>
       </section>
     );
   } else {
