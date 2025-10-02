@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Save;
 use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 
 class PairController extends Controller
 {
@@ -70,9 +71,25 @@ class PairController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Pair $pair)
+    public function update(Request $request, Save $save, Pair $pair)
     {
-        //
+        $request->validate([
+            'playerOnePokemon' => 'nullable|string|max:255',
+            'playerTwoPokemon' => 'nullable|string|max:255',
+            'playerOneNickname' => 'nullable|string|max:12',
+            'playerTwoNickname' => 'nullable|string|max:12',
+            'isAlive' => 'nullable|string',
+        ]);
+
+        // Gate::authorize('update', $pair);
+        $pair->update([
+            'player_one_pokemon_name' => $request->playerOnePokemon ?? $pair->player_one_pokemon_name,
+            'player_two_pokemon_name' => $request->playerTwoPokemon ?? $pair->player_two_pokemon_name,
+            'player_one_pokemon_nickname' => $request->playerOneNickname ?? $pair->player_one_pokemon_nickname,
+            'player_two_pokemon_nickname' => $request->playerTwoNickname ?? $pair->player_two_pokemon_nickname,
+            'is_alive' => $request->isAlive ? 1 : 0,
+        ]);
+        return back();
     }
 
     /**
@@ -80,12 +97,7 @@ class PairController extends Controller
      */
     public function destroy(Save $save, Pair $pair)
     {
-        // TODO: go over all authorization with https://laravel.com/docs/12.x/authorization
-        if ($pair->save_id !== $save->id) {
-            abort(404);
-        } else if ($save->user_id !== auth()->id()) {
-            abort(403);
-        }
+        Gate::authorize('delete', $pair);
 
         $pair->delete();
         return back();

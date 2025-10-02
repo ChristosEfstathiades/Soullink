@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 
 class Pair extends Model
 {
@@ -14,4 +16,9 @@ class Pair extends Model
         'player_two_pokemon_nickname',
         'is_alive',
     ];
+
+    public function saveFile(): BelongsTo
+    {
+        return $this->belongsTo(Save::class, 'save_id');
+    }
 }

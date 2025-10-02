@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Pair;
+use Illuminate\Support\Facades\Gate;
 
 class SaveController extends Controller
 {
@@ -54,6 +55,8 @@ class SaveController extends Controller
      */
     public function show(Save $save)
     {
+        Gate::authorize('view', $save);
+        
         $pairs = Pair::where('save_id', $save->id)->orderBy('created_at', 'asc')->get();
         return Inertia::render('tracker', [
             'save' => $save,
@@ -82,6 +85,7 @@ class SaveController extends Controller
      */
     public function destroy(Save $save)
     {
+        Gate::authorize('delete', $save);
         $save->delete();
         return to_route('saves.index');
     }

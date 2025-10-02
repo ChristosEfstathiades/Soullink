@@ -48,8 +48,8 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonN
   if (pair) {
     return (
       <section className="grow">
-        <div>
-            <div className="px-4 pb-4 border-b border-black/20 flex justify-between">
+        <div className="flex flex-col items-center">
+            <div className="px-4 pb-4 border-b border-black/20 flex justify-between w-full">
               <h2 className="text-center text-xl font-bold">
                 {pair.player_one_pokemon_nickname ? pair.player_one_pokemon_nickname : pair.player_one_pokemon_name} and {pair.player_two_pokemon_nickname ? pair.player_two_pokemon_nickname : pair.player_two_pokemon_name}
               </h2>
@@ -57,23 +57,28 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonN
             </div>
             <PokemonData name={pair.player_one_pokemon_name} data={pokemonData?.pokemon_one!} />
             <PokemonData name={pair.player_two_pokemon_name} data={pokemonData?.pokemon_two!} />
-            <Form className="flex flex-col justify-around" method="put" action={update([saveID, pair.id])}>
+            <Form resetOnSuccess className="flex flex-col justify-around" method="put" action={update([saveID, pair.id])}>
+              {/* TODO: pair doesnt update after form submission. Could pass boxpokemon as prop and add it to useEffect or create onSuccess handler that fetches updates pair from boxPokemon*/}
               {({ errors }) => (
                 <>
                   <div className="flex flex-row">
                     <div className="p-4 mr-4 flex flex-col gap-3">
                       <h3 className="text-[#CC0000]">{pair.player_one_name}</h3>
-                      <Select tabIndex={1} defaultValue={pair.player_one_pokemon_name} required id="playerOnePokemon" name="playerOnePokemon" options={pokemonNames?.map(name => ({ value: name, label: name }))} />
+                      <Select tabIndex={1} defaultValue={pair.player_one_pokemon_name} id="playerOnePokemon" name="playerOnePokemon" options={pokemonNames?.map(name => ({ value: name, label: name }))} />
                       <InputError message={errors.playerOnePokemon} className="mt-2" />
                       <Input tabIndex={2} placeholder="Nickname" id="playerOneNickname" type="text" name="playerOneNickname"></Input>
                       <InputError message={errors.playerOneNickname} className="mt-2" />
                     </div>
                     <div className="p-4 flex flex-col gap-3">
                       <h3 className="text-[#3B4CCA]">{pair.player_two_name}</h3>
-                      <Select tabIndex={3} defaultValue={pair.player_two_pokemon_name} required id="playerTwoPokemon" name="playerTwoPokemon" options={pokemonNames?.map(name => ({ value: name, label: name }))} />
+                      <Select tabIndex={3} defaultValue={pair.player_two_pokemon_name} id="playerTwoPokemon" name="playerTwoPokemon" options={pokemonNames?.map(name => ({ value: name, label: name }))} />
                       <InputError message={errors.playerTwoPokemon} className="mt-2" />
                       <Input tabIndex={4} placeholder="Nickname" id="playerTwoNickname" type="text" name="playerTwoNickname"></Input>
                       <InputError message={errors.playerTwoNickname} className="mt-2" />
+                    </div>
+                    <div className="p-4 flex flex-col justify-center items-start">
+                      <Label htmlFor="isAlive">Alive</Label>
+                      <Input className="shadow-none" type="checkbox" id="isAlive" name="isAlive" defaultChecked={pair.is_alive} />
                     </div>
                   </div>
                   <Button tabIndex={5} type="submit" className="self-center">Update Pair</Button>
