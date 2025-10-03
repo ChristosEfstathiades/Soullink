@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import InputError  from '@/components/input-error';
+import { log } from "console";
 
 
 export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonNames}: {pair: any, saveID: number, setLoadedPair: (pair: any) => void, pokemonNames?: string[]}) {
@@ -23,9 +24,9 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonN
   }
   // TODO: could move to onClick in PokemonPair, but this is fine for now
   const [pokemonData, setPokemonData] = useState<pokemonDataType>();
+  const [isAlive, setIsAlive] = useState<boolean>(true);
   useEffect(() => {
     if (pair) {
-      console.log('pair changed', pair);
       fetch(`https://pokeapi.co/api/v2/pokemon/${pair.player_one_pokemon_name}`).then(response => response.json()).then(
             data => {
                 let pokemon_one_data = {
@@ -43,6 +44,7 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonN
                 );
             }
         );
+      setIsAlive(pair.is_alive === 1 ? true : false);
     }
   }, [pair]);
   if (pair) {
@@ -78,7 +80,7 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonN
                     </div>
                     <div className="p-4 flex flex-col justify-center items-start">
                       <Label htmlFor="isAlive">Alive</Label>
-                      <Input className="shadow-none" type="checkbox" id="isAlive" name="isAlive" defaultChecked={pair.is_alive} />
+                      <Input className="shadow-none" type="checkbox" id="isAlive" onChange={e => setIsAlive(e.target.checked)} name="isAlive" checked={isAlive} />
                     </div>
                   </div>
                   <Button tabIndex={5} type="submit" className="self-center">Update Pair</Button>

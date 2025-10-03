@@ -33,19 +33,20 @@ interface PokemonBoxProps {
 }
 
 export default function PokemonBox({boxPokemon, pokemonNames, save, setLoadedPair }: PokemonBoxProps) {
+  const [open, setOpen] = useState(false);
   return (
-    <section className="w-2xl bg-center bg-[url('https://s3.pokeos.com/pokeos-uploads/art-archive/Games/Pok%C3%A9mon%20HOME/Profile%20Wallpapers/0011.png')] bg-no-repeat">
+    <section className="w-2xl grow bg-center bg-[url('https://s3.pokeos.com/pokeos-uploads/art-archive/Games/Pok%C3%A9mon%20HOME/Profile%20Wallpapers/0011.png')] bg-no-repeat">
       <div className="flex p-[22px] gap-4 flex-wrap">
         { boxPokemon.map((pair: any) => (
           <PokemonPair pair={pair} key={pair.id} setLoadedPair={setLoadedPair} />
         ))}
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger className="bg-white/75 p-4 rounded-full cursor-pointer self-center shadow-md"><Plus /></DialogTrigger>
         <DialogContent>
             <DialogHeader>
             <DialogTitle className="text-center">Add New Soullink Pair</DialogTitle>
             </DialogHeader>
-            <Form action={store(save.id)} className="flex flex-col justify-around">
+            <Form onSuccess={() => setOpen(false)} action={store(save.id)} className="flex flex-col justify-around">
               {({ errors }) => (
                 <>
                   <div className="flex flex-row">

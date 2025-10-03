@@ -15,6 +15,7 @@ interface TrackerProps {
         player_two_name: string | null;
     };
     boxPokemon: any[];
+    deathBox: any[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -24,9 +25,10 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Tracker({ save, boxPokemon }: TrackerProps) {
+export default function Tracker({ save, boxPokemon, deathBox }: TrackerProps) {
     const [pokemonNames, setPokemonNames] = useState<string[]>([]);
     const [loadedPair, setLoadedPair] = useState<any | null>(null);
+    const [viewDeathBox, setViewDeathBox] = useState(false);
     // TODO: replace with react-query
     useEffect(() => {
         fetch('https://pokeapi.co/api/v2/pokemon?limit=1301').then(response => response.json()).then(
@@ -40,7 +42,15 @@ export default function Tracker({ save, boxPokemon }: TrackerProps) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`${save.name} - Soullink Tracker`} />
             <section></section>
-            <PokemonBox setLoadedPair={setLoadedPair} save={save} pokemonNames={pokemonNames} boxPokemon={boxPokemon} />
+            <section className='cursor-[url("/storage/PCHand.png"),_pointer] flex flex-col items-center'>
+                <div className='flex flex-row  border-b-0 border-black/20 rounded-t-xl'>
+                    <button className='px-4 rounded-tl-xl' style={{ backgroundColor: viewDeathBox ? 'lightgray' : '#3B4CCA' }} onClick={() => { setViewDeathBox(false); }}>LivingBox</button>
+                    <div className="w-px h-full bg-black/20"></div>
+                    <button className='px-4 rounded-tr-xl' style={{ backgroundColor: viewDeathBox ? '#CC0000' : 'lightgray' }} onClick={() => { setViewDeathBox(true); }}>DeathBox</button>
+                </div>
+                <PokemonBox setLoadedPair={setLoadedPair} save={save} pokemonNames={pokemonNames} boxPokemon={viewDeathBox ? deathBox : boxPokemon} />
+            </section>
+
             <PokemonPairEditor setLoadedPair={setLoadedPair} saveID={save.id} pair={loadedPair} pokemonNames={pokemonNames} />
         </AppLayout>
     );

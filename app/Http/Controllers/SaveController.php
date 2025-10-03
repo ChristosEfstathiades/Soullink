@@ -58,9 +58,12 @@ class SaveController extends Controller
         Gate::authorize('view', $save);
         
         $pairs = Pair::where('save_id', $save->id)->orderBy('created_at', 'asc')->get();
+        $alivePairs = $pairs->where('is_alive', 1)->values();
+        $deadBox = $pairs->where('is_alive', 0)->values();
         return Inertia::render('tracker', [
             'save' => $save,
-            'boxPokemon' => $pairs,
+            'boxPokemon' => $alivePairs,
+            'deathBox' => $deadBox,
         ]);
     }
 
