@@ -8,7 +8,7 @@ export default function PokemonPair({pair, setLoadedPair}: {pair: any, setLoaded
       onClick={() => setLoadedPair && setLoadedPair(pair)}
     >
       <img draggable="false" className="w-13.5 lg:w-18" src={`/storage/${pair.player_one_pokemon_name}.png`} alt={pair.player_one_pokemon_name} />
-      <div className="w-px h-full bg-black/20"></div>
+      <div className="w-px bg-black/20"></div>
       <img draggable="false" className="w-13.5 lg:w-18" src={`/storage/${pair.player_two_pokemon_name}.png`} alt={pair.player_two_pokemon_name} />
     </div>
   );

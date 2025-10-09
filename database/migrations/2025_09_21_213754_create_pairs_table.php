@@ -19,8 +19,12 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->string('player_one_pokemon_name');
             $table->string('player_one_pokemon_nickname')->nullable();
+            $table->string('player_one_pokemon_primary_type');
+            $table->string('player_one_pokemon_secondary_type')->nullable();
             $table->string('player_two_pokemon_name');
             $table->string('player_two_pokemon_nickname')->nullable();
+            $table->string('player_two_pokemon_primary_type');
+            $table->string('player_two_pokemon_secondary_type')->nullable();
             $table->boolean('is_alive')->default(true);
         });
     }

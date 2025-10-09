@@ -53,7 +53,6 @@ export default function Tracker({ save, boxPokemon, deathBox }: TrackerProps) {
                     <div className="w-px h-full bg-black/20"></div>
                     <button className='px-4 rounded-tr-xl' style={{ backgroundColor: viewDeathBox ? '#CC0000' : 'lightgray' }} onClick={() => { setViewDeathBox(true); }}>DeathBox</button>
                 </div>
-                {/* TODO: create seperate DeathBox component */}
                 <PokemonBox setLoadedPair={setLoadedPair} save={save} pokemonNames={pokemonNames} viewDeathBox={viewDeathBox} livingBox={boxPokemon} deathBox={deathBox} />
             </section>
 
