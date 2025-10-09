@@ -40,7 +40,10 @@ export default function Tracker({ save, boxPokemon, deathBox }: TrackerProps) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={`${save.name} - Soullink Tracker`} />
+            <Head title={`${save.name} - Soullink Tracker`} >
+                <link rel="preload" href="/storage/livingbox.png" as="image"></link>
+                <link rel="preload" href="/storage/deathbox.png" as="image"></link>
+            </Head>
                 
             <PokemonParty />
 
