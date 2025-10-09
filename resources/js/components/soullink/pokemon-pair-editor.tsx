@@ -8,7 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import InputError  from '@/components/input-error';
-import { log } from "console";
+import {X} from 'lucide-react';
+
 
 
 export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonNames}: {pair: any, saveID: number, setLoadedPair: (pair: any) => void, pokemonNames?: string[]}) {
@@ -55,7 +56,7 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonN
               <h2 className="text-center text-xl font-bold">
                 {pair.player_one_pokemon_nickname ? pair.player_one_pokemon_nickname : pair.player_one_pokemon_name} and {pair.player_two_pokemon_nickname ? pair.player_two_pokemon_nickname : pair.player_two_pokemon_name}
               </h2>
-              <Link onClick={() => setLoadedPair(null)} className="hover:text-[#CC0000] cursor-pointer" method="delete" href={`/saves/${saveID}/pairs/${pair.id}`}>Kill Pair</Link>
+              <button className="cursor-pointer" onClick={() => setLoadedPair(null)}><X /></button>
             </div>
             <PokemonData name={pair.player_one_pokemon_name} data={pokemonData?.pokemon_one!} />
             <PokemonData name={pair.player_two_pokemon_name} data={pokemonData?.pokemon_two!} />
@@ -83,7 +84,10 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonN
                       <Input className="shadow-none" type="checkbox" id="isAlive" onChange={e => setIsAlive(e.target.checked)} name="isAlive" checked={isAlive} />
                     </div>
                   </div>
-                  <Button tabIndex={5} type="submit" className="self-center">Update Pair</Button>
+                  <Button tabIndex={5} type="submit" className="self-center cursor-pointer">Update Pair</Button>
+                  <Button className="self-center mt-4 cursor-pointer" variant='destructive'>
+                    <Link onClick={() => setLoadedPair(null)} className="cursor-pointer" method="delete" href={`/saves/${saveID}/pairs/${pair.id}`}>Delete</Link>
+                  </Button>
                 </>
               )}
             </Form>

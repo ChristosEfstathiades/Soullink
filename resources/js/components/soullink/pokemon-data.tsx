@@ -32,7 +32,7 @@ export default function PokemonData({name, data}: PokemonDataProps) {
     return (
         <div className="flex items-center">
             <div>
-                <img draggable="false" className="w-40 mr-4" src={`/storage/${name}.png`} alt={name} />
+                <img draggable="false" className="w-30 lg:w-38 mr-4" src={`/storage/${name}.png`} alt={name} />
                 <div className='flex justify-center gap-x-1'>
                     {data?.types.map((type, index)  => (
                         <div key={index}>
