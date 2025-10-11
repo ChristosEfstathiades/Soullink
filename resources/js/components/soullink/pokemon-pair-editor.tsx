@@ -52,7 +52,7 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonN
     return (
       <section className="grow">
         <div className="flex flex-col items-center">
-            <div className="px-4 pb-4 border-b border-black/20 flex justify-between w-full">
+            <div className="px-4 pt-1 pb-4 border-b border-black/20 flex justify-between w-full">
               <h2 className="text-center text-xl font-bold">
                 {pair.player_one_pokemon_nickname ? pair.player_one_pokemon_nickname : pair.player_one_pokemon_name} and {pair.player_two_pokemon_nickname ? pair.player_two_pokemon_nickname : pair.player_two_pokemon_name}
               </h2>
@@ -84,6 +84,7 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonN
                       <Input className="shadow-none" type="checkbox" id="isAlive" onChange={e => setIsAlive(e.target.checked)} name="isAlive" checked={isAlive} />
                     </div>
                   </div>
+                  <InputError message={errors.samePrimaryType} className="mb-2 text-center" />
                   <Button tabIndex={5} type="submit" className="self-center cursor-pointer">Update Pair</Button>
                   <Button className="self-center mt-4 cursor-pointer" variant='destructive'>
                     <Link onClick={() => setLoadedPair(null)} className="cursor-pointer" method="delete" href={`/saves/${saveID}/pairs/${pair.id}`}>Delete</Link>

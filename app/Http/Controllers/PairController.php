@@ -43,7 +43,10 @@ class PairController extends Controller
 
         $pokemonOneTypes = $this->fetchPokemonTypes($request->playerOnePokemon);
         $pokemonTwoTypes = $this->fetchPokemonTypes($request->playerTwoPokemon);
-        // TODO create another function that fetches types and make it use fetchPokemonData inside of it
+        // TODO: check docs to see if i can make reusable validation
+        if ($pokemonOneTypes[0] == $pokemonTwoTypes[0]) {
+            return back()->withErrors(['samePrimaryType' => 'Both Pokémon cannot share the same primary type.']);
+        }
 
 
         $pair = Pair::create([
@@ -99,6 +102,10 @@ class PairController extends Controller
             $pokemonTwoTypes = $this->fetchPokemonTypes($request->playerTwoPokemon);
         } else {
             $pokemonTwoTypes = [$pair->player_two_pokemon_primary_type, $pair->player_two_pokemon_secondary_type];
+        }
+
+        if ($pokemonOneTypes[0] == $pokemonTwoTypes[0]) {
+            return back()->withErrors(['samePrimaryType' => 'Both Pokémon cannot share the same primary type.']);
         }
 
         // Gate::authorize('update', $pair);

@@ -71,12 +71,14 @@ export default function PokemonBox({boxPokemon, pokemonNames, save, setLoadedPai
                     </div>
                     <div className="p-4 flex flex-col gap-3">
                       <h3 className="text-[#3B4CCA]">{save.player_two_name ? save.player_two_name : 'Player Two'}</h3>
+                      {/* TODO: select statement first character doesnt register */}
                       <Select tabIndex={3} required id="playerTwoPokemon" name="playerTwoPokemon" options={pokemonNames?.map(name => ({ value: name, label: name }))} />
                       <InputError message={errors.playerTwoPokemon} className="mt-2" />
                       <Input tabIndex={4} placeholder="Nickname" id="playerTwoNickname" type="text" name="playerTwoNickname"></Input>
                       <InputError message={errors.playerTwoNickname} className="mt-2" />
                     </div>
                   </div>
+                  <InputError message={errors.samePrimaryType} className="mb-2 text-center" />
                   <Button tabIndex={5} type="submit" className="self-center">Add Pair</Button>
                 </>
               )}
