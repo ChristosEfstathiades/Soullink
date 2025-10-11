@@ -53,7 +53,7 @@ export default function PokemonBox({boxPokemon, pokemonNames, save, setLoadedPai
         ))}
         <Dialog open={open} onOpenChange={setOpen}>
 
-        <DialogTrigger style={{ display: viewDeathBox ? 'none' : 'inline-block' }} className="bg-white/75 p-2 lg:p-4 rounded-full justify-self-start cursor-pointer self-center shadow-md"><Plus /></DialogTrigger>
+        <DialogTrigger style={{ display: viewDeathBox ? 'none' : 'inline-block' }} className="bg-white/85 p-2 lg:p-4 cursor-[url('/storage/PCHand.png'),_pointer] rounded-full justify-self-start self-center shadow-md"><Plus /></DialogTrigger>
         <DialogContent>
             <DialogHeader>
             <DialogTitle className="text-center">Add New Soullink Pair</DialogTitle>

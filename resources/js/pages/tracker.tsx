@@ -48,10 +48,10 @@ export default function Tracker({ save, boxPokemon, deathBox }: TrackerProps) {
             <PokemonParty />
 
             <section className='cursor-[url("/storage/PCHand.png"),_pointer] flex flex-col items-center h-[calc(100vh-4rem)]'>
-                <div className='flex flex-row  border-b-0 border-black/20 rounded-t-xl'>
-                    <button className='px-4 rounded-tl-xl' style={{ backgroundColor: viewDeathBox ? 'lightgray' : '#3B4CCA' }} onClick={() => { setViewDeathBox(false); }}>LivingBox</button>
-                    <div className="w-px h-full bg-black/20"></div>
-                    <button className='px-4 rounded-tr-xl' style={{ backgroundColor: viewDeathBox ? '#CC0000' : 'lightgray' }} onClick={() => { setViewDeathBox(true); }}>DeathBox</button>
+                <div className=' flex flex-row  border-b-0 border-black/20 rounded-t-xl'>
+                    <button className='px-4 py-1 cursor-[inherit] rounded-tl-xl' style={{ backgroundColor: viewDeathBox ? 'lightgray' : '#23CD5E' }} onClick={() => { setViewDeathBox(false); }}>LivingBox</button>
+                    <div className="w-px h-full bg-black/30"></div>
+                    <button className='px-4 py-1 cursor-[inherit] rounded-tr-xl' style={{ backgroundColor: viewDeathBox ? '#F34444' : 'lightgray' }} onClick={() => { setViewDeathBox(true); }}>DeathBox</button>
                 </div>
                 <PokemonBox setLoadedPair={setLoadedPair} save={save} pokemonNames={pokemonNames} viewDeathBox={viewDeathBox} livingBox={boxPokemon} deathBox={deathBox} />
             </section>
