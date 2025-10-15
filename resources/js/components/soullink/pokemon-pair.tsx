@@ -31,7 +31,6 @@ export default function PokemonPair({
 
   return (
     <div
-      draggable="true"
       onClick={() => setLoadedPair && setLoadedPair(pair)}
       className="rounded-4xl flex shrink-0 overflow-hidden transition-transform hover:scale-105 relative shadow-2xl"
     >
