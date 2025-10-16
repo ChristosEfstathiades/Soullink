@@ -22,9 +22,11 @@ const typeColors: { [key: string]: string } = {
 export default function PokemonPair({
   pair,
   setLoadedPair,
+  viewDeathBox,
 }: {
   pair: any;
   setLoadedPair?: (pair: any) => void;
+  viewDeathBox: boolean;
 }) {
   const playerOneColor = typeColors[pair.player_one_pokemon_primary_type] || '#FFFFFF';
   const playerTwoColor = typeColors[pair.player_two_pokemon_primary_type] || '#FFFFFF';
@@ -33,6 +35,7 @@ export default function PokemonPair({
     <div
       onClick={() => setLoadedPair && setLoadedPair(pair)}
       className="rounded-4xl flex shrink-0 overflow-hidden transition-transform hover:scale-105 relative shadow-2xl"
+      style={{display: viewDeathBox ? 'none' : ''}}
     >
       {/* Gradient background layer */}
       <div

@@ -46,14 +46,10 @@ export default function PokemonBox({boxPokemon, pokemonNames, save, setLoadedPai
         {/* TODO: allow users to sort box by primary/secondary type */}
         {/* TODO: allow users to only display unique pairs. a unique pair is pair whos two typings arent shared by another pairs */}
         { livingBox.map((pair: any) => (
-          <div key={pair.id} className={viewDeathBox ? 'hidden' : ''}>
-            <PokemonPair pair={pair} setLoadedPair={setLoadedPair} />
-          </div>
+            <PokemonPair key={pair.id} pair={pair} setLoadedPair={setLoadedPair} viewDeathBox={viewDeathBox} />
         ))}
         { deathBox.map((pair: any) => (
-          <div key={pair.id} className={viewDeathBox ? '' : 'hidden'}>
-            <PokemonPair pair={pair} setLoadedPair={setLoadedPair} />
-          </div>
+            <PokemonPair key={pair.id} pair={pair} setLoadedPair={setLoadedPair} viewDeathBox={!viewDeathBox} />
         ))}
         <Dialog open={open} onOpenChange={setOpen}>
 
