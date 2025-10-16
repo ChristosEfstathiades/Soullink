@@ -5,7 +5,7 @@ import {useDraggable} from '@dnd-kit/core';
 
 
 interface TeamBuilderProps {
-  livingBox?: any[];
+  livingBox: any[];
 }
 
 // TODO: generate teams from pairs. 
@@ -57,11 +57,12 @@ function generateTeam(pokemon: any[]) {
         }
     })
     let remainingSlots = 6 - uniquePairs.length
+    let unavailableTypes: string[] = [];
     console.log(remainingSlots)
     
 }
 
-export default function TeamBuilder({livingBox = [] }: TeamBuilderProps) {
+export default function TeamBuilder({livingBox}: TeamBuilderProps) {
 
     return (
         <section className="flex flex-col">

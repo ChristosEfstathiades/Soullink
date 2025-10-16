@@ -22,11 +22,10 @@ import {useDraggable} from '@dnd-kit/core';
 
 
 interface PokemonBoxProps {
-  boxPokemon?: any[]; // kept for backward compatibility
-  livingBox?: any[];
-  deathBox?: any[];
-  setLoadedPair?: (pair: any) => void;
-  pokemonNames?: string[];
+  livingBox: any[];
+  deathBox: any[];
+  setLoadedPair: (pair: any) => void;
+  pokemonNames: string[];
   viewDeathBox: boolean;
   save: {
     id: number;
@@ -36,7 +35,7 @@ interface PokemonBoxProps {
   };
 }
 
-export default function PokemonBox({boxPokemon, pokemonNames, save, setLoadedPair, viewDeathBox, livingBox = [], deathBox = [] }: PokemonBoxProps) {
+export default function PokemonBox({pokemonNames, save, setLoadedPair, viewDeathBox, livingBox, deathBox }: PokemonBoxProps) {
   const [open, setOpen] = useState(false);
   
   return (
@@ -45,6 +44,7 @@ export default function PokemonBox({boxPokemon, pokemonNames, save, setLoadedPai
         {/* TODO: When users are team building provide option to only display valid pairs that can be added */}
         {/* TODO: allow users to sort box by primary/secondary type */}
         {/* TODO: allow users to only display unique pairs. a unique pair is pair whos two typings arent shared by another pairs */}
+        {/* TODO: Optional: convert to carousel with shadcn */}
         { livingBox.map((pair: any) => (
             <PokemonPair key={pair.id} pair={pair} setLoadedPair={setLoadedPair} viewDeathBox={viewDeathBox} />
         ))}
@@ -53,7 +53,7 @@ export default function PokemonBox({boxPokemon, pokemonNames, save, setLoadedPai
         ))}
         <Dialog open={open} onOpenChange={setOpen}>
 
-        <DialogTrigger style={{ display: viewDeathBox ? 'none' : 'inline-block' }} className="bg-white/85 p-2 lg:p-4 cursor-[url('/storage/PCHand.png'),_pointer] rounded-full justify-self-start self-center shadow-md"><Plus /></DialogTrigger>
+        <DialogTrigger style={{ display: viewDeathBox ? 'inline-block' : 'inline-block' }} className="bg-white/85 p-2 lg:p-4 cursor-[url('/storage/PCHand.png'),_pointer] rounded-full justify-self-start self-center shadow-md"><Plus /></DialogTrigger>
         <DialogContent>
             <DialogHeader>
             <DialogTitle className="text-center">Add New Soullink Pair</DialogTitle>

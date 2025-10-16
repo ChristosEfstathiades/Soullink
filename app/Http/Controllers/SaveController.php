@@ -62,7 +62,7 @@ class SaveController extends Controller
         $deadBox = $pairs->where('is_alive', 0)->values();
         return Inertia::render('tracker', [
             'save' => $save,
-            'boxPokemon' => $alivePairs,
+            'livingBox' => $alivePairs,
             'deathBox' => $deadBox,
         ]);
     }
