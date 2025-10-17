@@ -23,10 +23,14 @@ export default function PokemonPair({
   pair,
   setLoadedPair,
   viewDeathBox,
+  unavailableTypes = [],
+  highlightAvailablePairs = false,
 }: {
   pair: any;
   setLoadedPair?: (pair: any) => void;
   viewDeathBox: boolean;
+  unavailableTypes?: string[];
+  highlightAvailablePairs?: boolean;
 }) {
   const playerOneColor = typeColors[pair.player_one_pokemon_primary_type] || '#FFFFFF';
   const playerTwoColor = typeColors[pair.player_two_pokemon_primary_type] || '#FFFFFF';
@@ -35,7 +39,7 @@ export default function PokemonPair({
     <div
       onClick={() => setLoadedPair && setLoadedPair(pair)}
       className="rounded-4xl flex shrink-0 overflow-hidden transition-transform hover:scale-105 relative shadow-2xl"
-      style={{display: viewDeathBox ? 'none' : ''}}
+      style={{display: viewDeathBox ? 'none' : '', opacity: (unavailableTypes.includes(pair.player_one_pokemon_primary_type) || unavailableTypes.includes(pair.player_two_pokemon_primary_type)) && highlightAvailablePairs ? 0.4 : 1}}
     >
       {/* Gradient background layer */}
       <div

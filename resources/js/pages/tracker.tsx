@@ -7,6 +7,7 @@ import TeamBuilder from '@/components/soullink/team-builder';
 import { useEffect, useState, useContext } from 'react';
 import { index } from '@/routes/saves';
 import {DndContext} from '@dnd-kit/core';
+import { Input } from '@/components/ui/input';
 
 interface TrackerProps {
     save: {
@@ -21,7 +22,7 @@ interface TrackerProps {
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Dashboard',
+        title: 'Saves',
         href: index().url,
     },
 ];
@@ -30,7 +31,9 @@ export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
     const [pokemonNames, setPokemonNames] = useState<string[]>([]);
     const [loadedPair, setLoadedPair] = useState<any | null>(null);
     const [viewDeathBox, setViewDeathBox] = useState(false);
-   
+    const [partyPairs, setPartyPairs] = useState<(any | null)[]>(Array(6).fill(null));
+    const [unavailableTypes, setUnavailableTypes] = useState<string[]>(["normal", "fire", "water", "ghost", "ice"]);
+    const [highlightAvailablePairs, setHighlightAvailablePairs] = useState(false);
 
     // TODO: replace with react-query
     useEffect(() => {
@@ -51,12 +54,17 @@ export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
                 <TeamBuilder livingBox={livingBox} />
 
                 <section className='cursor-[url("/storage/PCHand.png"),_pointer] flex flex-col items-center h-[calc(100vh-4rem)]'>
-                    <div className=' flex flex-row  border-b-0 border-black/20 rounded-t-xl'>
+                    <div className='flex flex-row  border-b-0 border-black/20 rounded-t-xl'>
                         <button className='px-4 py-1 cursor-[inherit] rounded-tl-xl' style={{ backgroundColor: viewDeathBox ? 'lightgray' : '#23CD5E' }} onClick={() => { setViewDeathBox(false); }}>LivingBox</button>
                         <div className="w-px h-full bg-black/30"></div>
                         <button className='px-4 py-1 cursor-[inherit] rounded-tr-xl' style={{ backgroundColor: viewDeathBox ? '#F34444' : 'lightgray' }} onClick={() => { setViewDeathBox(true); }}>DeathBox</button>
                     </div>
-                    <PokemonBox setLoadedPair={setLoadedPair} save={save} pokemonNames={pokemonNames} viewDeathBox={viewDeathBox} livingBox={livingBox} deathBox={deathBox} />
+                    <PokemonBox highlightAvailablePairs={highlightAvailablePairs} unavailableTypes={unavailableTypes} setLoadedPair={setLoadedPair} save={save} pokemonNames={pokemonNames} viewDeathBox={viewDeathBox} livingBox={livingBox} deathBox={deathBox} />
+                    <div className='mt-3 mb-1 flex items-center'>
+                        <input className='size-7 mr-1' onChange={e => setHighlightAvailablePairs(e.target.checked)} type="checkbox"/>
+                        <label>Highlight Available Pairs</label>
+                    </div>
+
                 </section>
             </DndContext>
 

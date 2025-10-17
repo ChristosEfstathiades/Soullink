@@ -33,20 +33,21 @@ interface PokemonBoxProps {
     player_one_name: string | null;
     player_two_name: string | null;
   };
+  unavailableTypes: string[];
+  highlightAvailablePairs: boolean;
 }
 
-export default function PokemonBox({pokemonNames, save, setLoadedPair, viewDeathBox, livingBox, deathBox }: PokemonBoxProps) {
+export default function PokemonBox({pokemonNames, save, setLoadedPair, viewDeathBox, livingBox, deathBox, unavailableTypes, highlightAvailablePairs }: PokemonBoxProps) {
   const [open, setOpen] = useState(false);
   
   return (
-    <section style={{ backgroundImage: !viewDeathBox ? 'url(/storage/livingbox.png)' : 'url(/storage/deathbox.png)' }} className="w-sm lg:w-2xl grow bg-center bg-no-repeat bg-cover overflow-y-auto">
+    <section style={{ backgroundImage: !viewDeathBox ? 'url(/storage/livingbox.png)' : 'url(/storage/deathbox.png)' }} className="w-sm lg:w-2xl grow bg-center bg-no-repeat bg-cover overflow-y-auto rounded-t-xl">
       <div className="grid grid-cols-3 lg:grid-cols-4 gap-4 justify-center lg:p-4 p-2"> 
-        {/* TODO: When users are team building provide option to only display valid pairs that can be added */}
         {/* TODO: allow users to sort box by primary/secondary type */}
         {/* TODO: allow users to only display unique pairs. a unique pair is pair whos two typings arent shared by another pairs */}
         {/* TODO: Optional: convert to carousel with shadcn */}
         { livingBox.map((pair: any) => (
-            <PokemonPair key={pair.id} pair={pair} setLoadedPair={setLoadedPair} viewDeathBox={viewDeathBox} />
+            <PokemonPair highlightAvailablePairs={highlightAvailablePairs} unavailableTypes={unavailableTypes} key={pair.id} pair={pair} setLoadedPair={setLoadedPair} viewDeathBox={viewDeathBox} />
         ))}
         { deathBox.map((pair: any) => (
             <PokemonPair key={pair.id} pair={pair} setLoadedPair={setLoadedPair} viewDeathBox={!viewDeathBox} />
