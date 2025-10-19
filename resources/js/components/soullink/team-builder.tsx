@@ -1,11 +1,12 @@
 import PokemonParty from '@/components/soullink/pokemon-party';
 import { Button } from '@/components/ui/button';
 import {useDraggable} from '@dnd-kit/core';
+import { type PokemonPairType } from '@/types';
 
 
 
 interface TeamBuilderProps {
-  livingBox: any[];
+  livingBox: PokemonPairType[];
 }
 
 // TODO: generate teams from pairs. 
@@ -16,11 +17,8 @@ interface TeamBuilderProps {
 // algorithm:
 // 1. filter out pairs based on team generation options
 // 2. Added locked pairs to each possible team
-// 3. Determine which remaining pairs have unique primary types, add to each possible team - tally up how many times each type occurs, loop over pairs to find pairs where both primary types occur once
-// 4. attempt to add a pair to the team, calculate remaining possible valid pairs, repeat for each pair, 
-//    prioritise pairs that leave the most options open
-// 5. once team is full, calculate type coverage score
-// 6. repeat 4-5 for a set number of iterations 
+// 3. [2,7]: 21, 4 
+
 // 7. return the team with the highest type coverage score
 const typeTally: { [key: string]: number } = {
     normal: 0,
@@ -42,16 +40,16 @@ const typeTally: { [key: string]: number } = {
     steel: 0,
     fairy: 0,
 };
-function generateTeam(pokemon: any[]) {
+function generateTeam(pokemon: PokemonPairType[]) {
     for (const key in typeTally) {
         typeTally[key] = 0;
     }
-    pokemon.map((pair: any) => {
+    pokemon.map((pair: PokemonPairType) => {
         typeTally[pair.player_one_pokemon_primary_type] += 1
         typeTally[pair.player_two_pokemon_primary_type] += 1
     })
     let uniquePairs: number[] = [];
-    pokemon.map((pair: any) => {
+    pokemon.map((pair: PokemonPairType) => {
         if (typeTally[pair.player_one_pokemon_primary_type] == 1 && typeTally[pair.player_two_pokemon_primary_type] == 1) {
             uniquePairs.push(pair.id)
         }

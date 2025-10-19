@@ -9,20 +9,21 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import InputError  from '@/components/input-error';
 import {X} from 'lucide-react';
+import { type PokemonPairType } from '@/types';
 
 
 
-export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonNames}: {pair: any, saveID: number, setLoadedPair: (pair: any) => void, pokemonNames?: string[]}) {
-  type pokemonDataType = {
-    pokemon_one: {
-      bst: number[];
-      types: string[];
-    };
-    pokemon_two: {
-      bst: number[];
-      types: string[];
-    };
-  }
+type pokemonDataType = {
+  pokemon_one: {
+    bst: number[];
+    types: string[];
+  };
+  pokemon_two: {
+    bst: number[];
+    types: string[];
+  };
+};
+export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonNames}: {pair: PokemonPairType | null, saveID: number, setLoadedPair: (pair: PokemonPairType | null) => void, pokemonNames?: string[]}) {
   // TODO: could move to onClick in PokemonPair, but this is fine for now
   const [pokemonData, setPokemonData] = useState<pokemonDataType>();
   const [isAlive, setIsAlive] = useState<boolean>(true);
@@ -66,14 +67,12 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonN
                 <>
                   <div className="flex flex-row">
                     <div className="p-4 mr-4 flex flex-col gap-3">
-                      <h3 className="text-[#CC0000]">{pair.player_one_name}</h3>
                       <Select tabIndex={1} defaultValue={pair.player_one_pokemon_name} id="playerOnePokemon" name="playerOnePokemon" options={pokemonNames?.map(name => ({ value: name, label: name }))} />
                       <InputError message={errors.playerOnePokemon} className="mt-2" />
                       <Input tabIndex={2} placeholder="Nickname" id="playerOneNickname" type="text" name="playerOneNickname"></Input>
                       <InputError message={errors.playerOneNickname} className="mt-2" />
                     </div>
                     <div className="p-4 flex flex-col gap-3">
-                      <h3 className="text-[#3B4CCA]">{pair.player_two_name}</h3>
                       <Select tabIndex={3} defaultValue={pair.player_two_pokemon_name} id="playerTwoPokemon" name="playerTwoPokemon" options={pokemonNames?.map(name => ({ value: name, label: name }))} />
                       <InputError message={errors.playerTwoPokemon} className="mt-2" />
                       <Input tabIndex={4} placeholder="Nickname" id="playerTwoNickname" type="text" name="playerTwoNickname"></Input>

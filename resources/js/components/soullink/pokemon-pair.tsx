@@ -1,3 +1,8 @@
+import { type PokemonPairType } from "@/types";
+import { useDraggable } from "@dnd-kit/core";
+import {Plus} from 'lucide-react';
+
+
 const typeColors: { [key: string]: string } = {
   normal: '#A8A77A',
   fire: '#EE8130',
@@ -26,28 +31,31 @@ export default function PokemonPair({
   unavailableTypes = [],
   highlightAvailablePairs = false,
 }: {
-  pair: any;
-  setLoadedPair?: (pair: any) => void;
+  pair: PokemonPairType;
+  setLoadedPair?: (pair: PokemonPairType) => void;
   viewDeathBox: boolean;
   unavailableTypes?: string[];
   highlightAvailablePairs?: boolean;
 }) {
   const playerOneColor = typeColors[pair.player_one_pokemon_primary_type] || '#FFFFFF';
   const playerTwoColor = typeColors[pair.player_two_pokemon_primary_type] || '#FFFFFF';
+  
 
   return (
     <div
       onClick={() => setLoadedPair && setLoadedPair(pair)}
-      className="rounded-4xl flex shrink-0 overflow-hidden transition-transform hover:scale-105 relative shadow-2xl"
+      className="rounded-4xl flex shrink-0  transition-transform hover:scale-105 relative shadow-2xl group"
       style={{display: viewDeathBox ? 'none' : '', opacity: (unavailableTypes.includes(pair.player_one_pokemon_primary_type) || unavailableTypes.includes(pair.player_two_pokemon_primary_type)) && highlightAvailablePairs ? 0.4 : 1}}
+    
     >
       {/* Gradient background layer */}
       <div
-        className="absolute inset-0 opacity-100"
+        className="absolute inset-0 rounded-4xl opacity-100"
         style={{
           background: `linear-gradient(to right, ${playerOneColor},rgba(255, 255, 255, 0.85) 50%, ${playerTwoColor})`,
         }}
       />
+      <div className="absolute p-1.5 bottom-0 right-0 hidden group-hover:block z-100 bg-white rounded-full cursor-pointer" ><Plus color="red" /></div>
 
       {/* Pokémon images layer */}
       <div className="relative flex w-full justify-between items-center z-10">

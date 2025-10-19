@@ -17,14 +17,15 @@ import InputError  from '@/components/input-error';
 import { store } from '@/actions/App/Http/Controllers/PairController';
 import PokemonPair from '@/components/soullink/pokemon-pair';
 import {useDraggable} from '@dnd-kit/core';
+import { type PokemonPairType } from '@/types';
 
 
 
 
 interface PokemonBoxProps {
-  livingBox: any[];
-  deathBox: any[];
-  setLoadedPair: (pair: any) => void;
+  livingBox: PokemonPairType[];
+  deathBox: PokemonPairType[];
+  setLoadedPair: (pair: PokemonPairType) => void;
   pokemonNames: string[];
   viewDeathBox: boolean;
   save: {
@@ -35,21 +36,22 @@ interface PokemonBoxProps {
   };
   unavailableTypes: string[];
   highlightAvailablePairs: boolean;
+  highlightUniquePairs: boolean;
 }
 
 export default function PokemonBox({pokemonNames, save, setLoadedPair, viewDeathBox, livingBox, deathBox, unavailableTypes, highlightAvailablePairs }: PokemonBoxProps) {
   const [open, setOpen] = useState(false);
   
   return (
-    <section style={{ backgroundImage: !viewDeathBox ? 'url(/storage/livingbox.png)' : 'url(/storage/deathbox.png)' }} className="w-sm lg:w-2xl grow bg-center bg-no-repeat bg-cover overflow-y-auto rounded-t-xl">
+    <section style={{ backgroundImage: viewDeathBox ? 'url(/storage/deathbox.png)' : 'url(/storage/livingbox.png)' }} className="w-sm lg:w-2xl grow bg-center bg-no-repeat bg-cover overflow-y-auto rounded-t-xl">
       <div className="grid grid-cols-3 lg:grid-cols-4 gap-4 justify-center lg:p-4 p-2"> 
         {/* TODO: allow users to sort box by primary/secondary type */}
         {/* TODO: allow users to only display unique pairs. a unique pair is pair whos two typings arent shared by another pairs */}
         {/* TODO: Optional: convert to carousel with shadcn */}
-        { livingBox.map((pair: any) => (
+        { livingBox.map((pair: PokemonPairType) => (
             <PokemonPair highlightAvailablePairs={highlightAvailablePairs} unavailableTypes={unavailableTypes} key={pair.id} pair={pair} setLoadedPair={setLoadedPair} viewDeathBox={viewDeathBox} />
         ))}
-        { deathBox.map((pair: any) => (
+        { deathBox.map((pair: PokemonPairType) => (
             <PokemonPair key={pair.id} pair={pair} setLoadedPair={setLoadedPair} viewDeathBox={!viewDeathBox} />
         ))}
         <Dialog open={open} onOpenChange={setOpen}>

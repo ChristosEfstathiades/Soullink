@@ -40,3 +40,17 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface PokemonPairType {
+    id: number;
+    save_id: number;
+    player_one_pokemon_name: string;
+    player_one_pokemon_nickname: string | null;
+    player_one_pokemon_primary_type: string;
+    player_one_pokemon_secondary_type: string | null;
+    player_two_pokemon_name: string;
+    player_two_pokemon_nickname: string | null;
+    player_two_pokemon_primary_type: string;
+    player_two_pokemon_secondary_type: string | null;
+    is_alive: number;
+}
