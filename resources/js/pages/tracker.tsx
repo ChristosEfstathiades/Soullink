@@ -6,8 +6,8 @@ import PokemonPairEditor from '@/components/soullink/pokemon-pair-editor';
 import TeamBuilder from '@/components/soullink/team-builder';
 import { useEffect, useState, useContext } from 'react';
 import { index } from '@/routes/saves';
-import {DndContext} from '@dnd-kit/core';
 import { Input } from '@/components/ui/input';
+import { useLocalStorage} from 'usehooks-ts'
 
 interface TrackerProps {
     save: {
@@ -31,7 +31,8 @@ export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
     const [pokemonNames, setPokemonNames] = useState<string[]>([]);
     const [loadedPair, setLoadedPair] = useState<PokemonPairType | null>(null);
     const [viewDeathBox, setViewDeathBox] = useState(false);
-    const [partyPairs, setPartyPairs] = useState<(PokemonPairType | null)[]>(Array(6).fill(null));
+    // const [partyPairs, setPartyPairs] = useState<(PokemonPairType | null)[]>(Array(6).fill(null));
+    const [partyPairs, setPartyPairs, removePartyPair] = useLocalStorage<(PokemonPairType | null)[]>('soullink-tracker-party', Array(6).fill(null));
     const [unavailableTypes, setUnavailableTypes] = useState<string[]>([]);
     const [highlightAvailablePairs, setHighlightAvailablePairs] = useState(false);
     const [highlightUniquePairs, setHighlightUniquePairs] = useState(false);
@@ -63,11 +64,15 @@ export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
                     <button className='px-4 py-1 cursor-[inherit] rounded-tr-xl' style={{ backgroundColor: viewDeathBox ? '#F34444' : 'lightgray' }} onClick={() => { setViewDeathBox(true); }}>DeathBox</button>
                 </div>
                 <PokemonBox setUnavailableTypes={setUnavailableTypes} highlightUniquePairs={highlightUniquePairs} highlightAvailablePairs={highlightAvailablePairs} unavailableTypes={unavailableTypes} setLoadedPair={setLoadedPair} save={save} pokemonNames={pokemonNames} viewDeathBox={viewDeathBox} livingBox={filteredBox} setPartyPairs={setPartyPairs} partyPairs={partyPairs} deathBox={deathBox} />
-                <div className='mt-3 mb-1 flex items-center'>
-                    <input className='size-7 mr-1' onChange={e => setHighlightAvailablePairs(e.target.checked)} type="checkbox"/>
-                    <label>Highlight Available Pairs</label>
-                    <input className='size-7 mr-1' onChange={e => setHighlightUniquePairs(e.target.checked)} type="checkbox"/>
-                    <label>Highlight Unique Pairs</label>
+                <div className='mt-3 mb-3 flex items-center gap-4'>
+                    <div className='flex items-center'>
+                        <input className='size-7 mr-1' onChange={e => setHighlightAvailablePairs(e.target.checked)} type="checkbox"/>
+                        <label>Highlight Available Pairs</label>
+                    </div>
+                    <div className='flex items-center'>
+                        <input className='size-7 mr-1' onChange={e => setHighlightUniquePairs(e.target.checked)} type="checkbox"/>
+                        <label>Highlight Unique Pairs</label>
+                    </div>
                 </div>
 
             </section>

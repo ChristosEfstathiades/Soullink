@@ -17,12 +17,8 @@ interface TeamBuilderProps {
 // normal/flying -> flying, revert fairy types. 
 // type coverage: count number of resistances, check if for every weakness there is a resistance
 
-// algorithm:
-// 1. filter out pairs based on team generation options
-// 2. Added locked pairs to each possible team
-// 3. [2,7]: 21, 4 
 
-// 7. return the team with the highest type coverage score
+// return the team with the highest type coverage score
 const typeTally: { [key: string]: number } = {
     normal: 0,
     fire: 0,
@@ -77,7 +73,7 @@ export default function TeamBuilder({livingBox, partyPairs, setPartyPairs, setUn
     }
 
     return (
-        <section className="flex flex-col">
+        <section className="flex flex-col pr-4">
             <h2 className="text-2xl font-bold text-center mb-4">Team Builder</h2>
             <Button onClick={() => generateTeam(livingBox)}>generate team</Button>
             <PokemonParty removeFromParty={removeFromParty} partyPairs={partyPairs} />
