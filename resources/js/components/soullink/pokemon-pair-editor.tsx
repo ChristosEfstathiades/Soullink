@@ -67,13 +67,13 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonN
                 <>
                   <div className="flex flex-row">
                     <div className="p-4 mr-4 flex flex-col gap-3">
-                      <Select tabIndex={1} defaultValue={pair.player_one_pokemon_name} id="playerOnePokemon" name="playerOnePokemon" options={pokemonNames?.map(name => ({ value: name, label: name }))} />
+                      <Select tabIndex={1} id="playerOnePokemon" name="playerOnePokemon" options={pokemonNames?.map(name => ({ value: name, label: name }))} />
                       <InputError message={errors.playerOnePokemon} className="mt-2" />
                       <Input tabIndex={2} placeholder="Nickname" id="playerOneNickname" type="text" name="playerOneNickname"></Input>
                       <InputError message={errors.playerOneNickname} className="mt-2" />
                     </div>
                     <div className="p-4 flex flex-col gap-3">
-                      <Select tabIndex={3} defaultValue={pair.player_two_pokemon_name} id="playerTwoPokemon" name="playerTwoPokemon" options={pokemonNames?.map(name => ({ value: name, label: name }))} />
+                      <Select tabIndex={3} id="playerTwoPokemon" name="playerTwoPokemon" options={pokemonNames?.map(name => ({ value: name, label: name }))} />
                       <InputError message={errors.playerTwoPokemon} className="mt-2" />
                       <Input tabIndex={4} placeholder="Nickname" id="playerTwoNickname" type="text" name="playerTwoNickname"></Input>
                       <InputError message={errors.playerTwoNickname} className="mt-2" />

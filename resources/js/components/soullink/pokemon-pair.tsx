@@ -24,18 +24,22 @@ const typeColors: { [key: string]: string } = {
   fairy: '#D685AD',
 };
 
+
+
 export default function PokemonPair({
   pair,
   setLoadedPair,
   viewDeathBox,
   unavailableTypes = [],
   highlightAvailablePairs = false,
+  addToParty,
 }: {
   pair: PokemonPairType;
   setLoadedPair?: (pair: PokemonPairType) => void;
   viewDeathBox: boolean;
   unavailableTypes?: string[];
   highlightAvailablePairs?: boolean;
+  addToParty: (event: React.MouseEvent<HTMLDivElement>, pair: PokemonPairType) => void;
 }) {
   const playerOneColor = typeColors[pair.player_one_pokemon_primary_type] || '#FFFFFF';
   const playerTwoColor = typeColors[pair.player_two_pokemon_primary_type] || '#FFFFFF';
@@ -55,7 +59,8 @@ export default function PokemonPair({
           background: `linear-gradient(to right, ${playerOneColor},rgba(255, 255, 255, 0.85) 50%, ${playerTwoColor})`,
         }}
       />
-      <div className="absolute p-1.5 bottom-0 right-0 hidden group-hover:block z-100 bg-white rounded-full cursor-pointer" ><Plus color="red" /></div>
+      <div style={{opacity: (unavailableTypes.includes(pair.player_one_pokemon_primary_type) || unavailableTypes.includes(pair.player_two_pokemon_primary_type)) ? 0.4 : 1}} onClick={(event) => addToParty(event, pair)} className="absolute p-0.5 bottom-0 right-0 hidden group-hover:block z-100 bg-white rounded-full cursor-pointer" ><Plus color="red" /></div>
+      
 
       {/* Pokémon images layer */}
       <div className="relative flex w-full justify-between items-center z-10">

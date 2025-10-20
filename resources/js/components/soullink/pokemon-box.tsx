@@ -16,9 +16,7 @@ import { Button } from '@/components/ui/button';
 import InputError  from '@/components/input-error';
 import { store } from '@/actions/App/Http/Controllers/PairController';
 import PokemonPair from '@/components/soullink/pokemon-pair';
-import {useDraggable} from '@dnd-kit/core';
 import { type PokemonPairType } from '@/types';
-
 
 
 
@@ -26,6 +24,8 @@ interface PokemonBoxProps {
   livingBox: PokemonPairType[];
   deathBox: PokemonPairType[];
   setLoadedPair: (pair: PokemonPairType) => void;
+  setPartyPairs: (pairs: (PokemonPairType | null)[]) => void;
+  setUnavailableTypes: (types: string[]) => void;
   pokemonNames: string[];
   viewDeathBox: boolean;
   save: {
@@ -37,10 +37,24 @@ interface PokemonBoxProps {
   unavailableTypes: string[];
   highlightAvailablePairs: boolean;
   highlightUniquePairs: boolean;
+  partyPairs: (PokemonPairType | null)[];
 }
 
-export default function PokemonBox({pokemonNames, save, setLoadedPair, viewDeathBox, livingBox, deathBox, unavailableTypes, highlightAvailablePairs }: PokemonBoxProps) {
+
+export default function PokemonBox({setUnavailableTypes, pokemonNames, save, setLoadedPair, viewDeathBox, livingBox, deathBox, unavailableTypes, highlightAvailablePairs,partyPairs, setPartyPairs }: PokemonBoxProps) {
   const [open, setOpen] = useState(false);
+
+  function addToParty(event: React.MouseEvent<HTMLDivElement>, pair: PokemonPairType) {
+    event.stopPropagation();
+    console.log(pair)
+    const emptyIndex = partyPairs.findIndex((p) => p === null);
+    if (emptyIndex !== -1 && !unavailableTypes.includes(pair.player_one_pokemon_primary_type) && !unavailableTypes.includes(pair.player_two_pokemon_primary_type) && !viewDeathBox) {
+      const newPartyPairs = [...partyPairs];
+      newPartyPairs[emptyIndex] = pair;
+      setPartyPairs(newPartyPairs);
+      setUnavailableTypes([...unavailableTypes, pair.player_one_pokemon_primary_type, pair.player_two_pokemon_primary_type]);
+    }
+  }
   
   return (
     <section style={{ backgroundImage: viewDeathBox ? 'url(/storage/deathbox.png)' : 'url(/storage/livingbox.png)' }} className="w-sm lg:w-2xl grow bg-center bg-no-repeat bg-cover overflow-y-auto rounded-t-xl">
@@ -49,17 +63,18 @@ export default function PokemonBox({pokemonNames, save, setLoadedPair, viewDeath
         {/* TODO: allow users to only display unique pairs. a unique pair is pair whos two typings arent shared by another pairs */}
         {/* TODO: Optional: convert to carousel with shadcn */}
         { livingBox.map((pair: PokemonPairType) => (
-            <PokemonPair highlightAvailablePairs={highlightAvailablePairs} unavailableTypes={unavailableTypes} key={pair.id} pair={pair} setLoadedPair={setLoadedPair} viewDeathBox={viewDeathBox} />
+            <PokemonPair addToParty={addToParty} highlightAvailablePairs={highlightAvailablePairs} unavailableTypes={unavailableTypes} key={pair.id} pair={pair} setLoadedPair={setLoadedPair} viewDeathBox={viewDeathBox} />
         ))}
         { deathBox.map((pair: PokemonPairType) => (
-            <PokemonPair key={pair.id} pair={pair} setLoadedPair={setLoadedPair} viewDeathBox={!viewDeathBox} />
+            <PokemonPair addToParty={addToParty} key={pair.id} pair={pair} setLoadedPair={setLoadedPair} viewDeathBox={!viewDeathBox} />
         ))}
         <Dialog open={open} onOpenChange={setOpen}>
 
-        <DialogTrigger style={{ display: viewDeathBox ? 'inline-block' : 'inline-block' }} className="bg-white/85 p-2 lg:p-4 cursor-[url('/storage/PCHand.png'),_pointer] rounded-full justify-self-start self-center shadow-md"><Plus /></DialogTrigger>
+        <DialogTrigger style={{ display: viewDeathBox ? 'none' : 'inline-block' }} className="bg-white/85 p-2 lg:p-4 cursor-pointer rounded-full justify-self-start self-center shadow-md"><Plus /></DialogTrigger>
         <DialogContent>
             <DialogHeader>
-            <DialogTitle className="text-center">Add New Soullink Pair</DialogTitle>
+            <DialogTitle className="text-center">Add a New Soullink Pair</DialogTitle>
+            <DialogDescription className="text-center">Selected Pokemon Cannot Share the Same Primary Type</DialogDescription>
             </DialogHeader>
             <Form onSuccess={() => setOpen(false)} action={store(save.id)} className="flex flex-col justify-around">
               {({ errors }) => (

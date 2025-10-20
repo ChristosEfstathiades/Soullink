@@ -1,12 +1,15 @@
 import PokemonParty from '@/components/soullink/pokemon-party';
 import { Button } from '@/components/ui/button';
-import {useDraggable} from '@dnd-kit/core';
 import { type PokemonPairType } from '@/types';
 
 
 
 interface TeamBuilderProps {
   livingBox: PokemonPairType[];
+  partyPairs: (PokemonPairType | null)[];
+  setPartyPairs: (pairs: (PokemonPairType | null)[]) => void;
+  setUnavailableTypes: (types: string[]) => void;
+  unavailableTypes: string[];
 }
 
 // TODO: generate teams from pairs. 
@@ -48,25 +51,36 @@ function generateTeam(pokemon: PokemonPairType[]) {
         typeTally[pair.player_one_pokemon_primary_type] += 1
         typeTally[pair.player_two_pokemon_primary_type] += 1
     })
-    let uniquePairs: number[] = [];
+    let uniquePairs: PokemonPairType[] = [];
     pokemon.map((pair: PokemonPairType) => {
         if (typeTally[pair.player_one_pokemon_primary_type] == 1 && typeTally[pair.player_two_pokemon_primary_type] == 1) {
-            uniquePairs.push(pair.id)
+            uniquePairs.push(pair)
         }
     })
     let remainingSlots = 6 - uniquePairs.length
     let unavailableTypes: string[] = [];
-    console.log(remainingSlots)
+    console.log(uniquePairs)
     
 }
 
-export default function TeamBuilder({livingBox}: TeamBuilderProps) {
+const moveNullsToEnd = (arr: (PokemonPairType | null)[]): (PokemonPairType | null)[] =>
+  [...arr.filter((x): x is PokemonPairType => x !== null), ...arr.filter(x => x === null)];
+
+
+
+export default function TeamBuilder({livingBox, partyPairs, setPartyPairs, setUnavailableTypes, unavailableTypes}: TeamBuilderProps) {
+    function removeFromParty(event: React.MouseEvent<HTMLDivElement>, pair: PokemonPairType) {
+        event.stopPropagation();
+        const newPartyPairs = moveNullsToEnd(partyPairs.map(p => p && p.id === pair.id ? null : p));
+        setPartyPairs(newPartyPairs);
+        setUnavailableTypes(unavailableTypes.filter(type => type !== pair.player_one_pokemon_primary_type && type !== pair.player_two_pokemon_primary_type));
+    }
 
     return (
         <section className="flex flex-col">
-            <h2 className="text-2xl font-bold text-center my-4">Team Builder</h2>
+            <h2 className="text-2xl font-bold text-center mb-4">Team Builder</h2>
             <Button onClick={() => generateTeam(livingBox)}>generate team</Button>
-            <PokemonParty/>
+            <PokemonParty removeFromParty={removeFromParty} partyPairs={partyPairs} />
         </section>
     );
 }

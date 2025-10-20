@@ -29,12 +29,15 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
     const [pokemonNames, setPokemonNames] = useState<string[]>([]);
-    const [loadedPair, setLoadedPair] = useState<any | null>(null);
+    const [loadedPair, setLoadedPair] = useState<PokemonPairType | null>(null);
     const [viewDeathBox, setViewDeathBox] = useState(false);
-    const [partyPairs, setPartyPairs] = useState<(any | null)[]>(Array(6).fill(null));
-    const [unavailableTypes, setUnavailableTypes] = useState<string[]>(["normal", "fire", "water", "ghost", "ice"]);
+    const [partyPairs, setPartyPairs] = useState<(PokemonPairType | null)[]>(Array(6).fill(null));
+    const [unavailableTypes, setUnavailableTypes] = useState<string[]>([]);
     const [highlightAvailablePairs, setHighlightAvailablePairs] = useState(false);
     const [highlightUniquePairs, setHighlightUniquePairs] = useState(false);
+    const filteredBox = livingBox.filter(
+        p => !partyPairs.some(slot => slot?.id === p.id)
+    );
 
     // TODO: replace with react-query
     useEffect(() => {
@@ -51,7 +54,7 @@ export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
                 <link rel="preload" href="/storage/livingbox.png" as="image"></link>
                 <link rel="preload" href="/storage/deathbox.png" as="image"></link>
             </Head>
-            <TeamBuilder livingBox={livingBox} />
+            <TeamBuilder unavailableTypes={unavailableTypes} setUnavailableTypes={setUnavailableTypes} setPartyPairs={setPartyPairs} livingBox={livingBox} partyPairs={partyPairs} />
 
             <section className='cursor-[url("/storage/PCHand.png"),_pointer] flex flex-col items-center h-[calc(100vh-4rem)]'>
                 <div className='flex flex-row  border-b-0 border-black/20 rounded-t-xl'>
@@ -59,7 +62,7 @@ export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
                     <div className="w-px h-full bg-black/30"></div>
                     <button className='px-4 py-1 cursor-[inherit] rounded-tr-xl' style={{ backgroundColor: viewDeathBox ? '#F34444' : 'lightgray' }} onClick={() => { setViewDeathBox(true); }}>DeathBox</button>
                 </div>
-                <PokemonBox highlightUniquePairs={highlightUniquePairs} highlightAvailablePairs={highlightAvailablePairs} unavailableTypes={unavailableTypes} setLoadedPair={setLoadedPair} save={save} pokemonNames={pokemonNames} viewDeathBox={viewDeathBox} livingBox={livingBox} deathBox={deathBox} />
+                <PokemonBox setUnavailableTypes={setUnavailableTypes} highlightUniquePairs={highlightUniquePairs} highlightAvailablePairs={highlightAvailablePairs} unavailableTypes={unavailableTypes} setLoadedPair={setLoadedPair} save={save} pokemonNames={pokemonNames} viewDeathBox={viewDeathBox} livingBox={filteredBox} setPartyPairs={setPartyPairs} partyPairs={partyPairs} deathBox={deathBox} />
                 <div className='mt-3 mb-1 flex items-center'>
                     <input className='size-7 mr-1' onChange={e => setHighlightAvailablePairs(e.target.checked)} type="checkbox"/>
                     <label>Highlight Available Pairs</label>
