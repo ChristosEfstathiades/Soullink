@@ -85,9 +85,7 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonN
                   </div>
                   <InputError message={errors.samePrimaryType} className="mb-2 text-center" />
                   <Button tabIndex={5} type="submit" className="self-center cursor-pointer">Update Pair</Button>
-                  <Button className="self-center mt-4 cursor-pointer" variant='destructive'>
-                    <Link onClick={() => setLoadedPair(null)} className="cursor-pointer" method="delete" href={`/saves/${saveID}/pairs/${pair.id}`}>Delete</Link>
-                  </Button>
+                  <Link className="self-center mt-4 cursor-pointer bg-[#e7000b] text-sm font-medium text-[#ffffff] py-2 px-4 rounded-md" onClick={() => setLoadedPair(null)} method="delete" href={`/saves/${saveID}/pairs/${pair.id}`}>Delete</Link>
                 </>
               )}
             </Form>

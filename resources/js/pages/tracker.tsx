@@ -27,13 +27,23 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+function currentPartyPairTypes(partyPairs: (PokemonPairType | null)[]): string[] {
+    const types: string[] = [];
+    partyPairs.forEach(pair => {
+        if (pair) {
+            types.push(pair.player_one_pokemon_primary_type, pair.player_two_pokemon_primary_type);
+        }
+    })
+    return types;
+}
+
 export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
     const [pokemonNames, setPokemonNames] = useState<string[]>([]);
     const [loadedPair, setLoadedPair] = useState<PokemonPairType | null>(null);
     const [viewDeathBox, setViewDeathBox] = useState(false);
     // const [partyPairs, setPartyPairs] = useState<(PokemonPairType | null)[]>(Array(6).fill(null));
-    const [partyPairs, setPartyPairs, removePartyPair] = useLocalStorage<(PokemonPairType | null)[]>('soullink-tracker-party', Array(6).fill(null));
-    const [unavailableTypes, setUnavailableTypes] = useState<string[]>([]);
+    const [partyPairs, setPartyPairs, removePartyPair] = useLocalStorage<(PokemonPairType | null)[]>(`${save.name}-${save.id}`, Array(6).fill(null));
+    const [unavailableTypes, setUnavailableTypes] = useState<string[]>(currentPartyPairTypes(partyPairs)); 
     const [highlightAvailablePairs, setHighlightAvailablePairs] = useState(false);
     const [highlightUniquePairs, setHighlightUniquePairs] = useState(false);
     const filteredBox = livingBox.filter(

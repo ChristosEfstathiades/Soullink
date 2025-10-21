@@ -41,7 +41,7 @@ export default function PokemonParty({ partyPairs, removeFromParty }: PokemonPar
                         <div
                             className="absolute inset-0 rounded-4xl opacity-100"
                             style={{
-                            background: `linear-gradient(to right, ${typeColors[pair.player_one_pokemon_primary_type]},rgba(255, 255, 255, 0.85) 50%, ${typeColors[pair.player_two_pokemon_primary_type]})`,
+                            background: `linear-gradient(to right, ${typeColors[pair.player_one_pokemon_primary_type]}, ${typeColors[pair.player_two_pokemon_primary_type]})`,
                             }}
                         />
                         <div onClick={(event) => removeFromParty(event, pair)} className="absolute p-0 bottom-0 right-0 hidden group-hover:block z-100 bg-red-600 rounded-full cursor-pointer" ><Minus color="white" /></div>

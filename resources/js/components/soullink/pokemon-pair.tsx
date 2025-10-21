@@ -56,7 +56,7 @@ export default function PokemonPair({
       <div
         className="absolute inset-0 rounded-4xl opacity-100"
         style={{
-          background: `linear-gradient(to right, ${playerOneColor},rgba(255, 255, 255, 0.85) 50%, ${playerTwoColor})`,
+          background: `linear-gradient(to right, ${playerOneColor}, ${playerTwoColor})`,
         }}
       />
       <div style={{opacity: (unavailableTypes.includes(pair.player_one_pokemon_primary_type) || unavailableTypes.includes(pair.player_two_pokemon_primary_type)) ? 0.4 : 1}} onClick={(event) => addToParty(event, pair)} className="absolute p-0.5 bottom-0 right-0 hidden group-hover:block z-100 bg-white rounded-full cursor-pointer" ><Plus color="red" /></div>
