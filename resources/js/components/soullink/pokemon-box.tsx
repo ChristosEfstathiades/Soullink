@@ -61,7 +61,6 @@ export default function PokemonBox({setUnavailableTypes, pokemonNames, save, set
       <div className="grid grid-cols-3 lg:grid-cols-4 gap-4 justify-center lg:p-4 p-2"> 
         {/* TODO: allow users to sort box by primary/secondary type */}
         {/* TODO: allow users to only display unique pairs. a unique pair is pair whos two typings arent shared by another pairs */}
-        {/* TODO: Optional: convert to carousel with shadcn */}
         { livingBox.map((pair: PokemonPairType) => (
             <PokemonPair addToParty={addToParty} highlightAvailablePairs={highlightAvailablePairs} unavailableTypes={unavailableTypes} key={pair.id} pair={pair} setLoadedPair={setLoadedPair} viewDeathBox={viewDeathBox} />
         ))}
@@ -70,7 +69,7 @@ export default function PokemonBox({setUnavailableTypes, pokemonNames, save, set
         ))}
         <Dialog open={open} onOpenChange={setOpen}>
 
-        <DialogTrigger style={{ display: viewDeathBox ? 'none' : 'inline-block' }} className="bg-white/85 p-2 lg:p-4 cursor-pointer rounded-full justify-self-start self-center shadow-md"><Plus /></DialogTrigger>
+        <DialogTrigger name="AddPair" style={{ display: viewDeathBox ? 'none' : 'inline-block' }} className="bg-white/85 p-2 lg:p-4 cursor-pointer rounded-full justify-self-start self-center shadow-md"><Plus /></DialogTrigger>
         <DialogContent>
             <DialogHeader>
             <DialogTitle className="text-center">Add a New Soullink Pair</DialogTitle>

@@ -41,7 +41,6 @@ export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
     const [pokemonNames, setPokemonNames] = useState<string[]>([]);
     const [loadedPair, setLoadedPair] = useState<PokemonPairType | null>(null);
     const [viewDeathBox, setViewDeathBox] = useState(false);
-    // const [partyPairs, setPartyPairs] = useState<(PokemonPairType | null)[]>(Array(6).fill(null));
     const [partyPairs, setPartyPairs, removePartyPair] = useLocalStorage<(PokemonPairType | null)[]>(`${save.name}-${save.id}`, Array(6).fill(null));
     const [unavailableTypes, setUnavailableTypes] = useState<string[]>(currentPartyPairTypes(partyPairs)); 
     const [highlightAvailablePairs, setHighlightAvailablePairs] = useState(false);
@@ -65,29 +64,29 @@ export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
                 <link rel="preload" href="/storage/livingbox.png" as="image"></link>
                 <link rel="preload" href="/storage/deathbox.png" as="image"></link>
             </Head>
-            <TeamBuilder unavailableTypes={unavailableTypes} setUnavailableTypes={setUnavailableTypes} setPartyPairs={setPartyPairs} livingBox={livingBox} partyPairs={partyPairs} />
+            <TeamBuilder save={save} unavailableTypes={unavailableTypes} setUnavailableTypes={setUnavailableTypes} setPartyPairs={setPartyPairs} livingBox={livingBox} partyPairs={partyPairs} />
 
             <section className='cursor-[url("/storage/PCHand.png"),_pointer] flex flex-col items-center h-[calc(100vh-4rem)]'>
-                <div className='flex flex-row  border-b-0 border-black/20 rounded-t-xl'>
-                    <button className='px-4 py-1 cursor-[inherit] rounded-tl-xl' style={{ backgroundColor: viewDeathBox ? 'lightgray' : '#23CD5E' }} onClick={() => { setViewDeathBox(false); }}>LivingBox</button>
+                <div className='flex rounded-t-xl'>
+                    <button className='px-4 py-1 cursor-[inherit] rounded-tl-xl' style={{ backgroundColor: viewDeathBox ? 'lightgray' : '#23CD5E' }} onClick={() => { setViewDeathBox(false); }}>{save.name} Box</button>
                     <div className="w-px h-full bg-black/30"></div>
-                    <button className='px-4 py-1 cursor-[inherit] rounded-tr-xl' style={{ backgroundColor: viewDeathBox ? '#F34444' : 'lightgray' }} onClick={() => { setViewDeathBox(true); }}>DeathBox</button>
+                    <button className='px-4 py-1 cursor-[inherit] rounded-tr-xl' style={{ backgroundColor: viewDeathBox ? '#F34444' : 'lightgray' }} onClick={() => { setViewDeathBox(true); }}>Death Box</button>
                 </div>
                 <PokemonBox setUnavailableTypes={setUnavailableTypes} highlightUniquePairs={highlightUniquePairs} highlightAvailablePairs={highlightAvailablePairs} unavailableTypes={unavailableTypes} setLoadedPair={setLoadedPair} save={save} pokemonNames={pokemonNames} viewDeathBox={viewDeathBox} livingBox={filteredBox} setPartyPairs={setPartyPairs} partyPairs={partyPairs} deathBox={deathBox} />
                 <div className='mt-3 mb-3 flex items-center gap-4'>
                     <div className='flex items-center'>
-                        <input className='size-7 mr-1' onChange={e => setHighlightAvailablePairs(e.target.checked)} type="checkbox"/>
-                        <label>Highlight Available Pairs</label>
+                        <input name='highlightAvailablePairs' className='size-7 mr-1' onChange={e => setHighlightAvailablePairs(e.target.checked)} type="checkbox"/>
+                        <label htmlFor='highlightAvailablePairs'>Highlight Available Pairs</label>
                     </div>
                     <div className='flex items-center'>
-                        <input className='size-7 mr-1' onChange={e => setHighlightUniquePairs(e.target.checked)} type="checkbox"/>
-                        <label>Highlight Unique Pairs</label>
+                        <input name='highlightUniquePairs' className='size-7 mr-1' onChange={e => setHighlightUniquePairs(e.target.checked)} type="checkbox"/>
+                        <label htmlFor='highlightUniquePairs'>Highlight Unique Pairs</label>
                     </div>
                 </div>
 
             </section>
 
-            <PokemonPairEditor setLoadedPair={setLoadedPair} saveID={save.id} pair={loadedPair} pokemonNames={pokemonNames} />
+            <PokemonPairEditor  setLoadedPair={setLoadedPair} saveID={save.id} pair={loadedPair} pokemonNames={pokemonNames} />
         </AppLayout>
     );
 }

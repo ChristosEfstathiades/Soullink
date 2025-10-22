@@ -30,7 +30,7 @@ const typeColors: { [key: string]: string } = {
 };
 export default function PokemonData({name, data}: PokemonDataProps) {
     return (
-        <div className="flex items-center">
+        <div className="flex items-center mt-2">
             <div>
                 <img draggable="false" className="w-30 lg:w-38 mr-4" src={`/storage/${name}.png`} alt={name} />
                 <div className='flex justify-center gap-x-1'>

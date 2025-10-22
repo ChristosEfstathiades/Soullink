@@ -23,10 +23,13 @@ type pokemonDataType = {
     types: string[];
   };
 };
+
+
 export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonNames}: {pair: PokemonPairType | null, saveID: number, setLoadedPair: (pair: PokemonPairType | null) => void, pokemonNames?: string[]}) {
   // TODO: could move to onClick in PokemonPair, but this is fine for now
   const [pokemonData, setPokemonData] = useState<pokemonDataType>();
   const [isAlive, setIsAlive] = useState<boolean>(true);
+
   useEffect(() => {
     if (pair) {
       fetch(`https://pokeapi.co/api/v2/pokemon/${pair.player_one_pokemon_name}`).then(response => response.json()).then(
@@ -51,7 +54,7 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonN
   }, [pair]);
   if (pair) {
     return (
-      <section className="grow">
+      <section className="">
         <div className="flex flex-col items-center">
             <div className="px-4 pt-1 pb-4 border-b border-black/20 flex justify-between w-full">
               <h2 className="text-center text-xl font-bold">
@@ -62,7 +65,7 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonN
             <PokemonData name={pair.player_one_pokemon_name} data={pokemonData?.pokemon_one!} />
             <PokemonData name={pair.player_two_pokemon_name} data={pokemonData?.pokemon_two!} />
             <Form resetOnSuccess className="flex flex-col justify-around" method="put" action={update([saveID, pair.id])}>
-              {/* TODO: pair doesnt update after form submission. Could pass boxpokemon as prop and add it to useEffect or create onSuccess handler that fetches updates pair from boxPokemon*/}
+              {/* TODO: pair doesnt update after form submission. Could pass boxpokemon as prop and add it to useEffect or create onSuccess handler that fetches updated pair from boxPokemon*/}
               {({ errors }) => (
                 <>
                   <div className="flex flex-row">
@@ -94,7 +97,7 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonN
     );
   } else {
     return (
-      <section className="grow flex items-center justify-center">
+      <section className=" flex items-center justify-center">
         <p className="text-center">Click a pair to view/edit it</p>
       </section>
     );
