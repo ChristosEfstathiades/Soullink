@@ -48,7 +48,7 @@ const typeTally: { [key: string]: number } = {
     steel: 0,
     fairy: 0,
 };
-function generateTeam(pokemon: PokemonPairType[]) {
+function generateUniquePairs(pokemon: PokemonPairType[]) {
     for (const key in typeTally) {
         typeTally[key] = 0;
     }
@@ -62,10 +62,17 @@ function generateTeam(pokemon: PokemonPairType[]) {
             uniquePairs.push(pair)
         }
     })
-    let remainingSlots = 6 - uniquePairs.length
-    let unavailableTypes: string[] = [];
     console.log(uniquePairs)
-    
+}
+
+function generateTeam(pokemon: PokemonPairType[], targetSize: number=6, lockedPairs: number[]=[], maxResults: number=10) {
+    // create array of typing pairs etc normal = 1, flying = 11, (1,11)
+    // Create dictionary of pair ids and type combinations so (1,11): 23, 4, ...
+    // run chatgpt code
+    // use dictionary to create teams
+    // evaluate teams based on type coverage
+    // create dialog that suggests best x amount of teams
+    // Add import button for each suggested team that loads them from box into party
 }
 
 const moveNullsToEnd = (arr: (PokemonPairType | null)[]): (PokemonPairType | null)[] =>
@@ -85,10 +92,10 @@ export default function TeamBuilder({save, livingBox, partyPairs, setPartyPairs,
     }
 
     return (
-        <section className="flex flex-col mr-4  min-w-37 lg:min-w-46 grow">
+        <section className="flex flex-col mr-4  min-w-39 lg:min-w-48 grow">
             <h2 className="text-2xl font-bold text-center h-8">Party</h2>
             <PokemonParty lockedPairs={lockedPairs} setLockedPairs={setLockedPairs} removeFromParty={removeFromParty} partyPairs={partyPairs} />
-            {/* <Button onClick={() => generateTeam(livingBox)}>generate team</Button> */}
+            <Button onClick={() => generateTeam(livingBox)}>generate team</Button>
         </section>
     );
 }

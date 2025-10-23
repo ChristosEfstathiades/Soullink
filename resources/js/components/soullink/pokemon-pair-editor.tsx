@@ -65,7 +65,7 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonN
             <PokemonData name={pair.player_one_pokemon_name} data={pokemonData?.pokemon_one!} />
             <PokemonData name={pair.player_two_pokemon_name} data={pokemonData?.pokemon_two!} />
             <Form resetOnSuccess className="flex flex-col justify-around" method="put" action={update([saveID, pair.id])}>
-              {/* TODO: pair doesnt update after form submission. Could pass boxpokemon as prop and add it to useEffect or create onSuccess handler that fetches updated pair from boxPokemon*/}
+              {/* TODO: Add button that fetches level up moveset*/}
               {({ errors }) => (
                 <>
                   <div className="flex flex-row">
@@ -98,7 +98,7 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonN
   } else {
     return (
       <section className=" flex items-center justify-center">
-        <p className="text-center">Click a pair to view/edit it</p>
+        <p className="text-center ml-4">Click a pair to view/edit it</p>
       </section>
     );
   }

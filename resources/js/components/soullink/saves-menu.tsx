@@ -19,7 +19,7 @@ export default function SavesMenu({ saves }: { saves: any[] }) {
   return (
     <section className="text-center text-lg">
         <Dialog>
-        <DialogTrigger className="p-4 rounded-full cursor-pointer hover:text-[#3B4CCA]">New Game</DialogTrigger>
+        <DialogTrigger className="py-2 px-3 hover:bg-accent rounded-sm transition-colors cursor-pointer hover:text-[#3B4CCA]">New Game</DialogTrigger>
         <DialogContent>
             <DialogHeader>
             <DialogTitle>Create a New Soullink Save</DialogTitle>
@@ -45,9 +45,9 @@ export default function SavesMenu({ saves }: { saves: any[] }) {
         <div className="flex flex-col gap-2 mt-4 text-center">
           <p className="text-center">Load Save</p>
           {saves.map((save) => (
-            <div className="flex align-center justify-between min-w-md " key={save.id}>
-              <Link prefetch className="hover:text-[#3B4CCA] flex" href={`/saves/${save.id}`}><Save className="mr-1" ></Save> {save.name}</Link>
-              <Link className="hover:text-[#CC0000] cursor-pointer" method="delete" href={`/saves/${save.id}`}><Trash size={24} /></Link>
+            <div className="flex align-center justify-between min-w-md mb-2" key={save.id}>
+              <Link prefetch className="hover:text-[#3B4CCA] flex transition-colors" href={`/saves/${save.id}`}><Save className="mr-1" ></Save> {save.name}</Link>
+              <Link className="hover:text-[#CC0000] cursor-pointer transition-colors" method="delete" href={`/saves/${save.id}`}><Trash size={24} /></Link>
             </div>
           ))}
         </div>

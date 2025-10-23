@@ -80,7 +80,12 @@ export default function PokemonParty({ partyPairs, removeFromParty, lockedPairs,
                             </div>
                         </div>
                     ) : ( 
-                        <img className='h-13.5  lg:h-18' src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/e8ddc4da-23dd-4502-b65b-378c9cfe5efa/dfgb85u-cf7e1762-c99f-4a72-b93a-6bd7539f1058.png/v1/fill/w_1280,h_1280/light_grey_pokeball_by_jormxdos_dfgb85u-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTI4MCIsInBhdGgiOiIvZi9lOGRkYzRkYS0yM2RkLTQ1MDItYjY1Yi0zNzhjOWNmZTVlZmEvZGZnYjg1dS1jZjdlMTc2Mi1jOTlmLTRhNzItYjkzYS02YmQ3NTM5ZjEwNTgucG5nIiwid2lkdGgiOiI8PTEyODAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.sdLoFrBVSkMHElQJDy4ekXhoFzKQAWSChIXv659NpzI" alt="" /> 
+                        <div className='flex items-center'>
+                            <img className='h-13.5  lg:h-18' src="/storage/light_grey_pokeball.png" alt="" /> 
+                            <hr className='border-t border-1 border-dashed w-5 bg-white text-white border-[#ff1c1c]'/>
+                            <img className='h-13.5  lg:h-18' src="/storage/light_grey_pokeball.png" alt="" /> 
+
+                        </div>
                     )}
                 </div>
             ))}
