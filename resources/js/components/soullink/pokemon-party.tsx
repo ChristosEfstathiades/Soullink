@@ -41,12 +41,12 @@ export default function PokemonParty({ partyPairs, removeFromParty, lockedPairs,
 
 
     return (
-        <section className="flex flex-col  items-center">
+        <section className="flex flex-col cursor-[url('/storage/PCHand.png'),_pointer] items-center">
             {partyPairs.map((pair, index) => (
                 <div className='flex mb-4 ' key={index}>
                     {pair ? ( 
                         <div className='flex items-center'>
-                            <div onClick={() => setLockStatus(pair.id)} className='cursor-pointer p-2 hover:bg-accent rounded-sm mr-2 transition-colors'>
+                            <div onClick={() => setLockStatus(pair.id)} className='p-2 hover:bg-accent rounded-sm mr-2 transition-colors'>
                                 {lockedPairs.includes(pair.id) ? <Lock /> : <LockOpen />}
                             </div>
                             <div

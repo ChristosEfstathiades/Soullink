@@ -48,6 +48,28 @@ const typeTally: { [key: string]: number } = {
     steel: 0,
     fairy: 0,
 };
+
+const typeNumbers: { [key: string]: number } = {
+    normal: 1,
+    fire: 2,
+    water: 3,
+    electric: 4,
+    grass: 5,
+    ice: 6,
+    fighting: 7,
+    poison: 8,
+    ground: 9,
+    flying: 10,
+    psychic: 11,
+    bug: 12,
+    rock: 13,
+    ghost: 14,
+    dragon: 15,
+    dark: 16,
+    steel: 17,
+    fairy: 18,
+}
+
 function generateUniquePairs(pokemon: PokemonPairType[]) {
     for (const key in typeTally) {
         typeTally[key] = 0;
@@ -65,10 +87,73 @@ function generateUniquePairs(pokemon: PokemonPairType[]) {
     console.log(uniquePairs)
 }
 
-function generateTeam(pokemon: PokemonPairType[], targetSize: number=6, lockedPairs: number[]=[], maxResults: number=10) {
+function generateTeamCombinations(pairs: number[][], targetSize: number, requiredPairs: number[][], maxResults: number) {
+    const solutions : number[][] = [];
+
+    // Normalize all pairs so that [2,1] -> [1,2]
+    pairs = pairs.map(([a, b]) => (a < b ? [a, b] : [b, a]));
+    requiredPairs = requiredPairs.map(([a, b]) => (a < b ? [a, b] : [b, a]));
+
+    const used = new Set();
+    let startingChosen = [];
+    for (const [a,b] of requiredPairs) {
+        used.add(a);
+        used.add(b);
+        startingChosen.push([a,b]);
+    }
+
+    const forbiddenNumbers = new Set(requiredPairs.flat());
+    const filteredPairs = pairs.filter(
+        ([a, b]) => !forbiddenNumbers.has(a) && !forbiddenNumbers.has(b)
+    );
+
+    function backtrack(start: number, chosen: any[], used: any) {
+        if (solutions.length >= maxResults) return;
+
+        if (chosen.length === targetSize) {
+            const sorted = [...chosen].sort((a, b) => a[0] - b[0]);
+            solutions.push(sorted);
+            return;
+        }
+
+        // Early pruning
+        if (filteredPairs.length - start < targetSize - chosen.length) return;
+
+        for (let i = start; i < filteredPairs.length; i++) {
+            const [a, b] = filteredPairs[i];
+            if (used.has(a) || used.has(b)) continue;
+
+            used.add(a);
+            used.add(b);
+            backtrack(i + 1, [...chosen, [a, b]], used);
+            used.delete(a);
+            used.delete(b);
+        }
+    }
+
+    backtrack(0, startingChosen, new Set(used));
+    return solutions;
+}
+
+function generateTeam(pokemon: PokemonPairType[], lockedPairs: number[], targetSize: number=6, maxResults: number=10) {
     // create array of typing pairs etc normal = 1, flying = 11, (1,11)
+    let typeCombinations: number[][] = [];
+    let lockedTypeCombinations: number[][] = [];
+    pokemon.map((pair: PokemonPairType) => {
+        typeCombinations.push([typeNumbers[pair.player_one_pokemon_primary_type], typeNumbers[pair.player_two_pokemon_primary_type]]);
+        if (lockedPairs.includes(pair.id)) {
+            lockedTypeCombinations.push([typeNumbers[pair.player_one_pokemon_primary_type], typeNumbers[pair.player_two_pokemon_primary_type]]);
+        }
+    })
     // Create dictionary of pair ids and type combinations so (1,11): 23, 4, ...
-    // run chatgpt code
+
+    // run chatgpt code for team size of 6 then decrease team sieze until results found
+
+    let solutions : number[][] = []
+    for (let size = targetSize; size >= 2 && solutions.length === 0; size--) {
+        solutions = generateTeamCombinations(typeCombinations, size, lockedTypeCombinations, maxResults);
+    }
+    console.log(solutions)
     // use dictionary to create teams
     // evaluate teams based on type coverage
     // create dialog that suggests best x amount of teams
@@ -95,7 +180,7 @@ export default function TeamBuilder({save, livingBox, partyPairs, setPartyPairs,
         <section className="flex flex-col mr-4  min-w-39 lg:min-w-48 grow">
             <h2 className="text-2xl font-bold text-center h-8">Party</h2>
             <PokemonParty lockedPairs={lockedPairs} setLockedPairs={setLockedPairs} removeFromParty={removeFromParty} partyPairs={partyPairs} />
-            <Button onClick={() => generateTeam(livingBox)}>generate team</Button>
+            <Button onClick={() => generateTeam(livingBox, lockedPairs)}>Generate Team</Button>
         </section>
     );
 }
