@@ -52,7 +52,7 @@ export default function PokemonPair({
   return (
     <div
       onClick={() => setLoadedPair && setLoadedPair(pair)}
-      className="rounded-4xl flex shrink-0 transition-transform hover:scale-105 relative shadow-2xl group"
+      className="rounded-4xl flex shrink-0 transition hover:scale-105 relative shadow-2xl group"
       style={{display: viewDeathBox ? 'none' : '', opacity: highlightedPair() ? 1 : 0.4}}
     
     >

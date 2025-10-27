@@ -56,7 +56,7 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonN
     return (
       <section className="">
         <div className="flex flex-col items-center">
-            <div className="px-4 pt-1 pb-4 border-b border-black/20 flex justify-between w-full">
+            <div className="px-4 pt-1 pb-2 border-b border-black/20 flex justify-between w-full">
               <h2 className="text-center text-xl font-bold">
                 {pair.player_one_pokemon_nickname ? pair.player_one_pokemon_nickname : pair.player_one_pokemon_name} and {pair.player_two_pokemon_nickname ? pair.player_two_pokemon_nickname : pair.player_two_pokemon_name}
               </h2>
@@ -64,7 +64,7 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonN
             </div>
             <PokemonData name={pair.player_one_pokemon_name} data={pokemonData?.pokemon_one!} />
             <PokemonData name={pair.player_two_pokemon_name} data={pokemonData?.pokemon_two!} />
-            <Form resetOnSuccess className="flex flex-col justify-around" method="put" action={update([saveID, pair.id])}>
+            <Form resetOnSuccess className="flex flex-col justify-around items-center" method="put" action={update([saveID, pair.id])}>
               {/* TODO: Add button that fetches level up moveset*/}
               {({ errors }) => (
                 <>
@@ -87,8 +87,10 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonN
                     </div>
                   </div>
                   <InputError message={errors.samePrimaryType} className="mb-2 text-center" />
-                  <Button tabIndex={5} type="submit" className="self-center cursor-pointer">Update Pair</Button>
-                  <Link className="self-center mt-4 cursor-pointer bg-[#e7000b] text-sm font-medium text-[#ffffff] py-2 px-4 rounded-md" onClick={() => setLoadedPair(null)} method="delete" href={`/saves/${saveID}/pairs/${pair.id}`}>Delete</Link>
+                  <div>
+                    <Button tabIndex={5} type="submit" className="self-center cursor-pointer rounded-tr-none rounded-br-none ">Update Pair</Button>
+                    <Link className="self-center cursor-pointer bg-[#e7000b] text-sm font-medium text-[#ffffff] py-2 px-4 rounded-md rounded-tl-none rounded-bl-none" onClick={() => setLoadedPair(null)} method="delete" href={`/saves/${saveID}/pairs/${pair.id}`}>Delete</Link>
+                  </div>
                 </>
               )}
             </Form>
@@ -98,7 +100,7 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonN
   } else {
     return (
       <section className=" flex items-center justify-center">
-        <p className="text-center ml-4">Click a pair to view/edit it</p>
+        <p className="text-center ml-4 w-22">Click a pair to view/edit</p>
       </section>
     );
   }

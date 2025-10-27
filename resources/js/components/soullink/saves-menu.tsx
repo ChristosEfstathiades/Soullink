@@ -13,7 +13,7 @@ import InputError  from '@/components/input-error';
 import { store } from '@/actions/App/Http/Controllers/SaveController';
 // import { saves } from '@/routes';
 import { Form, Link } from '@inertiajs/react';
-import {Trash, Save} from 'lucide-react';
+import {Trash2, Save} from 'lucide-react';
 
 export default function SavesMenu({ saves }: { saves: any[] }) {
   return (
@@ -47,7 +47,7 @@ export default function SavesMenu({ saves }: { saves: any[] }) {
           {saves.map((save) => (
             <div className="flex align-center justify-between min-w-md mb-2" key={save.id}>
               <Link prefetch className="hover:text-[#3B4CCA] flex transition-colors" href={`/saves/${save.id}`}><Save className="mr-1" ></Save> {save.name}</Link>
-              <Link className="hover:text-[#CC0000] cursor-pointer transition-colors" method="delete" href={`/saves/${save.id}`}><Trash size={24} /></Link>
+              <Link className="hover:text-[#CC0000] cursor-pointer transition-colors" method="delete" href={`/saves/${save.id}`}><Trash2 size={24} /></Link>
             </div>
           ))}
         </div>
