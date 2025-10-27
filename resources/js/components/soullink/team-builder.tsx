@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { type PokemonPairType } from '@/types';
 import { useState } from 'react';
 import { useLocalStorage} from 'usehooks-ts'
+import GeneratedTeams from '@/components/soullink/generated-teams';
 
 
 
@@ -152,7 +153,7 @@ function associatedTeams(solutions: number[][][], pokemon: PokemonPairType[]) {
     return teams;
 }
 
-function generateTeams(pokemon: PokemonPairType[], lockedPairs: number[], targetSize: number=6, maxResults: number=1000) {
+function generateTeams(pokemon: PokemonPairType[], lockedPairs: number[], targetSize: number=6, maxResults: number=12) {
     // create array of typing pairs etc normal = 1, flying = 11, (1,11)
     let typeCombinations: number[][] = [];
     let lockedTypeCombinations: number[][] = [];
@@ -205,7 +206,7 @@ export default function TeamBuilder({save, livingBox, partyPairs, setPartyPairs,
         <section className="flex flex-col mr-4  min-w-39 lg:min-w-48 grow items-center">
             <h2 className="text-2xl font-bold text-center h-8">Party</h2>
             <PokemonParty lockedPairs={lockedPairs} setLockedPairs={setLockedPairs} removeFromParty={removeFromParty} partyPairs={partyPairs} />
-            <Button  className="cursor-pointer" variant='outline' onClick={() => displayGeneratedTeams()}>Generate Teams</Button>
+            <GeneratedTeams teams={generatedTeams} displayGeneratedTeams={displayGeneratedTeams} />
         </section>
     );
 }

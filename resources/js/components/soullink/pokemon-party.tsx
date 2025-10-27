@@ -59,7 +59,7 @@ export default function PokemonParty({ partyPairs, removeFromParty, lockedPairs,
                                     background: `linear-gradient(to right, ${typeColors[pair.player_one_pokemon_primary_type]}, ${typeColors[pair.player_two_pokemon_primary_type]})`,
                                     }}
                                 />
-                                <div onClick={(event) => removeFromParty(event, pair)} className="absolute p-0 bottom-0 right-0 sm:hidden sm:group-hover:block z-100 bg-red-600 rounded-full cursor-pointer" ><Minus color="white" /></div>
+                                <div onClick={(event) => removeFromParty(event, pair)} className="absolute p-0 bottom-0 right-0 sm:hidden sm:group-hover:block z-49 bg-red-600 rounded-full cursor-pointer" ><Minus color="white" /></div>
                                 
 
                                 {/* Pokémon images layer */}
