@@ -11,7 +11,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import InputError  from '@/components/input-error';
 import { store } from '@/actions/App/Http/Controllers/SaveController';
-// import { saves } from '@/routes';
 import { Form, Link } from '@inertiajs/react';
 import {Trash2, Save} from 'lucide-react';
 
@@ -30,10 +29,10 @@ export default function SavesMenu({ saves }: { saves: any[] }) {
                   <Label htmlFor="name">Save Name: </Label>
                   <Input className="mb-2" type="text" id="name" name="name"  required></Input>
                   <InputError message={errors.name} className="mt-2" />
-                  <Label htmlFor="p1">Player1 Name (optional): </Label>
+                  <Label htmlFor="p1">Player 1 Name (optional): </Label>
                   <Input className="mb-2" type="text" id="p1" name="p1"></Input>
                   <InputError message={errors.p1} className="mt-2" />
-                  <Label htmlFor="p2">Player2 Name (optional): </Label>
+                  <Label htmlFor="p2">Player 2 Name (optional): </Label>
                   <Input className="mb-2" type="text" id="p2" name="p2"></Input>
                   <InputError message={errors.p2} className="mt-2" />
                   <Button className="cursor-pointer" type="submit">Create Save</Button>

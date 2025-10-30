@@ -1,4 +1,6 @@
 import BaseStat from '@/components/soullink/base-stat';
+import { Link } from '@inertiajs/react';
+import { ExternalLink } from 'lucide-react';
  
 
 interface PokemonDataProps {
@@ -35,10 +37,11 @@ export default function PokemonData({name, data}: PokemonDataProps) {
                 <img draggable="false" className="w-30 lg:w-38 mr-4" src={`/storage/${name}.png`} alt={name} />
                 <div className='flex justify-center gap-x-1'>
                     {data?.types.map((type, index)  => (
-                        <div key={index}>
+                        <div className='flex items-center' key={index}>
                             {type ? <span style={{ backgroundColor: typeColors[type] }} className='text-shadow-md text-center text-xs text-white px-2 border border-black/15 rounded'>{type.toUpperCase()}</span> : null}
                         </div>
                     ))}
+                    <a className='text-xs items-center flex hover:underline' target='_blank' href={`https://pokemondb.net/pokedex/${name}`} >Pokedex <ExternalLink className='ml-0.5' size={14} /></a>
                 </div>
             </div>
 

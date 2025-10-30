@@ -63,7 +63,7 @@ export default function PokemonPair({
           background: `linear-gradient(to right, ${playerOneColor}, ${playerTwoColor})`,
         }}
       />
-      <div style={{opacity: (unavailableTypes.includes(pair.player_one_pokemon_primary_type) || unavailableTypes.includes(pair.player_two_pokemon_primary_type)) ? 0.4 : 1, display: (pair.is_alive == 0 ? 'none' : '')}} onClick={(event) => addToParty(event, pair)} className="absolute p-0.5 bottom-0 right-0 sm:hidden sm:group-hover:block z-49 bg-white rounded-full cursor-pointer" ><Plus color="red" /></div>
+      <div style={{opacity: (unavailableTypes.includes(pair.player_one_pokemon_primary_type) || unavailableTypes.includes(pair.player_two_pokemon_primary_type)) ? 0.3 : 0.85, display: (pair.is_alive == 0 ? 'none' : '')}} onClick={(event) => addToParty(event, pair)} className="absolute p-0.5 bottom-0 right-0 sm:hidden sm:group-hover:block z-49 bg-white rounded-full cursor-pointer" ><Plus color="red" /></div>
       
 
       {/* Pokémon images layer */}

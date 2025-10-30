@@ -37,7 +37,7 @@ export default function GeneratedTeams({teams, displayGeneratedTeams}: Generated
                     {Array.from({ length: Math.ceil(teams.length / 3) }).map((_, index) => (
                         <CarouselItem className="flex justify-around" key={index}>
                             {teams.slice(index * 3, index * 3 + 3).map((team, index) => (
-                                <div className="flex flex-col items-center" key={index} >
+                                <div onClick={() => alert(1)} className="flex flex-col items-center cursor-copy" key={index} >
                                     {team.map((pair,index) => (
                                         <div key={index} className="flex mb-1">
                                             <div className='flex items-center'>
@@ -72,7 +72,6 @@ export default function GeneratedTeams({teams, displayGeneratedTeams}: Generated
                                             </div>
                                         </div>
                                     ))}
-                                    <button>Import</button>
                                 </div>
                             ))}
                         </CarouselItem>

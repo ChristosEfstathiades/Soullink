@@ -57,6 +57,7 @@ export default function PokemonBox({setUnavailableTypes, pokemonNames, save, set
   }
   
   return (
+    // TODO: create hook for background image selection based of use appearance USE LOCALSTORAGE FIRST
     <section style={{ backgroundImage: viewDeathBox ? 'url(/storage/deathbox.png)' : 'url(/storage/livingbox.png)' }} className="w-sm lg:w-2xl grow bg-center bg-no-repeat bg-cover overflow-y-auto rounded-t-xl">
       <div className="grid grid-cols-3 lg:grid-cols-4 gap-4 justify-center lg:p-4 p-2"> 
         {/* TODO: allow users to sort box by primary/secondary type */}
