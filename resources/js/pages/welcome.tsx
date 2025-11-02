@@ -1,4 +1,5 @@
-import { dashboard, login, register } from '@/routes';
+import { login, register } from '@/routes';
+import { index } from '@/routes/saves';
 import { type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 
@@ -16,10 +17,10 @@ export default function Welcome() {
                     <nav className="flex items-center justify-end gap-4">
                         {auth.user ? (
                             <Link
-                                href={dashboard()}
+                                href={index()}
                                 className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
                             >
-                                Dashboard
+                                Saves
                             </Link>
                         ) : (
                             <>
@@ -39,6 +40,18 @@ export default function Welcome() {
                         )}
                     </nav>
                 </header>
+                <section className='flex flex-col'>
+                    <div className='flex flex-col items-center text-center'>
+                        <h3>Make Teambuilding Quick and Easy with</h3>
+                        <div className='flex'>
+                            <img src="/storage/pokeball.svg" alt="App Logo" className='w-16 h-16' />
+                            <h1 className='text-[#F34444] text-6xl uppercase font-extrabold'>Soullink</h1>
+                        </div>
+                        <p className='text-xs w-80'>
+                            The perfect tool for any 2-player Pokemon Nuzlocke Challenge A.K.A a Soullink. Track your encounters and Build your best possible combined team. 
+                        </p>
+                    </div>
+                </section>
             </div>
         </>
     );
