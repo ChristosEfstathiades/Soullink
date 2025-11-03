@@ -15,21 +15,23 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 
 
 interface GeneratedTeamsProps {
     teams: PokemonPairType[][];
     displayGeneratedTeams: () => void;
+    importTeamToParty: (team: PokemonPairType[]) => void;
 }
 
-export default function GeneratedTeams({teams, displayGeneratedTeams}: GeneratedTeamsProps) {
+export default function GeneratedTeams({teams, displayGeneratedTeams, importTeamToParty}: GeneratedTeamsProps) {
     return (
         <Dialog>
         <DialogTrigger asChild ><Button className="cursor-pointer" variant='outline' onClick={() => displayGeneratedTeams()}>Generate Teams</Button></DialogTrigger>
         <DialogContent>
             <DialogHeader>
                 <DialogTitle className="text-center">Possible Soullink Teams</DialogTitle>
-                <DialogDescription className="text-center">Click Import to Load a Team into your Party</DialogDescription>
+                <DialogDescription className="text-center flex justify-center items-center">Click <div className=" bg-[#737373] p-0.5 rounded-full mx-1"><Plus size={14} color="white" /></div> to Load a Team into your Party</DialogDescription>
             </DialogHeader>
             <Carousel>
                 <CarouselContent>
@@ -37,12 +39,12 @@ export default function GeneratedTeams({teams, displayGeneratedTeams}: Generated
                     {Array.from({ length: Math.ceil(teams.length / 3) }).map((_, index) => (
                         <CarouselItem className="flex justify-around" key={index}>
                             {teams.slice(index * 3, index * 3 + 3).map((team, index) => (
-                                <div onClick={() => alert(1)} className="flex flex-col items-center cursor-copy" key={index} >
+                                <div className="flex flex-col items-center relative" key={index} >
                                     {team.map((pair,index) => (
                                         <div key={index} className="flex mb-1">
                                             <div className='flex items-center'>
                                                 <div
-                                                className="rounded-4xl flex shrink-0 relative shadow-lg group"
+                                                className="rounded-4xl flex shrink-0 relative shadow-lg"
                                                 >
                                                 {/* Gradient background layer */}
                                                     <div
@@ -72,7 +74,10 @@ export default function GeneratedTeams({teams, displayGeneratedTeams}: Generated
                                             </div>
                                         </div>
                                     ))}
+                                    {/* <p>pus</p> */}
+                                    <div className="absolute bottom-0 z-100 cursor-pointer bg-blue-500 p-1 rounded-full" onClick={() => importTeamToParty(team)} ><Plus color="white" /></div>
                                 </div>
+                                
                             ))}
                         </CarouselItem>
                     ))}

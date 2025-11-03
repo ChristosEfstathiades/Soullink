@@ -13,6 +13,7 @@ interface TeamBuilderProps {
   partyPairs: (PokemonPairType | null)[];
   setPartyPairs: (pairs: (PokemonPairType | null)[]) => void;
   setUnavailableTypes: (types: string[]) => void;
+  removePartyPairs: () => void;
   unavailableTypes: string[];
   save: {
         id: number;
@@ -22,7 +23,6 @@ interface TeamBuilderProps {
     };
 }
 
-// TODO: generate teams from pairs. 
 // Options: prioritise type coverage, lock certain pairs in party, enforce unique primary types, 
 // normal/flying -> flying, revert fairy types. 
 // type coverage: count number of resistances, check if for every weakness there is a resistance
@@ -183,8 +183,8 @@ const moveNullsToEnd = (arr: (PokemonPairType | null)[]): (PokemonPairType | nul
 
 
 
-export default function TeamBuilder({save, livingBox, partyPairs, setPartyPairs, setUnavailableTypes, unavailableTypes}: TeamBuilderProps) {
-    const [lockedPairs, setLockedPairs] = useLocalStorage<number[]>(`LockedPairs-${save.name}-${save.id}`, []);
+export default function TeamBuilder({save, livingBox, partyPairs, setPartyPairs, setUnavailableTypes, unavailableTypes, removePartyPairs}: TeamBuilderProps) {
+    const [lockedPairs, setLockedPairs, removeLockedPairs] = useLocalStorage<number[]>(`LockedPairs-${save.name}-${save.id}`, []);
     const [generatedTeams, setGeneratedTeams] = useState<PokemonPairType[][]>([]);
 
     function removeFromParty(event: React.MouseEvent<HTMLDivElement>, pair: PokemonPairType) {
@@ -197,16 +197,28 @@ export default function TeamBuilder({save, livingBox, partyPairs, setPartyPairs,
 
     function displayGeneratedTeams() {
         let teams = generateTeams(livingBox, lockedPairs);
-        console.log(teams);
         setGeneratedTeams(teams);
 
+    }
+
+    function importTeamToParty(team : PokemonPairType[]) {
+        removePartyPairs();
+        const types: string[] = [];
+        const newPartyPairs = Array(6).fill(null);
+        team.forEach((pair: PokemonPairType) => {
+            let emptyIndex = newPartyPairs.findIndex((p) => p === null);
+            newPartyPairs[emptyIndex] = pair;
+            types.push(pair.player_one_pokemon_primary_type, pair.player_two_pokemon_primary_type);
+        })
+        setPartyPairs(newPartyPairs);
+        setUnavailableTypes(types);
     }
 
     return (
         <section className="flex flex-col mr-4  min-w-39 lg:min-w-48 grow items-center">
             <h2 className="text-2xl font-bold text-center h-8">Party</h2>
             <PokemonParty lockedPairs={lockedPairs} setLockedPairs={setLockedPairs} removeFromParty={removeFromParty} partyPairs={partyPairs} />
-            <GeneratedTeams teams={generatedTeams} displayGeneratedTeams={displayGeneratedTeams} />
+            <GeneratedTeams importTeamToParty={importTeamToParty} teams={generatedTeams} displayGeneratedTeams={displayGeneratedTeams} />
         </section>
     );
 }

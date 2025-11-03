@@ -28,7 +28,7 @@ export default function Welcome() {
                                     href={login()}
                                     className="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
                                 >
-                                    Log in
+                                    Login
                                 </Link>
                                 <Link
                                     href={register()}
@@ -43,9 +43,10 @@ export default function Welcome() {
                 <section className='flex flex-col'>
                     <div className='flex flex-col items-center text-center'>
                         <h3>Make Teambuilding Quick and Easy with</h3>
-                        <div className='flex'>
+                        <div className='flex items-center'>
                             <img src="/storage/pokeball.svg" alt="App Logo" className='w-16 h-16' />
-                            <h1 className='text-[#F34444] text-6xl uppercase font-extrabold'>Soullink</h1>
+                            <img src="/storage/fontbolt.png" alt="App Name" className='h-24' />
+                            {/* <h1 className='text-[#F34444] font-Pokemon text-6xl uppercase font-extrabold'>Soullink</h1> */}
                         </div>
                         <p className='text-xs w-80'>
                             The perfect tool for any 2-player Pokemon Nuzlocke Challenge A.K.A a Soullink. Track your encounters and Build your best possible combined team. 

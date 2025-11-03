@@ -36,7 +36,6 @@ interface PokemonBoxProps {
   };
   unavailableTypes: string[];
   highlightAvailablePairs: boolean;
-  highlightUniquePairs: boolean;
   partyPairs: (PokemonPairType | null)[];
 }
 
