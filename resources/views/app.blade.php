@@ -3,6 +3,8 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Soullink is a two player Pokemon Nuzlocke teambuilding tool. Use Soullink to keep track of your Pokemon Pairs and build the best possible combined team.">
+        <meta name="keywords" content="pokemon,nuzlocke,soullink,2-player nuzlocke,two player nuzlocke,2 player nuzlocke,nuzlocke challenge,nuzlocke tracker,tracker,nuzlocke teambuilder,teambuilder,pokemon teambuilder,pokemon nuzlocke,nuzlocke challenge,pokemon challenge" >
 
         {{-- Inline script to detect system dark mode preference and apply it immediately --}}
         <script>
@@ -36,8 +38,17 @@
         <link rel="icon" href="/favicon.svg" type="image/svg+xml">
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
         
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.bunny.net" />
+
+        <!-- Preload the font CSS -->
+        <link rel="preload" href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600&display=swap" as="style" />
+
+        <!-- Load it non-blocking -->
+        <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+        <noscript>
+            <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600&display=swap" rel="stylesheet" />
+        </noscript>
+
 
         @viteReactRefresh
         @vite(['resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])

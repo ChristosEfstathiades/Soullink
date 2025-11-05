@@ -48,8 +48,8 @@ export default function Welcome() {
                             <img src="/storage/fontbolt.png" alt="App Name" className='h-24' />
                             {/* <h1 className='text-[#F34444] font-Pokemon text-6xl uppercase font-extrabold'>Soullink</h1> */}
                         </div>
-                        <p className='text-xs w-80'>
-                            The perfect tool for any 2-player Pokemon Nuzlocke Challenge A.K.A a Soullink. Track your encounters and Build your best possible combined team. 
+                        <p className='text-xs max-w-90'>
+                            The perfect tool for any 2-player Pokemon Nuzlocke Challenge A.K.A a <a className='underline decoration-solid decoration-[#3B4CCA] hover:decoration-2 underline-offset-2' target='_blank' href="https://nuzlockeuniversity.ca/nuzlocke-variants/soul-link-nuzlocke-rules/" >Soullink</a>. Track your encounters and Build your best possible combined team. 
                         </p>
                     </div>
                 </section>

@@ -12,13 +12,13 @@ import { Label } from '@/components/ui/label';
 import InputError  from '@/components/input-error';
 import { store } from '@/actions/App/Http/Controllers/SaveController';
 import { Form, Link } from '@inertiajs/react';
-import {Trash2, Save} from 'lucide-react';
+import {Trash2, Save, FilePlus} from 'lucide-react';
 
 export default function SavesMenu({ saves }: { saves: any[] }) {
   return (
     <section className="text-center text-lg">
         <Dialog>
-        <DialogTrigger className="py-2 px-3 hover:bg-accent rounded-sm transition-colors cursor-pointer hover:text-[#3B4CCA]">New Game</DialogTrigger>
+        <DialogTrigger className="py-2 px-3 hover:bg-accent rounded-sm transition-colors cursor-pointer hover:text-[#3B4CCA] ">New Game <FilePlus className="inline-block" /></DialogTrigger>
         <DialogContent>
             <DialogHeader>
             <DialogTitle>Create a New Soullink Save</DialogTitle>
@@ -44,13 +44,12 @@ export default function SavesMenu({ saves }: { saves: any[] }) {
         <div className="flex flex-col gap-2 mt-4 text-center">
           <p className="text-center">Load Save</p>
           {saves.map((save) => (
-            <div className="flex align-center justify-between min-w-md mb-2" key={save.id}>
+            <div className="flex align-center justify-between min-w-3xs md:min-w-sm py-2 px-3 hover:bg-accent rounded-sm transition-colors" key={save.id}>
               <Link prefetch className="hover:text-[#3B4CCA] flex transition-colors" href={`/saves/${save.id}`}><Save className="mr-1" ></Save> {save.name}</Link>
               <Link className="hover:text-[#CC0000] cursor-pointer transition-colors" method="delete" href={`/saves/${save.id}`}><Trash2 size={24} /></Link>
             </div>
           ))}
         </div>
     </section>
-    
   );
 }
