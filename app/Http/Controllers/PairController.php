@@ -43,7 +43,7 @@ class PairController extends Controller
 
         $pokemonOneTypes = $this->fetchPokemonTypes($request->playerOnePokemon);
         $pokemonTwoTypes = $this->fetchPokemonTypes($request->playerTwoPokemon);
-        // TODO: check docs to see if i can make reusable validation
+        
         if ($pokemonOneTypes[0] == $pokemonTwoTypes[0]) {
             return back()->withErrors(['samePrimaryType' => 'Both Pokémon cannot share the same primary type.']);
         }

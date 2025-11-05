@@ -17,6 +17,9 @@ import InputError  from '@/components/input-error';
 import { store } from '@/actions/App/Http/Controllers/PairController';
 import PokemonPair from '@/components/soullink/pokemon-pair';
 import { type PokemonPairType } from '@/types';
+import { useLocalStorage} from 'usehooks-ts'
+import { type SharedData } from '@/types';
+import { usePage } from '@inertiajs/react';
 
 
 
@@ -42,6 +45,8 @@ interface PokemonBoxProps {
 
 export default function PokemonBox({setUnavailableTypes, pokemonNames, save, setLoadedPair, viewDeathBox, livingBox, deathBox, unavailableTypes, highlightAvailablePairs,partyPairs, setPartyPairs }: PokemonBoxProps) {
   const [open, setOpen] = useState(false);
+  const { auth } = usePage<SharedData>().props;
+  const [pcBoxBackground, setPcBoxBackground] = useLocalStorage<number>(`pc-box-background-${auth.user.id}`, 0);
 
   function addToParty(event: React.MouseEvent<HTMLDivElement>, pair: PokemonPairType) {
     event.stopPropagation();
@@ -56,11 +61,9 @@ export default function PokemonBox({setUnavailableTypes, pokemonNames, save, set
   }
   
   return (
-    // TODO: create hook for background image selection based of use appearance USE LOCALSTORAGE FIRST
-    <section style={{ backgroundImage: viewDeathBox ? 'url(/storage/deathbox.png)' : 'url(/storage/livingbox.png)' }} className="w-sm lg:w-2xl grow bg-center bg-no-repeat bg-cover overflow-y-auto rounded-t-xl">
+    <section style={{ backgroundImage: viewDeathBox ? 'url(/storage/deathbox.png)' : `url(/storage/pc-box-backgrounds/${pcBoxBackground}.png)` }} className="w-sm lg:w-2xl grow bg-center bg-no-repeat bg-cover overflow-y-auto rounded-t-xl">
       <div className="grid grid-cols-3 lg:grid-cols-4 gap-4 justify-center lg:p-4 p-2"> 
         {/* TODO: allow users to sort box by primary/secondary type */}
-        {/* TODO: allow users to only display unique pairs. a unique pair is pair whos two typings arent shared by another pairs */}
         { livingBox.map((pair: PokemonPairType) => (
             <PokemonPair addToParty={addToParty} highlightAvailablePairs={highlightAvailablePairs} unavailableTypes={unavailableTypes} key={pair.id} pair={pair} setLoadedPair={setLoadedPair} viewDeathBox={viewDeathBox} />
         ))}

@@ -65,7 +65,6 @@ export default function PokemonPairEditor({pair, saveID, setLoadedPair, pokemonN
             <PokemonData name={pair.player_one_pokemon_name} data={pokemonData?.pokemon_one!} />
             <PokemonData name={pair.player_two_pokemon_name} data={pokemonData?.pokemon_two!} />
             <Form resetOnSuccess className="flex flex-col justify-around items-center" method="put" action={update([saveID, pair.id])}>
-              {/* TODO: Add button that fetches level up moveset*/}
               {({ errors }) => (
                 <>
                   <div className="flex flex-row">

@@ -2,6 +2,7 @@ import { Head } from '@inertiajs/react';
 
 import AppearanceTabs from '@/components/appearance-tabs';
 import HeadingSmall from '@/components/heading-small';
+import PCBoxBackgroundOptions from '@/components/soullink/pc-box-background-options';
 import { type BreadcrumbItem } from '@/types';
 
 import AppLayout from '@/layouts/app-layout';
@@ -24,6 +25,8 @@ export default function Appearance() {
                 <div className="space-y-6">
                     <HeadingSmall title="Appearance settings" description="Update your account's appearance settings" />
                     <AppearanceTabs />
+                    <HeadingSmall title="PC box wallpaper" description="Change the wallpaper of your PC Box" />
+                    <PCBoxBackgroundOptions />
                 </div>
             </SettingsLayout>
         </AppLayout>
