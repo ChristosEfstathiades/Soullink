@@ -3,13 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pair;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
-use Inertia\Response;
 use App\Models\Save;
-use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-
 
 class PairController extends Controller
 {
@@ -43,11 +39,10 @@ class PairController extends Controller
 
         $pokemonOneTypes = $this->fetchPokemonTypes($request->playerOnePokemon);
         $pokemonTwoTypes = $this->fetchPokemonTypes($request->playerTwoPokemon);
-        
+
         if ($pokemonOneTypes[0] == $pokemonTwoTypes[0]) {
             return back()->withErrors(['samePrimaryType' => 'Both Pokémon cannot share the same primary type.']);
         }
-
 
         $pair = Pair::create([
             'save_id' => $save->id,
@@ -93,12 +88,12 @@ class PairController extends Controller
             'playerTwoNickname' => 'nullable|string|max:12',
             'isAlive' => 'nullable|string',
         ]);
-        if (!is_null($request->playerOnePokemon)) {
+        if (! is_null($request->playerOnePokemon)) {
             $pokemonOneTypes = $this->fetchPokemonTypes($request->playerOnePokemon);
         } else {
             $pokemonOneTypes = [$pair->player_one_pokemon_primary_type, $pair->player_one_pokemon_secondary_type];
         }
-        if (!is_null($request->playerTwoPokemon)) {
+        if (! is_null($request->playerTwoPokemon)) {
             $pokemonTwoTypes = $this->fetchPokemonTypes($request->playerTwoPokemon);
         } else {
             $pokemonTwoTypes = [$pair->player_two_pokemon_primary_type, $pair->player_two_pokemon_secondary_type];
@@ -120,6 +115,7 @@ class PairController extends Controller
             'player_two_pokemon_secondary_type' => $pokemonTwoTypes[1],
             'is_alive' => $request->isAlive ? 1 : 0,
         ]);
+
         return back();
     }
 
@@ -131,6 +127,7 @@ class PairController extends Controller
         Gate::authorize('delete', $pair);
 
         $pair->delete();
+
         return back();
     }
 
@@ -141,7 +138,7 @@ class PairController extends Controller
         $connectionTimeout = 5;
 
         curl_setopt_array($curl, [
-            CURLOPT_URL            => 'https://pokeapi.co/api/v2/pokemon/' . strtolower($pokemonName),
+            CURLOPT_URL => 'https://pokeapi.co/api/v2/pokemon/'.strtolower($pokemonName),
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_SSL_VERIFYPEER => false,
@@ -151,20 +148,20 @@ class PairController extends Controller
 
         curl_setopt_array($curl, [
             CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER    => [],
-            CURLOPT_POSTFIELDS    => [],
+            CURLOPT_HTTPHEADER => [],
+            CURLOPT_POSTFIELDS => [],
         ]);
 
         $response = curl_exec($curl);
 
-        if (false === $response) {
+        if ($response === false) {
             $exceptionMessage = curl_error($this->curl);
 
             $exceptionCode = curl_errno($this->curl);
 
             throw new \RuntimeException($exceptionMessage, $exceptionCode);
         }
-        
+
         curl_close($curl);
 
         return json_decode($response, true);
@@ -181,6 +178,7 @@ class PairController extends Controller
         if (count($types) == 1) {
             $types[1] = null;
         }
+
         return $types;
     }
 }

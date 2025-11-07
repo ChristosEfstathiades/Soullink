@@ -1,12 +1,8 @@
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
+import SavesMenu from '@/components/soullink/saves-menu';
 import AppLayout from '@/layouts/app-layout';
-import { dashboard } from '@/routes';
+import { index } from '@/routes/saves';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import PokemonBox from '@/components/soullink/pokemon-box';
-import SavesMenu from "@/components/soullink/saves-menu";
-import { index } from '@/routes/saves';
-
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -15,7 +11,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Dashboard({saves}: {saves: any[]}) {
+export default function Dashboard({ saves }: { saves: any[] }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Saves" />

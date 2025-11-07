@@ -1,13 +1,12 @@
-import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, type PokemonPairType } from '@/types';
-import { Head } from '@inertiajs/react';
 import PokemonBox from '@/components/soullink/pokemon-box';
 import PokemonPairEditor from '@/components/soullink/pokemon-pair-editor';
 import TeamBuilder from '@/components/soullink/team-builder';
-import { useEffect, useState, useContext } from 'react';
+import AppLayout from '@/layouts/app-layout';
 import { index } from '@/routes/saves';
-import { Input } from '@/components/ui/input';
-import { useLocalStorage} from 'usehooks-ts'
+import { type BreadcrumbItem, type PokemonPairType } from '@/types';
+import { Head } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 
 interface TrackerProps {
     save: {
@@ -29,11 +28,11 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 function currentPartyPairTypes(partyPairs: (PokemonPairType | null)[]): string[] {
     const types: string[] = [];
-    partyPairs.forEach(pair => {
+    partyPairs.forEach((pair) => {
         if (pair) {
             types.push(pair.player_one_pokemon_primary_type, pair.player_two_pokemon_primary_type);
         }
-    })
+    });
     return types;
 }
 
@@ -42,46 +41,84 @@ export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
     const [loadedPair, setLoadedPair] = useState<PokemonPairType | null>(null);
     const [viewDeathBox, setViewDeathBox] = useState(false);
     const [partyPairs, setPartyPairs, removePartyPairs] = useLocalStorage<(PokemonPairType | null)[]>(`${save.name}-${save.id}`, Array(6).fill(null));
-    const [unavailableTypes, setUnavailableTypes] = useState<string[]>(currentPartyPairTypes(partyPairs)); 
+    const [unavailableTypes, setUnavailableTypes] = useState<string[]>(currentPartyPairTypes(partyPairs));
     const [highlightAvailablePairs, setHighlightAvailablePairs] = useState(false);
-    const filteredBox = livingBox.filter(
-        p => !partyPairs.some(slot => slot?.id === p.id)
-    );
+    const filteredBox = livingBox.filter((p) => !partyPairs.some((slot) => slot?.id === p.id));
 
     // TODO: replace with react-query
     useEffect(() => {
-        fetch('https://pokeapi.co/api/v2/pokemon?limit=1301').then(response => response.json()).then(
-            data => {
+        fetch('https://pokeapi.co/api/v2/pokemon?limit=1301')
+            .then((response) => response.json())
+            .then((data) => {
                 setPokemonNames(data.results.map((pokemon: { name: string }) => pokemon.name));
-            }
-        );
+            });
     }, []);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={`${save.name} - Soullink Tracker`} >
-                <link rel="preload" href="/storage/livingbox.png" as="image"></link>
+            <Head title={`${save.name} - Soullink Tracker`}>
+                <link rel="preload" href="/storage/pc-box-backgrounds/0.png" as="image"></link>
                 <link rel="preload" href="/storage/deathbox.png" as="image"></link>
             </Head>
-            <TeamBuilder removePartyPairs={removePartyPairs} save={save} unavailableTypes={unavailableTypes} setUnavailableTypes={setUnavailableTypes} setPartyPairs={setPartyPairs} livingBox={livingBox} partyPairs={partyPairs} />
+            <TeamBuilder
+                removePartyPairs={removePartyPairs}
+                save={save}
+                unavailableTypes={unavailableTypes}
+                setUnavailableTypes={setUnavailableTypes}
+                setPartyPairs={setPartyPairs}
+                livingBox={livingBox}
+                partyPairs={partyPairs}
+            />
 
-            <section className='cursor-[url("/storage/PCHand.png"),_pointer] flex flex-col items-center h-[calc(100vh-4rem)]'>
-                <div className='flex rounded-t-xl'>
-                    <button className='px-4 py-1 cursor-[inherit] rounded-tl-xl' style={{ backgroundColor: viewDeathBox ? '#eee' : '#23CD5E' }} onClick={() => { setViewDeathBox(false); }}>{save.name} Box</button>
-                    <div className="w-px h-full bg-black/30"></div>
-                    <button className='px-4 py-1 cursor-[inherit] rounded-tr-xl' style={{ backgroundColor: viewDeathBox ? '#F34444' : '#eee' }} onClick={() => { setViewDeathBox(true); }}>Death Box</button>
+            <section className='flex h-[calc(100vh-4rem)] cursor-[url("/storage/PCHand.png"),_pointer] flex-col items-center'>
+                <div className="flex rounded-t-xl">
+                    <button
+                        className="cursor-[inherit] rounded-tl-xl px-4 py-1"
+                        style={{ backgroundColor: viewDeathBox ? '#eee' : '#23CD5E' }}
+                        onClick={() => {
+                            setViewDeathBox(false);
+                        }}
+                    >
+                        {save.name} Box
+                    </button>
+                    <div className="h-full w-px bg-black/30"></div>
+                    <button
+                        className="cursor-[inherit] rounded-tr-xl px-4 py-1"
+                        style={{ backgroundColor: viewDeathBox ? '#F34444' : '#eee' }}
+                        onClick={() => {
+                            setViewDeathBox(true);
+                        }}
+                    >
+                        Death Box
+                    </button>
                 </div>
-                <PokemonBox setUnavailableTypes={setUnavailableTypes} highlightAvailablePairs={highlightAvailablePairs} unavailableTypes={unavailableTypes} setLoadedPair={setLoadedPair} save={save} pokemonNames={pokemonNames} viewDeathBox={viewDeathBox} livingBox={filteredBox} setPartyPairs={setPartyPairs} partyPairs={partyPairs} deathBox={deathBox} />
-                <div className='mt-3 mb-3 flex items-center gap-4'>
-                    <div className='flex items-center'>
-                        <input name='highlightAvailablePairs' className='size-7 mr-1' onChange={e => setHighlightAvailablePairs(e.target.checked)} type="checkbox"/>
-                        <label htmlFor='highlightAvailablePairs'>Highlight Available Pairs</label>
+                <PokemonBox
+                    setUnavailableTypes={setUnavailableTypes}
+                    highlightAvailablePairs={highlightAvailablePairs}
+                    unavailableTypes={unavailableTypes}
+                    setLoadedPair={setLoadedPair}
+                    save={save}
+                    pokemonNames={pokemonNames}
+                    viewDeathBox={viewDeathBox}
+                    livingBox={filteredBox}
+                    setPartyPairs={setPartyPairs}
+                    partyPairs={partyPairs}
+                    deathBox={deathBox}
+                />
+                <div className="mt-3 mb-3 flex items-center gap-4">
+                    <div className="flex items-center">
+                        <input
+                            name="highlightAvailablePairs"
+                            className="mr-1 size-7"
+                            onChange={(e) => setHighlightAvailablePairs(e.target.checked)}
+                            type="checkbox"
+                        />
+                        <label htmlFor="highlightAvailablePairs">Highlight Available Pairs</label>
                     </div>
                 </div>
-
             </section>
 
-            <PokemonPairEditor  setLoadedPair={setLoadedPair} saveID={save.id} pair={loadedPair} pokemonNames={pokemonNames} />
+            <PokemonPairEditor setLoadedPair={setLoadedPair} saveID={save.id} pair={loadedPair} pokemonNames={pokemonNames} />
         </AppLayout>
     );
 }
