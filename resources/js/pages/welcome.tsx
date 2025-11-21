@@ -50,8 +50,9 @@ export default function Welcome() {
                     <div className="flex flex-col items-center text-center">
                         <h3>Make Teambuilding Quick and Easy with</h3>
                         <div className="flex items-center">
-                            <img src="/storage/pokeball.svg" alt="App Logo" className="h-16 w-16" />
+                            <img src="/storage/pokeball.svg" alt="App Logo" className="w-10" />
                             <img src="/storage/fontbolt.png" alt="App Name" className="h-24" />
+                            <img src="/storage/pokeball.svg" alt="App Logo" className="w-10" />
                         </div>
                         <p className="max-w-90 text-xs">
                             The perfect tool for any 2-player Pokemon Nuzlocke Challenge A.K.A a{' '}

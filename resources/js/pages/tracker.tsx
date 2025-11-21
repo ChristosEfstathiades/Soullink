@@ -109,7 +109,7 @@ export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
                     <div className="flex items-center">
                         <input
                             name="highlightAvailablePairs"
-                            className="mr-1 size-7"
+                            className="mr-1 size-7 accent-[#3B4CCA]"
                             onChange={(e) => setHighlightAvailablePairs(e.target.checked)}
                             type="checkbox"
                         />

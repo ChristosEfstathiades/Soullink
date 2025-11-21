@@ -63,6 +63,9 @@ export default function PokemonBox({
             setUnavailableTypes([...unavailableTypes, pair.player_one_pokemon_primary_type, pair.player_two_pokemon_primary_type]);
         }
     }
+    function test() {
+        return livingBox;
+    }
 
     return (
         <section
@@ -71,7 +74,7 @@ export default function PokemonBox({
         >
             <div className="grid grid-cols-3 justify-center gap-4 p-2 lg:grid-cols-4 lg:p-4">
                 {/* TODO: allow users to sort box by primary/secondary type */}
-                {livingBox.map((pair: PokemonPairType) => (
+                {test().map((pair: PokemonPairType) => (
                     <PokemonPair
                         addToParty={addToParty}
                         highlightAvailablePairs={highlightAvailablePairs}
