@@ -92,7 +92,7 @@ export default function PokemonBox({
                     <DialogTrigger
                         name="AddPair"
                         style={{ display: viewDeathBox ? 'none' : 'inline-block' }}
-                        className="cursor-pointer self-center justify-self-start rounded-full bg-white/85 p-2 shadow-md lg:p-4"
+                        className="cursor-pointer self-center justify-self-start rounded-full bg-white/85 p-2 shadow-md lg:p-4 dark:text-black"
                     >
                         <Plus />
                     </DialogTrigger>

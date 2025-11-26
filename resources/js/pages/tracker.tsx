@@ -73,7 +73,7 @@ export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
             <section className='flex h-[calc(100vh-4rem)] cursor-[url("/storage/PCHand.png"),_pointer] flex-col items-center'>
                 <div className="flex rounded-t-xl">
                     <button
-                        className="cursor-[inherit] rounded-tl-xl px-4 py-1"
+                        className="cursor-[inherit] rounded-tl-xl px-4 py-1 dark:text-black"
                         style={{ backgroundColor: viewDeathBox ? '#eee' : '#23CD5E' }}
                         onClick={() => {
                             setViewDeathBox(false);
@@ -83,7 +83,7 @@ export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
                     </button>
                     <div className="h-full w-px bg-black/30"></div>
                     <button
-                        className="cursor-[inherit] rounded-tr-xl px-4 py-1"
+                        className="dark: cursor-[inherit] rounded-tr-xl px-4 py-1 dark:text-black"
                         style={{ backgroundColor: viewDeathBox ? '#F34444' : '#eee' }}
                         onClick={() => {
                             setViewDeathBox(true);
