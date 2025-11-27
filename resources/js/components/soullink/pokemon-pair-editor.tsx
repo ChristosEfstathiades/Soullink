@@ -122,7 +122,7 @@ export default function PokemonPairEditor({
                                             onChange={(e) => setIsAlive(e.target.checked)}
                                             name="isAlive"
                                             // checked={isAlive}
-                                            defaultChecked={isAlive}
+                                            defaultChecked={isAlive} //TODO: death box mons are auto checked
                                         />
                                     </div>
                                 </div>
