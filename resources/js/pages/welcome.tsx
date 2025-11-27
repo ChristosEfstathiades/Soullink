@@ -73,12 +73,78 @@ export default function Welcome() {
                 </section>
             </div>
             <section className="w-full bg-[#E34234] py-6">
-                <h2 className="text-center text-3xl font-bold text-white">How to use Soullink</h2>
-                <div className="mx-auto my-4 w-[85%]">
+                <h2 className="mb-8 text-center text-3xl font-bold text-white">How to use Soullink</h2>
+                <div className="mx-auto w-[85%]">
                     <Tutorial image="tutorial_1.png" number={1}>
                         <TutorialContent>
-                            <TutorialTitle>Create/Load a Soullink Save</TutorialTitle>
+                            <TutorialTitle number={1}>Create/Load a Soullink Save</TutorialTitle>
                             <TutorialDescription>First create a new save and give both you and your soullink teammate nicknames</TutorialDescription>
+                        </TutorialContent>
+                    </Tutorial>
+                    <Tutorial image="tutorial_2.png" number={2}>
+                        <TutorialContent>
+                            <TutorialTitle number={2}>Begin to track your encounters and build your team</TutorialTitle>
+                            <TutorialDescription>
+                                Under Party displays your current team and a generate team button. The centre of the page displays your living PC box
+                                and your death box, you can toggle between the two. The right side is reserved for editing and viewing data about your
+                                pokemon
+                            </TutorialDescription>
+                        </TutorialContent>
+                    </Tutorial>
+                    <Tutorial image="tutorial_3.png" number={3}>
+                        <TutorialContent>
+                            <TutorialTitle number={3}>Add your first pair to your PC box</TutorialTitle>
+                            <TutorialDescription>
+                                You can now start to add your encounters to your PC box, Just select two pokemon from the dropdowns and give them
+                                nicknames
+                            </TutorialDescription>
+                        </TutorialContent>
+                    </Tutorial>
+                    <Tutorial image="tutorial_4.png" number={4}>
+                        <TutorialContent>
+                            <TutorialTitle number={4}>View/edit your pair by clicking on them</TutorialTitle>
+                            <TutorialDescription>Click on your pair to view their base stats or edit their nicknames or species</TutorialDescription>
+                        </TutorialContent>
+                    </Tutorial>
+                    <Tutorial image="tutorial_5.png" number={5}>
+                        <TutorialContent>
+                            <TutorialTitle number={5}>Add pairs to your party and choose to highlight available pairs</TutorialTitle>
+                            <TutorialDescription>
+                                Once you start to add pokemon to your party it may be helpful to check the highlight available pairs option, this
+                                fades out pokemon in your box which cannot be added to your party due to duplicate typings
+                            </TutorialDescription>
+                        </TutorialContent>
+                    </Tutorial>
+                    <Tutorial image="tutorial_6.png" number={6}>
+                        <TutorialContent>
+                            <TutorialTitle number={6}>Lock certain pairs in your party</TutorialTitle>
+                            <TutorialDescription>
+                                Before clicking generate teams you can click the lock button next to certain pairs in your party, this will guarantee
+                                that all teams generated will contain the locked pairs
+                            </TutorialDescription>
+                        </TutorialContent>
+                    </Tutorial>
+                    <Tutorial image="tutorial_7.png" number={7}>
+                        <TutorialContent>
+                            <TutorialTitle number={7}>View generated teams and import them into your party</TutorialTitle>
+                            <TutorialDescription>
+                                The team generation feature suggests possible teams you can build based on your available pairs and your locked party
+                                pairs
+                            </TutorialDescription>
+                        </TutorialContent>
+                    </Tutorial>
+                    <Tutorial image="tutorial_8.png" number={8}>
+                        <TutorialContent>
+                            <TutorialTitle number={8}>Click death box to view your dead pairs</TutorialTitle>
+                            <TutorialDescription>To add/remove pairs to/from your deathbox check/uncheck the alive checkbox</TutorialDescription>
+                        </TutorialContent>
+                    </Tutorial>
+                    <Tutorial image="tutorial_9.png" number={9}>
+                        <TutorialContent>
+                            <TutorialTitle number={9}>Customise the PC box wallpaper</TutorialTitle>
+                            <TutorialDescription>
+                                Click Initials {'->'} Settings {'->'} Appearance {'->'} PC box wallpaper to change your PC box background
+                            </TutorialDescription>
                         </TutorialContent>
                     </Tutorial>
                 </div>
