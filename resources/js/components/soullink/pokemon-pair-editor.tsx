@@ -121,7 +121,8 @@ export default function PokemonPairEditor({
                                             id="isAlive"
                                             onChange={(e) => setIsAlive(e.target.checked)}
                                             name="isAlive"
-                                            checked={isAlive}
+                                            // checked={isAlive}
+                                            defaultChecked={isAlive}
                                         />
                                     </div>
                                 </div>
