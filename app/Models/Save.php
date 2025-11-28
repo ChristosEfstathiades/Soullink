@@ -15,6 +15,8 @@ class Save extends Model
         'name',
         'player_one_name',
         'player_two_name',
+        'swap_normal_flying_order',
+        'revert_fairy_typing',
         'user_id',
     ];
 }

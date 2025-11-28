@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pair;
 use App\Models\Save;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
-use Inertia\Response;
-use App\Models\Pair;
 use Illuminate\Support\Facades\Gate;
+use Inertia\Inertia;
 
 class SaveController extends Controller
 {
@@ -17,6 +16,7 @@ class SaveController extends Controller
     public function index()
     {
         $saves = Save::where('user_id', auth()->id())->get();
+
         return Inertia::render('dashboard', [
             'saves' => $saves,
         ]);
@@ -39,14 +39,19 @@ class SaveController extends Controller
             'name' => 'required|string|max:255',
             'p1' => 'nullable|string|max:30',
             'p2' => 'nullable|string|max:30',
+            'swap_normal_flying_order' => 'nullable|string',
+            'revert_fairy_typing' => 'nullable|string',
         ]);
 
         $save = Save::create([
             'name' => $request->name,
             'player_one_name' => $request->p1,
             'player_two_name' => $request->p2,
+            'swap_normal_flying_order' => $request->swap_normal_flying_order ? 1 : 0,
+            'revert_fairy_typing' => $request->revert_fairy_typing ? 1 : 0,
             'user_id' => auth()->id(),
         ]);
+
         return to_route('saves.show', $save);
     }
 
@@ -56,10 +61,11 @@ class SaveController extends Controller
     public function show(Save $save)
     {
         Gate::authorize('view', $save);
-        
+
         $pairs = Pair::where('save_id', $save->id)->orderBy('created_at', 'asc')->get();
         $alivePairs = $pairs->where('is_alive', 1)->values();
         $deadBox = $pairs->where('is_alive', 0)->values();
+
         return Inertia::render('tracker', [
             'save' => $save,
             'livingBox' => $alivePairs,
@@ -90,6 +96,7 @@ class SaveController extends Controller
     {
         Gate::authorize('delete', $save);
         $save->delete();
+
         return to_route('saves.index');
     }
 }

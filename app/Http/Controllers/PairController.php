@@ -9,6 +9,17 @@ use Illuminate\Support\Facades\Gate;
 
 class PairController extends Controller
 {
+    private $fairyPokemon = [
+        'cleffa',
+        'clefairy',
+        'clefable',
+        'granbull',
+        'snubbull',
+        'togepi',
+        'togetic',
+        'togekiss',
+    ];
+
     /**
      * Display a listing of the resource.
      */
@@ -39,6 +50,16 @@ class PairController extends Controller
 
         $pokemonOneTypes = $this->fetchPokemonTypes($request->playerOnePokemon);
         $pokemonTwoTypes = $this->fetchPokemonTypes($request->playerTwoPokemon);
+
+        if ($save->swap_normal_flying_order) {
+            $pokemonOneTypes = $this->swapNormalFlyingOrder($pokemonOneTypes);
+            $pokemonTwoTypes = $this->swapNormalFlyingOrder($pokemonTwoTypes);
+        }
+
+        if ($save->revert_fairy_typing) {
+            $pokemonOneTypes = $this->revertFairyTyping($request->playerOnePokemon, $pokemonOneTypes);
+            $pokemonTwoTypes = $this->revertFairyTyping($request->playerTwoPokemon, $pokemonTwoTypes);
+        }
 
         if ($pokemonOneTypes[0] == $pokemonTwoTypes[0]) {
             return back()->withErrors(['samePrimaryType' => 'Both Pokémon cannot share the same primary type.']);
@@ -180,5 +201,25 @@ class PairController extends Controller
         }
 
         return $types;
+    }
+
+    private function swapNormalFlyingOrder($pokemonTypes)
+    {
+        if ($pokemonTypes[0] == 'normal' && $pokemonTypes[1] == 'flying') {
+            return ['flying', 'normal'];
+        }
+
+        return $pokemonTypes;
+    }
+
+    private function revertFairyTyping($pokemon, $pokemonTypes)
+    {
+        if ($pokemonTypes[0] == 'fairy') {
+            if (in_array(strtolower($pokemon), $this->fairyPokemon)) {
+                return ['normal', null];
+            }
+        }
+
+        return $pokemonTypes;
     }
 }
