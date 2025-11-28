@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSaveRequest;
 use App\Models\Pair;
 use App\Models\Save;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
@@ -23,26 +23,10 @@ class SaveController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreSaveRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'p1' => 'nullable|string|max:30',
-            'p2' => 'nullable|string|max:30',
-            'swap_normal_flying_order' => 'nullable|string',
-            'revert_fairy_typing' => 'nullable|string',
-        ]);
-
         $save = Save::create([
             'name' => $request->name,
             'player_one_name' => $request->p1,
@@ -71,22 +55,6 @@ class SaveController extends Controller
             'livingBox' => $alivePairs,
             'deathBox' => $deadBox,
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Save $save)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Save $save)
-    {
-        //
     }
 
     /**

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePairRequest;
+use App\Http\Requests\UpdatePairRequest;
 use App\Models\Pair;
 use App\Models\Save;
-use Illuminate\Http\Request;
+use App\Services\PokemonService;
 use Illuminate\Support\Facades\Gate;
 
 class PairController extends Controller
@@ -20,46 +22,20 @@ class PairController extends Controller
         'togekiss',
     ];
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+    private PokemonService $pokemonService;
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function __construct(PokemonService $pokemonService)
     {
-        //
+        $this->pokemonService = $pokemonService;
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Save $save)
+    public function store(StorePairRequest $request, Save $save)
     {
-        $request->validate([
-            'playerOnePokemon' => 'required|string|max:255',
-            'playerTwoPokemon' => 'required|string|max:255',
-            'playerOneNickname' => 'nullable|string|max:12',
-            'playerTwoNickname' => 'nullable|string|max:12',
-        ]);
-
-        $pokemonOneTypes = $this->fetchPokemonTypes($request->playerOnePokemon);
-        $pokemonTwoTypes = $this->fetchPokemonTypes($request->playerTwoPokemon);
-
-        if ($save->swap_normal_flying_order) {
-            $pokemonOneTypes = $this->swapNormalFlyingOrder($pokemonOneTypes);
-            $pokemonTwoTypes = $this->swapNormalFlyingOrder($pokemonTwoTypes);
-        }
-
-        if ($save->revert_fairy_typing) {
-            $pokemonOneTypes = $this->revertFairyTyping($request->playerOnePokemon, $pokemonOneTypes);
-            $pokemonTwoTypes = $this->revertFairyTyping($request->playerTwoPokemon, $pokemonTwoTypes);
-        }
+        $pokemonOneTypes = $this->pokemonService->fetchPokemonTypes($request->playerOnePokemon, $save);
+        $pokemonTwoTypes = $this->pokemonService->fetchPokemonTypes($request->playerTwoPokemon, $save);
 
         if ($pokemonOneTypes[0] == $pokemonTwoTypes[0]) {
             return back()->withErrors(['samePrimaryType' => 'Both Pokémon cannot share the same primary type.']);
@@ -82,40 +58,18 @@ class PairController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Pair $pair)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Pair $pair)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Save $save, Pair $pair)
+    public function update(UpdatePairRequest $request, Save $save, Pair $pair)
     {
-        $request->validate([
-            'playerOnePokemon' => 'nullable|string|max:255',
-            'playerTwoPokemon' => 'nullable|string|max:255',
-            'playerOneNickname' => 'nullable|string|max:12',
-            'playerTwoNickname' => 'nullable|string|max:12',
-            'isAlive' => 'nullable|string',
-        ]);
         if (! is_null($request->playerOnePokemon)) {
-            $pokemonOneTypes = $this->fetchPokemonTypes($request->playerOnePokemon);
+            $pokemonOneTypes = $this->pokemonService->fetchPokemonTypes($request->playerOnePokemon, $save);
+
         } else {
             $pokemonOneTypes = [$pair->player_one_pokemon_primary_type, $pair->player_one_pokemon_secondary_type];
         }
         if (! is_null($request->playerTwoPokemon)) {
-            $pokemonTwoTypes = $this->fetchPokemonTypes($request->playerTwoPokemon);
+            $pokemonTwoTypes = $this->pokemonService->fetchPokemonTypes($request->playerTwoPokemon, $save);
         } else {
             $pokemonTwoTypes = [$pair->player_two_pokemon_primary_type, $pair->player_two_pokemon_secondary_type];
         }
@@ -124,7 +78,6 @@ class PairController extends Controller
             return back()->withErrors(['samePrimaryType' => 'Both Pokémon cannot share the same primary type.']);
         }
 
-        // Gate::authorize('update', $pair);
         $pair->update([
             'player_one_pokemon_name' => $request->playerOnePokemon ?? $pair->player_one_pokemon_name,
             'player_two_pokemon_name' => $request->playerTwoPokemon ?? $pair->player_two_pokemon_name,
@@ -150,76 +103,5 @@ class PairController extends Controller
         $pair->delete();
 
         return back();
-    }
-
-    private function fetchPokemonData($pokemonName)
-    {
-        $curl = curl_init();
-
-        $connectionTimeout = 5;
-
-        curl_setopt_array($curl, [
-            CURLOPT_URL => 'https://pokeapi.co/api/v2/pokemon/'.strtolower($pokemonName),
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false,
-            CURLOPT_CONNECTTIMEOUT => $connectionTimeout,
-        ]);
-
-        curl_setopt_array($curl, [
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER => [],
-            CURLOPT_POSTFIELDS => [],
-        ]);
-
-        $response = curl_exec($curl);
-
-        if ($response === false) {
-            $exceptionMessage = curl_error($this->curl);
-
-            $exceptionCode = curl_errno($this->curl);
-
-            throw new \RuntimeException($exceptionMessage, $exceptionCode);
-        }
-
-        curl_close($curl);
-
-        return json_decode($response, true);
-    }
-
-    private function fetchPokemonTypes($pokemonName)
-    {
-        $pokemonData = $this->fetchPokemonData($pokemonName);
-
-        $types = [];
-        foreach ($pokemonData['types'] as $type) {
-            $types[] = $type['type']['name'];
-        }
-        if (count($types) == 1) {
-            $types[1] = null;
-        }
-
-        return $types;
-    }
-
-    private function swapNormalFlyingOrder($pokemonTypes)
-    {
-        if ($pokemonTypes[0] == 'normal' && $pokemonTypes[1] == 'flying') {
-            return ['flying', 'normal'];
-        }
-
-        return $pokemonTypes;
-    }
-
-    private function revertFairyTyping($pokemon, $pokemonTypes)
-    {
-        if ($pokemonTypes[0] == 'fairy') {
-            if (in_array(strtolower($pokemon), $this->fairyPokemon)) {
-                return ['normal', $pokemonTypes[1]];
-            }
-        }
-
-        return $pokemonTypes;
     }
 }
