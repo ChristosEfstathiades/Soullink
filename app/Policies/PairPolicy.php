@@ -4,8 +4,6 @@ namespace App\Policies;
 
 use App\Models\Pair;
 use App\Models\User;
-use App\Models\Save;
-use Illuminate\Auth\Access\Response;
 
 class PairPolicy
 {
@@ -38,7 +36,7 @@ class PairPolicy
      */
     public function update(User $user, Pair $pair): bool
     {
-        return false;
+        return $user->id === $pair->saveFile->user_id;
     }
 
     /**
