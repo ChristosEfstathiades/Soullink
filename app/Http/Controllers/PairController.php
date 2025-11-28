@@ -216,7 +216,7 @@ class PairController extends Controller
     {
         if ($pokemonTypes[0] == 'fairy') {
             if (in_array(strtolower($pokemon), $this->fairyPokemon)) {
-                return ['normal', null];
+                return ['normal', $pokemonTypes[1]];
             }
         }
 
