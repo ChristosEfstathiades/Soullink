@@ -18,7 +18,7 @@ export default function Welcome() {
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
             <div className="flex flex-col items-center bg-[#FDFDFC] p-6 text-[#1b1b18] lg:p-8 dark:bg-[#0a0a0a]">
-                <header className="mb-6 w-full max-w-[80%] text-sm not-has-[nav]:hidden lg:max-w-4xl">
+                <header className="mb-6 w-full text-sm not-has-[nav]:hidden lg:max-w-4xl">
                     <nav className="flex items-center justify-between gap-4">
                         <Link href={home()} prefetch className="flex items-center space-x-2 dark:text-[#EDEDEC]">
                             <AppLogo />
@@ -58,7 +58,7 @@ export default function Welcome() {
                             <img src="/storage/fontbolt.png" alt="App Name" className="h-14 sm:h-24" />
                             <img src="/storage/pokeball.svg" alt="App Logo" className="w-8 sm:w-10" />
                         </div>
-                        <p className="max-w-90 text-xs dark:text-[#EDEDEC]">
+                        <p className="mb-2 max-w-90 text-xs dark:text-[#EDEDEC]">
                             The perfect tool for any 2-player Pokemon Nuzlocke Challenge A.K.A a{' '}
                             <a
                                 className="underline decoration-[#3B4CCA] decoration-solid underline-offset-2 hover:decoration-2"
@@ -69,6 +69,14 @@ export default function Welcome() {
                             </a>
                             . Track your encounters and Build your best possible combined team.
                         </p>
+                        {auth.user && (
+                            <Link
+                                href={index()}
+                                className="flex items-center rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#333] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                            >
+                                <SaveAll className="mr-1" size={16} /> Saves
+                            </Link>
+                        )}
                     </div>
                 </section>
             </div>

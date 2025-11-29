@@ -84,19 +84,20 @@ export default function SavesMenu({ saves }: { saves: any[] }) {
             </Dialog>
             <div className="mt-4 flex flex-col gap-2 text-center">
                 <p className="text-center">Load Save</p>
-                {/* TODO: make whole link clickable not just save name */}
                 {saves.map((save) => (
-                    <div
-                        className="align-center flex min-w-3xs justify-between rounded-sm px-3 py-2 transition-colors hover:bg-accent md:min-w-sm"
+                    <Link
+                        prefetch
+                        className="group flex min-w-3xs justify-between rounded-sm px-3 py-2 transition-colors hover:bg-accent md:min-w-sm"
+                        href={`/saves/${save.id}`}
                         key={save.id}
                     >
-                        <Link prefetch className="flex transition-colors hover:text-[#3B4CCA]" href={`/saves/${save.id}`}>
+                        <div className="flex items-center group-hover:text-[#3B4CCA]">
                             <Save className="mr-1"></Save> {save.name}
-                        </Link>
+                        </div>
                         <Link className="cursor-pointer transition-colors hover:text-[#CC0000]" method="delete" href={`/saves/${save.id}`}>
                             <Trash2 size={24} />
                         </Link>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </section>
