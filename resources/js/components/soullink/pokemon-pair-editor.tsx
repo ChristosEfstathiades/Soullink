@@ -61,7 +61,7 @@ export default function PokemonPairEditor({
     if (pair) {
         return (
             <section className="">
-                <div className="flex flex-col items-center">
+                <div className="ml-2 flex flex-col items-center">
                     <div className="flex w-full justify-between border-b border-black/20 px-4 pt-1 pb-2">
                         <h2 className="text-center text-xl font-bold">
                             {pair.player_one_pokemon_nickname ? pair.player_one_pokemon_nickname : pair.player_one_pokemon_name} and{' '}
@@ -77,7 +77,7 @@ export default function PokemonPairEditor({
                         {({ errors }) => (
                             <>
                                 <div className="flex flex-row">
-                                    <div className="mr-4 flex flex-col gap-3 p-4">
+                                    <div className="flex flex-col gap-3 p-2 lg:p-4">
                                         <Select
                                             placeholder={pair.player_one_pokemon_name}
                                             tabIndex={1}
@@ -95,7 +95,7 @@ export default function PokemonPairEditor({
                                         ></Input>
                                         <InputError message={errors.playerOneNickname} className="mt-2" />
                                     </div>
-                                    <div className="flex flex-col gap-3 p-4">
+                                    <div className="flex flex-col gap-3 p-2 lg:p-4">
                                         <Select
                                             placeholder={pair.player_two_pokemon_name}
                                             tabIndex={3}

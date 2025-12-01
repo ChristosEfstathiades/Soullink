@@ -31,9 +31,9 @@ const typeColors: { [key: string]: string } = {
 export default function PokemonData({ name, data }: PokemonDataProps) {
     return (
         <div className="mt-2 flex items-center">
-            <div>
-                <img draggable="false" className="mr-4 w-30 lg:w-38" src={`/storage/${name}.png`} alt={name} />
-                <div className="flex justify-center gap-x-1">
+            <div className="flex flex-col">
+                <img draggable="false" className="w-34 lg:w-38" src={`/storage/${name}.png`} alt={name} />
+                <div className="flex gap-x-1">
                     {data?.types.map((type, index) => (
                         <div className="flex items-center" key={index}>
                             {type ? (
@@ -46,10 +46,10 @@ export default function PokemonData({ name, data }: PokemonDataProps) {
                             ) : null}
                         </div>
                     ))}
-                    <a className="flex items-center text-xs hover:underline" target="_blank" href={`https://pokemondb.net/pokedex/${name}`}>
-                        Pokedex <ExternalLink className="ml-0.5" size={14} />
-                    </a>
                 </div>
+                <a className="mt-2 flex items-center text-xs hover:underline" target="_blank" href={`https://pokemondb.net/pokedex/${name}`}>
+                    Pokedex <ExternalLink className="ml-0.5" size={14} />
+                </a>
             </div>
 
             <ul className="text-xs">
