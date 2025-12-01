@@ -157,11 +157,16 @@ export default function Welcome() {
                     </Tutorial>
                 </div>
             </section>
-            <footer className="grid h-25 place-items-center bg-[#333]">
-                <p className="flex items-center gap-1 text-xs text-white/70">
-                    All content & design © Christos Efstathiades, 2025-2026. Privacy Policy. Credits.
-                    <br /> Pokémon images & names © 1995-2026 Nintendo/Creatures Inc./GAME FREAK inc. TM
-                </p>
+            <footer className="grid h-30 place-items-center">
+                <div className="flex flex-col items-center">
+                    <a href="https://github.com/ChristosEfstathiades/Soullink" rel="noopener noreferrer" target="_blank">
+                        <img className="w-6" src="/storage/Github.svg" alt="" />
+                    </a>
+                    <p className="mt-2 flex items-center gap-1 text-xs text-[#333]">
+                        All content & design © Christos Efstathiades, 2025-2026. Privacy Policy. Credits.
+                        <br /> Pokémon images & names © 1995-2026 Nintendo/Creatures Inc./GAME FREAK inc. TM
+                    </p>
+                </div>
             </footer>
         </>
     );
