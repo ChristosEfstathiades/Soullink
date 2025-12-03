@@ -83,6 +83,7 @@ export default function PokemonPairEditor({
                                             tabIndex={1}
                                             id="playerOnePokemon"
                                             name="playerOnePokemon"
+                                            className="dark:text-black"
                                             options={pokemonNames?.map((name) => ({ value: name, label: name }))}
                                         />
                                         <InputError message={errors.playerOnePokemon} className="mt-2" />
@@ -101,6 +102,7 @@ export default function PokemonPairEditor({
                                             tabIndex={3}
                                             id="playerTwoPokemon"
                                             name="playerTwoPokemon"
+                                            className="dark:text-black"
                                             options={pokemonNames?.map((name) => ({ value: name, label: name }))}
                                         />
                                         <InputError message={errors.playerTwoPokemon} className="mt-2" />

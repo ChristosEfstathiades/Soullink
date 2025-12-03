@@ -1,10 +1,9 @@
 @font-face {
-  font-family: 'Pokemon';
-  src: url('/storage/Pokemonfont.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'Pokemon';
+    src: url('/storage/Pokemonfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
-
 
 @import 'tailwindcss';
 
@@ -104,7 +103,7 @@
 }
 
 .dark {
-    --background: oklch(0.145 0 0);
+    --background: #141616; /*oklch(0.145 0 0);*/
     --foreground: oklch(0.985 0 0);
     --card: oklch(0.145 0 0);
     --card-foreground: oklch(0.985 0 0);

@@ -83,7 +83,7 @@ export default function PokemonParty({ partyPairs, removeFromParty, lockedPairs,
                     ) : (
                         <div className="flex items-center">
                             <img className="h-13.5 lg:h-18" src="/storage/light_grey_pokeball.png" alt="" />
-                            <hr className="w-5 border-1 border-t border-dashed border-[#ff1c1c] bg-white text-white" />
+                            <hr className="w-5 border-1 border-t border-dashed border-[#ff1c1c] bg-white text-white dark:bg-black" />
                             <img className="h-13.5 lg:h-18" src="/storage/light_grey_pokeball.png" alt="" />
                         </div>
                     )}
