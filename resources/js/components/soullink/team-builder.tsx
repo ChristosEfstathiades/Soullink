@@ -162,7 +162,6 @@ function generateTeams(pokemon: PokemonPairType[], lockedPairs: number[], target
     });
     // Create dictionary of pair ids and type combinations so (1,11): 23, 4, ...
 
-    // run chatgpt code for team size of 6 then decrease team sieze until results found
     let solutions: number[][][] = [];
     for (let size = targetSize; size >= 2 && solutions.length === 0; size--) {
         solutions = generateTeamCombinations(typeCombinations, size, lockedTypeCombinations, maxResults);
@@ -171,8 +170,6 @@ function generateTeams(pokemon: PokemonPairType[], lockedPairs: number[], target
     // use dictionary to create teams
     // evaluate teams based on type coverage
     return associatedTeams(solutions, pokemon);
-    // create dialog that suggests best x amount of teams
-    // Add import button for each suggested team that loads them from box into party
 }
 
 const moveNullsToEnd = (arr: (PokemonPairType | null)[]): (PokemonPairType | null)[] => [
