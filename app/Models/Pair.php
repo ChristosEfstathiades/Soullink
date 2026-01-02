@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-
 class Pair extends Model
 {
     protected $fillable = [
@@ -19,6 +18,10 @@ class Pair extends Model
         'player_two_pokemon_primary_type',
         'player_two_pokemon_secondary_type',
         'is_alive',
+    ];
+
+    protected $casts = [
+        'is_alive' => 'integer',
     ];
 
     public function saveFile(): BelongsTo

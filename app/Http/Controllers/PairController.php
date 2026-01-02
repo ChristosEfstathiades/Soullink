@@ -51,7 +51,7 @@ class PairController extends Controller
             'player_one_pokemon_secondary_type' => $pokemonOneTypes[1],
             'player_two_pokemon_primary_type' => $pokemonTwoTypes[0],
             'player_two_pokemon_secondary_type' => $pokemonTwoTypes[1],
-            'is_alive' => true,
+            'is_alive' => 1,
         ]);
 
         return back();
