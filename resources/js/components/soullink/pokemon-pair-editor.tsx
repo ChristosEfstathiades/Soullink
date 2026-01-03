@@ -56,7 +56,6 @@ export default function PokemonPairEditor({
                         });
                 });
             setIsAlive(pair.is_alive === 1 ? true : false);
-            console.log(typeof pair.is_alive, pair.is_alive);
         }
     }, [pair]);
     if (pair) {
@@ -125,7 +124,6 @@ export default function PokemonPairEditor({
                                             onChange={(e) => setIsAlive(e.target.checked)}
                                             name="isAlive"
                                             checked={isAlive}
-                                            // defaultChecked={isAlive} //TODO: death box mons are auto checked
                                         />
                                     </div>
                                 </div>

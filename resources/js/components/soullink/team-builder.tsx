@@ -201,6 +201,12 @@ export default function TeamBuilder({
 
     function displayGeneratedTeams() {
         let teams = generateTeams(livingBox, lockedPairs);
+        // Order locked pairs at the top
+        teams.sort((a, b) => {
+            const aLockedCount = a.filter((pair) => lockedPairs.includes(pair.id)).length;
+            const bLockedCount = b.filter((pair) => lockedPairs.includes(pair.id)).length;
+            return bLockedCount - aLockedCount;
+        });
         setGeneratedTeams(teams);
     }
 

@@ -31,7 +31,6 @@ export default function GeneratedTeams({ teams, displayGeneratedTeams, importTea
                 </DialogHeader>
                 <Carousel>
                     <CarouselContent>
-                        {/* TODO: Order locked pairs at the top in team builder function */}
                         {Array.from({ length: Math.ceil(teams.length / 3) }).map((_, index) => (
                             <CarouselItem className="flex justify-around" key={index}>
                                 {teams.slice(index * 3, index * 3 + 3).map((team, index) => (
