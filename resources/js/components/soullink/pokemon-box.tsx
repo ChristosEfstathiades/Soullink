@@ -10,6 +10,7 @@ import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import Select from 'react-select';
 import { useLocalStorage } from 'usehooks-ts';
+import { Appearance, useAppearance } from '@/hooks/use-appearance';
 
 interface PokemonBoxProps {
     livingBox: PokemonPairType[];
@@ -46,6 +47,21 @@ export default function PokemonBox({
     const [open, setOpen] = useState(false);
     const { auth } = usePage<SharedData>().props;
     const [pcBoxBackground, setPcBoxBackground] = useLocalStorage<number>(`pc-box-background-${auth.user.id}`, 0);
+    const { appearance, updateAppearance } = useAppearance();
+
+    const darkSelectClassNames = {
+        control: () => appearance === 'dark' ? 'bg-neutral-800 border-neutral-600' : '',
+        menu: () => appearance === 'dark' ? 'bg-neutral-800 border-neutral-600' : '',
+        option: (state: { isFocused: boolean }) =>
+            appearance === 'dark'
+                ? state.isFocused
+                    ? 'bg-neutral-600 text-white'
+                    : 'bg-neutral-800 text-white'
+                : '',
+        singleValue: () => appearance === 'dark' ? 'text-white' : '',
+        input: () => appearance === 'dark' ? 'text-white' : '',
+        placeholder: () => appearance === 'dark' ? 'text-neutral-400' : '',
+    };
 
     function addToParty(event: React.MouseEvent<HTMLDivElement>, pair: PokemonPairType) {
         event.stopPropagation();
@@ -112,7 +128,7 @@ export default function PokemonBox({
                                                 required
                                                 id="playerOnePokemon"
                                                 name="playerOnePokemon"
-                                                className="dark:text-black"
+                                                classNames={darkSelectClassNames}
                                                 options={pokemonNames?.map((name) => ({ value: name, label: name }))}
                                             />
                                             <InputError message={errors.playerOnePokemon} className="mt-2" />
@@ -133,7 +149,7 @@ export default function PokemonBox({
                                                 required
                                                 id="playerTwoPokemon"
                                                 name="playerTwoPokemon"
-                                                className="dark:text-black"
+                                                classNames={darkSelectClassNames}
                                                 options={pokemonNames?.map((name) => ({ value: name, label: name }))}
                                             />
                                             <InputError message={errors.playerTwoPokemon} className="mt-2" />
