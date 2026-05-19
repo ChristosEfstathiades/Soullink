@@ -9,8 +9,8 @@ import { Form, usePage } from '@inertiajs/react';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import Select from 'react-select';
+import { useAppearance } from '@/hooks/use-appearance';
 import { useLocalStorage } from 'usehooks-ts';
-import { Appearance, useAppearance } from '@/hooks/use-appearance';
 
 interface PokemonBoxProps {
     livingBox: PokemonPairType[];
@@ -47,20 +47,22 @@ export default function PokemonBox({
     const [open, setOpen] = useState(false);
     const { auth } = usePage<SharedData>().props;
     const [pcBoxBackground, setPcBoxBackground] = useLocalStorage<number>(`pc-box-background-${auth.user.id}`, 0);
-    const { appearance, updateAppearance } = useAppearance();
+    const { appearance } = useAppearance();
+    const isDark =
+        appearance === 'dark' ||
+        (appearance === 'system' && typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
-    const darkSelectClassNames = {
-        control: () => appearance === 'dark' ? 'bg-neutral-800 border-neutral-600' : '',
-        menu: () => appearance === 'dark' ? 'bg-neutral-800 border-neutral-600' : '',
-        option: (state: { isFocused: boolean }) =>
-            appearance === 'dark'
-                ? state.isFocused
-                    ? 'bg-neutral-600 text-white'
-                    : 'bg-neutral-800 text-white'
-                : '',
-        singleValue: () => appearance === 'dark' ? 'text-white' : '',
-        input: () => appearance === 'dark' ? 'text-white' : '',
-        placeholder: () => appearance === 'dark' ? 'text-neutral-400' : '',
+    const selectStyles = {
+        control: (base: object) => ({ ...base, ...(isDark && { backgroundColor: '#27272a', borderColor: '#52525b' }) }),
+        menu: (base: object) => ({ ...base, ...(isDark && { backgroundColor: '#27272a' }) }),
+        menuList: (base: object) => ({ ...base, ...(isDark && { backgroundColor: '#27272a' }) }),
+        option: (base: object, { isFocused }: { isFocused: boolean }) => ({
+            ...base,
+            ...(isDark && { backgroundColor: isFocused ? '#3f3f46' : '#27272a', color: 'white' }),
+        }),
+        singleValue: (base: object) => ({ ...base, ...(isDark && { color: 'white' }) }),
+        input: (base: object) => ({ ...base, ...(isDark && { color: 'white' }) }),
+        placeholder: (base: object) => ({ ...base, ...(isDark && { color: '#a1a1aa' }) }),
     };
 
     function addToParty(event: React.MouseEvent<HTMLDivElement>, pair: PokemonPairType) {
@@ -128,7 +130,7 @@ export default function PokemonBox({
                                                 required
                                                 id="playerOnePokemon"
                                                 name="playerOnePokemon"
-                                                classNames={darkSelectClassNames}
+                                                styles={selectStyles}
                                                 options={pokemonNames?.map((name) => ({ value: name, label: name }))}
                                             />
                                             <InputError message={errors.playerOnePokemon} className="mt-2" />
@@ -149,7 +151,7 @@ export default function PokemonBox({
                                                 required
                                                 id="playerTwoPokemon"
                                                 name="playerTwoPokemon"
-                                                classNames={darkSelectClassNames}
+                                                styles={selectStyles}
                                                 options={pokemonNames?.map((name) => ({ value: name, label: name }))}
                                             />
                                             <InputError message={errors.playerTwoPokemon} className="mt-2" />
