@@ -1,6 +1,7 @@
 import PokemonBox from '@/components/soullink/pokemon-box';
 import PokemonPairEditor from '@/components/soullink/pokemon-pair-editor';
 import TeamBuilder from '@/components/soullink/team-builder';
+import { useAppearance } from '@/hooks/use-appearance';
 import AppLayout from '@/layouts/app-layout';
 import { index } from '@/routes/saves';
 import { type BreadcrumbItem, type PokemonPairType } from '@/types';
@@ -44,6 +45,7 @@ export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
     const [unavailableTypes, setUnavailableTypes] = useState<string[]>(currentPartyPairTypes(partyPairs));
     const [highlightAvailablePairs, setHighlightAvailablePairs] = useState(false);
     const filteredBox = livingBox.filter((p) => !partyPairs.some((slot) => slot?.id === p.id));
+    const { appearance } = useAppearance();
 
     // TODO: replace with react-query
     useEffect(() => {
@@ -83,8 +85,17 @@ export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
                     </button>
                     <div className="h-full w-px bg-black/30"></div>
                     <button
-                        className="dark: cursor-[inherit] rounded-tr-xl px-4 py-1 dark:text-black"
-                        style={{ backgroundColor: viewDeathBox ? '#F34444' : '#eee' }}
+                        className="cursor-[inherit] rounded-tr-xl px-4 py-1 dark:text-white"
+                        style={{
+                            backgroundColor: viewDeathBox
+                                ? '#F34444'
+                                : appearance === 'dark' ||
+                                    (appearance === 'system' &&
+                                        typeof window !== 'undefined' &&
+                                        window.matchMedia('(prefers-color-scheme: dark)').matches)
+                                  ? '#27272a'
+                                  : '#eee',
+                        }}
                         onClick={() => {
                             setViewDeathBox(true);
                         }}

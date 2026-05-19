@@ -136,7 +136,7 @@ export default function PokemonPairEditor({
                                 </div>
                                 <InputError message={errors.samePrimaryType} className="mb-2 text-center" />
                                 <div>
-                                    <Button tabIndex={5} type="submit" className="cursor-pointer self-center rounded-tr-none rounded-br-none">
+                                    <Button tabIndex={5} type="submit" className="cursor-pointer self-center rounded-tr-none rounded-br-none dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
                                         Update Pair
                                     </Button>
                                     <Link
