@@ -7,6 +7,8 @@ import { update } from '@/routes/saves/pairs';
 import { type PokemonPairType } from '@/types';
 import { Form, Link } from '@inertiajs/react';
 import { X } from 'lucide-react';
+import { useAppearance } from '@/hooks/use-appearance';
+import { buildSelectStyles } from '@/lib/select-styles';
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
 
@@ -35,6 +37,11 @@ export default function PokemonPairEditor({
     // TODO: could move to onClick in PokemonPair, but this is fine for now
     const [pokemonData, setPokemonData] = useState<pokemonDataType>();
     const [isAlive, setIsAlive] = useState<boolean>(true);
+    const { appearance } = useAppearance();
+    const isDark =
+        appearance === 'dark' ||
+        (appearance === 'system' && typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const selectStyles = buildSelectStyles(isDark);
 
     useEffect(() => {
         if (pair) {
@@ -83,7 +90,7 @@ export default function PokemonPairEditor({
                                             tabIndex={1}
                                             id="playerOnePokemon"
                                             name="playerOnePokemon"
-                                            className="dark:text-black"
+                                            styles={selectStyles}
                                             options={pokemonNames?.map((name) => ({ value: name, label: name }))}
                                         />
                                         <InputError message={errors.playerOnePokemon} className="mt-2" />
@@ -102,7 +109,7 @@ export default function PokemonPairEditor({
                                             tabIndex={3}
                                             id="playerTwoPokemon"
                                             name="playerTwoPokemon"
-                                            className="dark:text-black"
+                                            styles={selectStyles}
                                             options={pokemonNames?.map((name) => ({ value: name, label: name }))}
                                         />
                                         <InputError message={errors.playerTwoPokemon} className="mt-2" />

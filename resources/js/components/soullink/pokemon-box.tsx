@@ -10,6 +10,7 @@ import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import Select from 'react-select';
 import { useAppearance } from '@/hooks/use-appearance';
+import { buildSelectStyles } from '@/lib/select-styles';
 import { useLocalStorage } from 'usehooks-ts';
 
 interface PokemonBoxProps {
@@ -51,19 +52,7 @@ export default function PokemonBox({
     const isDark =
         appearance === 'dark' ||
         (appearance === 'system' && typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-
-    const selectStyles = {
-        control: (base: object) => ({ ...base, ...(isDark && { backgroundColor: '#27272a', borderColor: '#52525b' }) }),
-        menu: (base: object) => ({ ...base, ...(isDark && { backgroundColor: '#27272a' }) }),
-        menuList: (base: object) => ({ ...base, ...(isDark && { backgroundColor: '#27272a' }) }),
-        option: (base: object, { isFocused }: { isFocused: boolean }) => ({
-            ...base,
-            ...(isDark && { backgroundColor: isFocused ? '#3f3f46' : '#27272a', color: 'white' }),
-        }),
-        singleValue: (base: object) => ({ ...base, ...(isDark && { color: 'white' }) }),
-        input: (base: object) => ({ ...base, ...(isDark && { color: 'white' }) }),
-        placeholder: (base: object) => ({ ...base, ...(isDark && { color: '#a1a1aa' }) }),
-    };
+    const selectStyles = buildSelectStyles(isDark);
 
     function addToParty(event: React.MouseEvent<HTMLDivElement>, pair: PokemonPairType) {
         event.stopPropagation();
