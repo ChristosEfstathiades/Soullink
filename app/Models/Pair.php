@@ -20,6 +20,10 @@ class Pair extends Model
         'is_alive',
     ];
 
+    protected $casts = [
+        'is_alive' => 'boolean',
+    ];
+
     public function saveFile(): BelongsTo
     {
         return $this->belongsTo(Save::class, 'save_id');

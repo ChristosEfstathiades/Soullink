@@ -72,7 +72,7 @@ export default function PokemonPairEditor({
                 }
             });
 
-        setIsAlive(pair.is_alive === 1);
+        setIsAlive(pair.is_alive);
         return () => controller.abort();
     }, [pair]);
     if (pair) {
