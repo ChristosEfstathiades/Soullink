@@ -4,13 +4,13 @@ import PokemonPair from '@/components/soullink/pokemon-pair';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { useAppearance } from '@/hooks/use-appearance';
+import { buildSelectStyles } from '@/lib/select-styles';
 import { type PokemonPairType, type SharedData } from '@/types';
 import { Form, usePage } from '@inertiajs/react';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import Select from 'react-select';
-import { useAppearance } from '@/hooks/use-appearance';
-import { buildSelectStyles } from '@/lib/select-styles';
 import { useLocalStorage } from 'usehooks-ts';
 
 interface PokemonBoxProps {
@@ -47,7 +47,7 @@ export default function PokemonBox({
 }: PokemonBoxProps) {
     const [open, setOpen] = useState(false);
     const { auth } = usePage<SharedData>().props;
-    const [pcBoxBackground, setPcBoxBackground] = useLocalStorage<number>(`pc-box-background-${auth.user.id}`, 0);
+    const [pcBoxBackground] = useLocalStorage<number>(`pc-box-background-${auth.user.id}`, 0);
     const { appearance } = useAppearance();
     const isDark =
         appearance === 'dark' ||

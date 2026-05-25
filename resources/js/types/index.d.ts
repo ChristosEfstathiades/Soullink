@@ -54,3 +54,13 @@ export interface PokemonPairType {
     player_two_pokemon_secondary_type: string | null;
     is_alive: boolean;
 }
+
+// export interface SaveType {
+//     created_at: string;
+//     id: number;
+//     user_id: number;
+//     name: string;
+//     player_one_name: string | null;
+//     player_two_name: string | null;
+//     revert_fairy_typing
+// }

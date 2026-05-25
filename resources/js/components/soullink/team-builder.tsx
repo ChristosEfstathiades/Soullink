@@ -19,32 +19,6 @@ interface TeamBuilderProps {
     };
 }
 
-// Options: prioritise type coverage, lock certain pairs in party, enforce unique primary types,
-// normal/flying -> flying, revert fairy types.
-// type coverage: count number of resistances, check if for every weakness there is a resistance
-
-// return the team with the highest type coverage score
-const typeTally: { [key: string]: number } = {
-    normal: 0,
-    fire: 0,
-    water: 0,
-    electric: 0,
-    grass: 0,
-    ice: 0,
-    fighting: 0,
-    poison: 0,
-    ground: 0,
-    flying: 0,
-    psychic: 0,
-    bug: 0,
-    rock: 0,
-    ghost: 0,
-    dragon: 0,
-    dark: 0,
-    steel: 0,
-    fairy: 0,
-};
-
 const typeNumbers: { [key: string]: number } = {
     normal: 1,
     fire: 2,
@@ -66,23 +40,6 @@ const typeNumbers: { [key: string]: number } = {
     fairy: 18,
 };
 
-function generateUniquePairs(pokemon: PokemonPairType[]) {
-    for (const key in typeTally) {
-        typeTally[key] = 0;
-    }
-    pokemon.map((pair: PokemonPairType) => {
-        typeTally[pair.player_one_pokemon_primary_type] += 1;
-        typeTally[pair.player_two_pokemon_primary_type] += 1;
-    });
-    let uniquePairs: PokemonPairType[] = [];
-    pokemon.map((pair: PokemonPairType) => {
-        if (typeTally[pair.player_one_pokemon_primary_type] == 1 && typeTally[pair.player_two_pokemon_primary_type] == 1) {
-            uniquePairs.push(pair);
-        }
-    });
-    console.log(uniquePairs);
-}
-
 function generateTeamCombinations(pairs: number[][], targetSize: number, requiredPairs: number[][], maxResults: number): number[][][] {
     const solutions: number[][][] = [];
 
@@ -91,7 +48,7 @@ function generateTeamCombinations(pairs: number[][], targetSize: number, require
     requiredPairs = requiredPairs.map(([a, b]) => (a < b ? [a, b] : [b, a]));
 
     const used = new Set<number>();
-    let startingChosen: number[][] = [];
+    const startingChosen: number[][] = [];
     for (const [a, b] of requiredPairs) {
         used.add(a);
         used.add(b);
@@ -130,7 +87,7 @@ function generateTeamCombinations(pairs: number[][], targetSize: number, require
 }
 
 function associatedTeams(solutions: number[][][], pokemon: PokemonPairType[]) {
-    let teams: PokemonPairType[][] = [];
+    const teams: PokemonPairType[][] = [];
     for (let i = 0; i < solutions.length; i++) {
         const solution = solutions[i]; // solution is number[][]
         const team: PokemonPairType[] = [];
@@ -152,8 +109,8 @@ function associatedTeams(solutions: number[][][], pokemon: PokemonPairType[]) {
 
 function generateTeams(pokemon: PokemonPairType[], lockedPairs: number[], targetSize: number = 6, maxResults: number = 12) {
     // create array of typing pairs etc normal = 1, flying = 11, (1,11)
-    let typeCombinations: number[][] = [];
-    let lockedTypeCombinations: number[][] = [];
+    const typeCombinations: number[][] = [];
+    const lockedTypeCombinations: number[][] = [];
     pokemon.map((pair: PokemonPairType) => {
         typeCombinations.push([typeNumbers[pair.player_one_pokemon_primary_type], typeNumbers[pair.player_two_pokemon_primary_type]]);
         if (lockedPairs.includes(pair.id)) {
@@ -186,7 +143,7 @@ export default function TeamBuilder({
     unavailableTypes,
     removePartyPairs,
 }: TeamBuilderProps) {
-    const [lockedPairs, setLockedPairs, removeLockedPairs] = useLocalStorage<number[]>(`LockedPairs-${save.name}-${save.id}`, []);
+    const [lockedPairs, setLockedPairs] = useLocalStorage<number[]>(`LockedPairs-${save.name}-${save.id}`, []);
     const [generatedTeams, setGeneratedTeams] = useState<PokemonPairType[][]>([]);
 
     function removeFromParty(event: React.MouseEvent<HTMLDivElement>, pair: PokemonPairType) {
@@ -200,7 +157,7 @@ export default function TeamBuilder({
     }
 
     function displayGeneratedTeams() {
-        let teams = generateTeams(livingBox, lockedPairs);
+        const teams = generateTeams(livingBox, lockedPairs);
         // Order locked pairs at the top
         teams.sort((a, b) => {
             const aLockedCount = a.filter((pair) => lockedPairs.includes(pair.id)).length;
@@ -215,7 +172,7 @@ export default function TeamBuilder({
         const types: string[] = [];
         const newPartyPairs = Array(6).fill(null);
         team.forEach((pair: PokemonPairType) => {
-            let emptyIndex = newPartyPairs.findIndex((p) => p === null);
+            const emptyIndex = newPartyPairs.findIndex((p) => p === null);
             newPartyPairs[emptyIndex] = pair;
             types.push(pair.player_one_pokemon_primary_type, pair.player_two_pokemon_primary_type);
         });

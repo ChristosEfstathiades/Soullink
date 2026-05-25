@@ -67,7 +67,7 @@ export default function PokemonPair({
                         unavailableTypes.includes(pair.player_two_pokemon_primary_type)
                             ? 0.3
                             : 0.85,
-                    display: pair.is_alive == 0 ? 'none' : '',
+                    display: !pair.is_alive ? 'none' : '',
                 }}
                 onClick={(event) => addToParty(event, pair)}
                 className="absolute right-0 bottom-0 z-49 cursor-pointer rounded-full bg-white p-0.5 sm:hidden sm:group-hover:block"
