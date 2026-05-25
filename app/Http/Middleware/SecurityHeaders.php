@@ -10,6 +10,10 @@ class SecurityHeaders
 {
     public function handle(Request $request, Closure $next): Response
     {
+        // Generate the nonce before $next() so Blade can read it while rendering.
+        $nonce = base64_encode(random_bytes(16));
+        $request->attributes->set('csp_nonce', $nonce);
+
         $response = $next($request);
 
         // Safe in all environments
@@ -28,11 +32,11 @@ class SecurityHeaders
             $response->headers->set(
                 'Content-Security-Policy',
                 "default-src 'self'; " .
-                "script-src 'self'; " .
-                "style-src 'self' 'unsafe-inline'; " .
+                "script-src 'self' 'nonce-{$nonce}'; " .
+                "style-src 'self' 'unsafe-inline' https://fonts.bunny.net; " .
                 "img-src 'self' data: blob:; " .
                 "connect-src 'self' https://pokeapi.co; " .
-                "font-src 'self' data: https:; " .
+                "font-src 'self' data: https://fonts.bunny.net; " .
                 "object-src 'none'; " .
                 "base-uri 'self';"
             );

@@ -7,7 +7,7 @@
         <meta name="keywords" content="pokemon,nuzlocke,soullink,2-player nuzlocke,two player nuzlocke,2 player nuzlocke,nuzlocke challenge,nuzlocke tracker,tracker,nuzlocke teambuilder,teambuilder,pokemon teambuilder,pokemon nuzlocke,nuzlocke challenge,pokemon challenge" >
 
         {{-- Inline script to detect system dark mode preference and apply it immediately --}}
-        <script>
+        <script nonce="{{ request()->attributes->get('csp_nonce') }}">
             (function() {
                 const appearance = '{{ $appearance ?? "system" }}';
 
@@ -21,14 +21,15 @@
             })();
         </script>
 
-        {{-- Inline style to set the HTML background color based on our theme in app.css --}}
+        {{-- Inline style to set the HTML background color based on our theme in app.css.
+             Must stay in sync with the --background CSS variable values defined there. --}}
         <style>
             html {
                 background-color: oklch(1 0 0);
             }
 
             html.dark {
-                background-color: oklch(0.145 0 0);
+                background-color: #141616;
             }
         </style>
 
