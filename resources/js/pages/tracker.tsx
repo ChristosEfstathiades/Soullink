@@ -47,13 +47,22 @@ export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
     const filteredBox = livingBox.filter((p) => !partyPairs.some((slot) => slot?.id === p.id));
     const { appearance } = useAppearance();
 
-    // TODO: replace with react-query
     useEffect(() => {
-        fetch('https://pokeapi.co/api/v2/pokemon?limit=1301')
-            .then((response) => response.json())
+        const controller = new AbortController();
+        fetch('https://pokeapi.co/api/v2/pokemon?limit=1301', { signal: controller.signal })
+            .then((response) => {
+                if (!response.ok) throw new Error(`PokeAPI responded with ${response.status}`);
+                return response.json();
+            })
             .then((data) => {
                 setPokemonNames(data.results.map((pokemon: { name: string }) => pokemon.name));
+            })
+            .catch((err: Error) => {
+                if (err.name !== 'AbortError') {
+                    console.error('Failed to load Pokémon list:', err);
+                }
             });
+        return () => controller.abort();
     }, []);
 
     return (

@@ -42,7 +42,6 @@ class PokemonService
      */
     public function fetchPokemonTypes(string $pokemonName, Save $save): array
     {
-        // dd(1);
         $pokemonData = $this->fetchPokemonData($pokemonName);
 
         $types = array_map(fn ($type) => $type['type']['name'], $pokemonData['types']);
@@ -82,7 +81,6 @@ class PokemonService
 
             $result[$pokemonNames[$index]] = $this->applySettings($types, $pokemonNames[$index], $save);
         }
-        // dd($result);
 
         return $result;
     }

@@ -11,17 +11,6 @@ use Illuminate\Support\Facades\Gate;
 
 class PairController extends Controller
 {
-    private $fairyPokemon = [
-        'cleffa',
-        'clefairy',
-        'clefable',
-        'granbull',
-        'snubbull',
-        'togepi',
-        'togetic',
-        'togekiss',
-    ];
-
     private PokemonService $pokemonService;
 
     public function __construct(PokemonService $pokemonService)
@@ -34,6 +23,8 @@ class PairController extends Controller
      */
     public function store(StorePairRequest $request, Save $save)
     {
+        Gate::authorize('view', $save);
+
         $pokemonOneTypes = $this->pokemonService->fetchPokemonTypes($request->playerOnePokemon, $save);
         $pokemonTwoTypes = $this->pokemonService->fetchPokemonTypes($request->playerTwoPokemon, $save);
 

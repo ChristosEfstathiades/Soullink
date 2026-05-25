@@ -44,26 +44,36 @@ export default function PokemonPairEditor({
     const selectStyles = buildSelectStyles(isDark);
 
     useEffect(() => {
-        if (pair) {
-            fetch(`https://pokeapi.co/api/v2/pokemon/${pair.player_one_pokemon_name}`)
-                .then((response) => response.json())
-                .then((data) => {
-                    let pokemon_one_data = {
+        if (!pair) return;
+
+        const controller = new AbortController();
+        const fetchPokemon = (name: string) =>
+            fetch(`https://pokeapi.co/api/v2/pokemon/${name}`, { signal: controller.signal }).then((r) => {
+                if (!r.ok) throw new Error(`PokeAPI responded with ${r.status} for "${name}"`);
+                return r.json();
+            });
+
+        Promise.all([fetchPokemon(pair.player_one_pokemon_name), fetchPokemon(pair.player_two_pokemon_name)])
+            .then(([data, data2]) => {
+                setPokemonData({
+                    pokemon_one: {
                         bst: data.stats.map((stat: { base_stat: number }) => stat.base_stat),
                         types: [data.types[0].type.name, data.types[1] ? data.types[1].type.name : ''],
-                    };
-                    fetch(`https://pokeapi.co/api/v2/pokemon/${pair.player_two_pokemon_name}`)
-                        .then((response) => response.json())
-                        .then((data2) => {
-                            let pokemon_two_data = {
-                                bst: data2.stats.map((stat: { base_stat: number }) => stat.base_stat),
-                                types: [data2.types[0].type.name, data2.types[1] ? data2.types[1].type.name : ''],
-                            };
-                            setPokemonData({ pokemon_one: pokemon_one_data, pokemon_two: pokemon_two_data });
-                        });
+                    },
+                    pokemon_two: {
+                        bst: data2.stats.map((stat: { base_stat: number }) => stat.base_stat),
+                        types: [data2.types[0].type.name, data2.types[1] ? data2.types[1].type.name : ''],
+                    },
                 });
-            setIsAlive(pair.is_alive === 1 ? true : false);
-        }
+            })
+            .catch((err: Error) => {
+                if (err.name !== 'AbortError') {
+                    console.error('Failed to load Pokémon data:', err);
+                }
+            });
+
+        setIsAlive(pair.is_alive === 1);
+        return () => controller.abort();
     }, [pair]);
     if (pair) {
         return (

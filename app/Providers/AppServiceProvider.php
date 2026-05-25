@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use PokePHP\PokeApi;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -12,12 +11,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(PokeApi::class, function ($app) {
-            return new PokeApi();
-        });
-        $this->app->singleton(Query::class, function ($app) {
-            return new Query();
-        });
+        //
     }
 
     /**
