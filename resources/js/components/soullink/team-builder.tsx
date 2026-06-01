@@ -40,93 +40,75 @@ const typeNumbers: { [key: string]: number } = {
     fairy: 18,
 };
 
-function generateTeamCombinations(pairs: number[][], targetSize: number, requiredPairs: number[][], maxResults: number): number[][][] {
-    const solutions: number[][][] = [];
+// Selects teams of `targetSize` pairs such that no primary type is used twice
+// across the team. Works on pair objects directly so the exact locked pairs end
+// up in every team (no matching back by type, which could pick a same-typed pair).
+function generateTeamCombinations(
+    pairs: PokemonPairType[],
+    targetSize: number,
+    requiredPairs: PokemonPairType[],
+    maxResults: number,
+): PokemonPairType[][] {
+    const solutions: PokemonPairType[][] = [];
 
-    // Normalize all pairs so that [2,1] -> [1,2]
-    pairs = pairs.map(([a, b]) => (a < b ? [a, b] : [b, a]));
-    requiredPairs = requiredPairs.map(([a, b]) => (a < b ? [a, b] : [b, a]));
+    const typesOf = (pair: PokemonPairType): [number, number] => [
+        typeNumbers[pair.player_one_pokemon_primary_type],
+        typeNumbers[pair.player_two_pokemon_primary_type],
+    ];
 
+    // Lock the required pairs in up front and reserve their primary types.
     const used = new Set<number>();
-    const startingChosen: number[][] = [];
-    for (const [a, b] of requiredPairs) {
+    const startingChosen: PokemonPairType[] = [];
+    for (const pair of requiredPairs) {
+        const [a, b] = typesOf(pair);
         used.add(a);
         used.add(b);
-        startingChosen.push([a, b]);
+        startingChosen.push(pair);
     }
 
-    const forbiddenNumbers = new Set(requiredPairs.flat());
-    const filteredPairs = pairs.filter(([a, b]) => !forbiddenNumbers.has(a) && !forbiddenNumbers.has(b));
+    // Candidate pool excludes the locked pairs (already chosen).
+    const requiredIds = new Set(requiredPairs.map((pair) => pair.id));
+    const candidatePairs = pairs.filter((pair) => !requiredIds.has(pair.id));
 
-    function backtrack(start: number, chosen: number[][], used: Set<number>) {
+    function backtrack(start: number, chosen: PokemonPairType[]) {
         if (solutions.length >= maxResults) return;
 
         if (chosen.length === targetSize) {
-            const sorted = [...chosen].sort((a, b) => a[0] - b[0]);
-            solutions.push(sorted);
+            solutions.push([...chosen]);
             return;
         }
 
-        // Early pruning
-        if (filteredPairs.length - start < targetSize - chosen.length) return;
+        // Early pruning: not enough candidates left to fill the team.
+        if (candidatePairs.length - start < targetSize - chosen.length) return;
 
-        for (let i = start; i < filteredPairs.length; i++) {
-            const [a, b] = filteredPairs[i];
+        for (let i = start; i < candidatePairs.length; i++) {
+            const [a, b] = typesOf(candidatePairs[i]);
+            // Skip pairs that reuse a primary type already on the team.
             if (used.has(a) || used.has(b)) continue;
 
             used.add(a);
             used.add(b);
-            backtrack(i + 1, [...chosen, [a, b]], used);
+            chosen.push(candidatePairs[i]);
+            backtrack(i + 1, chosen);
+            chosen.pop();
             used.delete(a);
             used.delete(b);
         }
     }
 
-    backtrack(0, startingChosen, new Set(used));
+    backtrack(0, startingChosen);
     return solutions;
 }
 
-function associatedTeams(solutions: number[][][], pokemon: PokemonPairType[]) {
-    const teams: PokemonPairType[][] = [];
-    for (let i = 0; i < solutions.length; i++) {
-        const solution = solutions[i]; // solution is number[][]
-        const team: PokemonPairType[] = [];
-        for (let j = 0; j < solution.length; j++) {
-            const [a, b] = solution[j];
-            const pair = pokemon.find(
-                (p) =>
-                    (typeNumbers[p.player_one_pokemon_primary_type] === a && typeNumbers[p.player_two_pokemon_primary_type] === b) ||
-                    (typeNumbers[p.player_one_pokemon_primary_type] === b && typeNumbers[p.player_two_pokemon_primary_type] === a),
-            );
-            if (pair) {
-                team.push(pair);
-            }
-        }
-        teams.push(team);
-    }
-    return teams;
-}
-
 function generateTeams(pokemon: PokemonPairType[], lockedPairs: number[], targetSize: number = 6, maxResults: number = 12) {
-    // create array of typing pairs etc normal = 1, flying = 11, (1,11)
-    const typeCombinations: number[][] = [];
-    const lockedTypeCombinations: number[][] = [];
-    pokemon.map((pair: PokemonPairType) => {
-        typeCombinations.push([typeNumbers[pair.player_one_pokemon_primary_type], typeNumbers[pair.player_two_pokemon_primary_type]]);
-        if (lockedPairs.includes(pair.id)) {
-            lockedTypeCombinations.push([typeNumbers[pair.player_one_pokemon_primary_type], typeNumbers[pair.player_two_pokemon_primary_type]]);
-        }
-    });
-    // Create dictionary of pair ids and type combinations so (1,11): 23, 4, ...
+    const lockedSet = new Set(lockedPairs);
+    const requiredPairs = pokemon.filter((pair) => lockedSet.has(pair.id));
 
-    let solutions: number[][][] = [];
+    let solutions: PokemonPairType[][] = [];
     for (let size = targetSize; size >= 2 && solutions.length === 0; size--) {
-        solutions = generateTeamCombinations(typeCombinations, size, lockedTypeCombinations, maxResults);
+        solutions = generateTeamCombinations(pokemon, size, requiredPairs, maxResults);
     }
-    console.log(solutions);
-    // use dictionary to create teams
-    // evaluate teams based on type coverage
-    return associatedTeams(solutions, pokemon);
+    return solutions;
 }
 
 const moveNullsToEnd = (arr: (PokemonPairType | null)[]): (PokemonPairType | null)[] => [
@@ -158,13 +140,11 @@ export default function TeamBuilder({
 
     function displayGeneratedTeams() {
         const teams = generateTeams(livingBox, lockedPairs);
-        // Order locked pairs at the top
-        teams.sort((a, b) => {
-            const aLockedCount = a.filter((pair) => lockedPairs.includes(pair.id)).length;
-            const bLockedCount = b.filter((pair) => lockedPairs.includes(pair.id)).length;
-            return bLockedCount - aLockedCount;
-        });
-        setGeneratedTeams(teams);
+        // Order locked pairs at the top of each team (stable sort keeps the rest in place)
+        const orderedTeams = teams.map((team) =>
+            [...team].sort((a, b) => Number(lockedPairs.includes(b.id)) - Number(lockedPairs.includes(a.id))),
+        );
+        setGeneratedTeams(orderedTeams);
     }
 
     function importTeamToParty(team: PokemonPairType[]) {
