@@ -31,14 +31,21 @@ export default function GeneratedTeams({ teams, displayGeneratedTeams, importTea
                 </DialogHeader>
                 <Carousel>
                     <CarouselContent>
-                        {Array.from({ length: Math.ceil(teams.length / 3) }).map((_, index) => (
-                            <CarouselItem className="flex justify-around" key={index}>
-                                {teams.slice(index * 3, index * 3 + 3).map((team, index) => (
-                                    <div className="relative flex flex-col items-center" key={index}>
-                                        {team.map((pair, index) => (
-                                            <div key={index} className="mb-1 flex">
+                        {Array.from({ length: Math.ceil(teams.length / 3) }).map((_, pageIndex) => (
+                            <CarouselItem className="flex justify-around" key={`page-${pageIndex}`}>
+                                {teams.slice(pageIndex * 3, pageIndex * 3 + 3).map((team) => (
+                                    <div
+                                        className="relative flex flex-col items-center"
+                                        style={{ contain: 'content' }}
+                                        key={team.map((pair) => pair.player_one_pokemon_name).join('-')}
+                                    >
+                                        {team.map((pair) => (
+                                            <div
+                                                key={`${pair.player_one_pokemon_name}-${pair.player_two_pokemon_name}`}
+                                                className="mb-1 flex"
+                                            >
                                                 <div className="flex items-center">
-                                                    <div className="relative flex shrink-0 rounded-4xl shadow-lg">
+                                                    <div className="relative flex shrink-0 rounded-4xl shadow-sm">
                                                         {/* Gradient background layer */}
                                                         <div
                                                             className="absolute inset-0 rounded-4xl opacity-100"
@@ -51,12 +58,20 @@ export default function GeneratedTeams({ teams, displayGeneratedTeams, importTea
                                                         <div className="relative z-10 flex w-full items-center justify-between">
                                                             <img
                                                                 draggable="false"
+                                                                loading="lazy"
+                                                                decoding="async"
+                                                                width={72}
+                                                                height={72}
                                                                 className="w-13.5 lg:w-18"
                                                                 src={`/storage/${pair.player_one_pokemon_name}.png`}
                                                                 alt={pair.player_one_pokemon_name}
                                                             />
                                                             <img
                                                                 draggable="false"
+                                                                loading="lazy"
+                                                                decoding="async"
+                                                                width={72}
+                                                                height={72}
                                                                 className="w-13.5 lg:w-18"
                                                                 src={`/storage/${pair.player_two_pokemon_name}.png`}
                                                                 alt={pair.player_two_pokemon_name}
@@ -66,7 +81,6 @@ export default function GeneratedTeams({ teams, displayGeneratedTeams, importTea
                                                 </div>
                                             </div>
                                         ))}
-                                        {/* <p>pus</p> */}
                                         <div
                                             className="absolute bottom-0 z-100 cursor-pointer rounded-full bg-blue-500 p-1"
                                             onClick={() => importTeamToParty(team)}
