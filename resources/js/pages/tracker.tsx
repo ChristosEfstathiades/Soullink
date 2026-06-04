@@ -37,8 +37,16 @@ function currentPartyPairTypes(partyPairs: (PokemonPairType | null)[]): string[]
     return types;
 }
 
+function formatLocationName(name: string): string {
+    return name
+        .split('-')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+}
+
 export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
     const [pokemonNames, setPokemonNames] = useState<string[]>([]);
+    const [locationOptions, setLocationOptions] = useState<{ value: string; label: string }[]>([]);
     const [loadedPair, setLoadedPair] = useState<PokemonPairType | null>(null);
     const [viewDeathBox, setViewDeathBox] = useState(false);
     const [partyPairs, setPartyPairs, removePartyPairs] = useLocalStorage<(PokemonPairType | null)[]>(`${save.name}-${save.id}`, Array(6).fill(null));
@@ -60,6 +68,28 @@ export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
             .catch((err: Error) => {
                 if (err.name !== 'AbortError') {
                     console.error('Failed to load Pokémon list:', err);
+                }
+            });
+        return () => controller.abort();
+    }, []);
+
+    useEffect(() => {
+        const controller = new AbortController();
+        fetch('https://pokeapi.co/api/v2/location?limit=2000', { signal: controller.signal })
+            .then((response) => {
+                if (!response.ok) throw new Error(`PokeAPI responded with ${response.status}`);
+                return response.json();
+            })
+            .then((data) => {
+                const options = data.results
+                    .map((location: { name: string }) => formatLocationName(location.name))
+                    .sort((a: string, b: string) => a.localeCompare(b))
+                    .map((name: string) => ({ value: name, label: name }));
+                setLocationOptions(options);
+            })
+            .catch((err: Error) => {
+                if (err.name !== 'AbortError') {
+                    console.error('Failed to load location list:', err);
                 }
             });
         return () => controller.abort();
@@ -119,6 +149,7 @@ export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
                     setLoadedPair={setLoadedPair}
                     save={save}
                     pokemonNames={pokemonNames}
+                    locationOptions={locationOptions}
                     viewDeathBox={viewDeathBox}
                     livingBox={filteredBox}
                     setPartyPairs={setPartyPairs}
@@ -138,7 +169,7 @@ export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
                 </div>
             </section>
 
-            <PokemonPairEditor setLoadedPair={setLoadedPair} saveID={save.id} pair={loadedPair} pokemonNames={pokemonNames} />
+            <PokemonPairEditor setLoadedPair={setLoadedPair} saveID={save.id} pair={loadedPair} pokemonNames={pokemonNames} locationOptions={locationOptions} />
         </AppLayout>
     );
 }

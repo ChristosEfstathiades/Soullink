@@ -3,12 +3,12 @@ import PokemonData from '@/components/soullink/pokemon-data';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useAppearance } from '@/hooks/use-appearance';
+import { buildSelectStyles } from '@/lib/select-styles';
 import { update } from '@/routes/saves/pairs';
 import { type PokemonPairType } from '@/types';
 import { Form, Link } from '@inertiajs/react';
 import { X } from 'lucide-react';
-import { useAppearance } from '@/hooks/use-appearance';
-import { buildSelectStyles } from '@/lib/select-styles';
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
 
@@ -28,11 +28,13 @@ export default function PokemonPairEditor({
     saveID,
     setLoadedPair,
     pokemonNames,
+    locationOptions = [],
 }: {
     pair: PokemonPairType | null;
     saveID: number;
     setLoadedPair: (pair: PokemonPairType | null) => void;
     pokemonNames?: string[];
+    locationOptions?: { value: string; label: string }[];
 }) {
     // TODO: could move to onClick in PokemonPair, but this is fine for now
     const [pokemonData, setPokemonData] = useState<pokemonDataType>();
@@ -41,7 +43,7 @@ export default function PokemonPairEditor({
     const isDark =
         appearance === 'dark' ||
         (appearance === 'system' && typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    const selectStyles = buildSelectStyles(isDark);
+    const selectStyles = buildSelectStyles(isDark, true);
 
     useEffect(() => {
         if (!pair) return;
@@ -80,10 +82,13 @@ export default function PokemonPairEditor({
             <section className="">
                 <div className="ml-2 flex flex-col items-center">
                     <div className="flex w-full justify-between border-b border-black/20 px-4 pt-1 pb-2">
-                        <h2 className="text-center text-xl font-bold">
-                            {pair.player_one_pokemon_nickname ? pair.player_one_pokemon_nickname : pair.player_one_pokemon_name} and{' '}
-                            {pair.player_two_pokemon_nickname ? pair.player_two_pokemon_nickname : pair.player_two_pokemon_name}
-                        </h2>
+                        <div className="text-center">
+                            <h2 className="text-xl font-bold">
+                                {pair.player_one_pokemon_nickname ? pair.player_one_pokemon_nickname : pair.player_one_pokemon_name} and{' '}
+                                {pair.player_two_pokemon_nickname ? pair.player_two_pokemon_nickname : pair.player_two_pokemon_name}
+                            </h2>
+                            {pair.location && <p className="text-sm text-muted-foreground">Caught at {pair.location}</p>}
+                        </div>
                         <button className="cursor-pointer" onClick={() => setLoadedPair(null)}>
                             <X />
                         </button>
@@ -105,6 +110,7 @@ export default function PokemonPairEditor({
                                         />
                                         <InputError message={errors.playerOnePokemon} className="mt-2" />
                                         <Input
+                                            className="h-8 text-sm"
                                             tabIndex={2}
                                             placeholder="Nickname"
                                             id="playerOneNickname"
@@ -124,6 +130,7 @@ export default function PokemonPairEditor({
                                         />
                                         <InputError message={errors.playerTwoPokemon} className="mt-2" />
                                         <Input
+                                            className="h-8 text-sm"
                                             tabIndex={4}
                                             placeholder="Nickname"
                                             id="playerTwoNickname"
@@ -132,21 +139,44 @@ export default function PokemonPairEditor({
                                         ></Input>
                                         <InputError message={errors.playerTwoNickname} className="mt-2" />
                                     </div>
-                                    <div className="flex flex-col items-start justify-center p-4">
-                                        <Label htmlFor="isAlive">Alive</Label>
-                                        <Input
-                                            className="shadow-none"
-                                            type="checkbox"
-                                            id="isAlive"
-                                            onChange={(e) => setIsAlive(e.target.checked)}
-                                            name="isAlive"
-                                            checked={isAlive}
-                                        />
+                                </div>
+                                <div className="flex w-full flex-col items-center gap-2 px-2 pb-2 lg:px-4">
+                                    <div className="flex w-full items-start justify-center gap-4">
+                                        <div className="flex w-1/2 flex-col gap-2">
+                                            <Label htmlFor="location">Caught Location</Label>
+                                            <Select
+                                                key={pair.id}
+                                                tabIndex={5}
+                                                isClearable
+                                                id="location"
+                                                name="location"
+                                                placeholder="Select a location..."
+                                                styles={selectStyles}
+                                                defaultValue={pair.location ? { value: pair.location, label: pair.location } : undefined}
+                                                options={locationOptions}
+                                            />
+                                        </div>
+                                        <div className="flex flex-col gap-2">
+                                            <Label htmlFor="isAlive">Alive</Label>
+                                            <Input
+                                                className="size-7 shadow-none"
+                                                type="checkbox"
+                                                id="isAlive"
+                                                onChange={(e) => setIsAlive(e.target.checked)}
+                                                name="isAlive"
+                                                checked={isAlive}
+                                            />
+                                        </div>
                                     </div>
+                                    <InputError message={errors.location} className="mt-2 text-center" />
                                 </div>
                                 <InputError message={errors.samePrimaryType} className="mb-2 text-center" />
                                 <div>
-                                    <Button tabIndex={5} type="submit" className="cursor-pointer self-center rounded-tr-none rounded-br-none dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
+                                    <Button
+                                        tabIndex={6}
+                                        type="submit"
+                                        className="cursor-pointer self-center rounded-tr-none rounded-br-none dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600"
+                                    >
                                         Update Pair
                                     </Button>
                                     <Link

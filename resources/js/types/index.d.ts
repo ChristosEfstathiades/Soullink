@@ -52,6 +52,7 @@ export interface PokemonPairType {
     player_two_pokemon_nickname: string | null;
     player_two_pokemon_primary_type: string;
     player_two_pokemon_secondary_type: string | null;
+    location: string | null;
     is_alive: boolean;
 }
 

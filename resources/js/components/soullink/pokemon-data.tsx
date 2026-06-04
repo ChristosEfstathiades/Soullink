@@ -33,7 +33,7 @@ export default function PokemonData({ name, data }: PokemonDataProps) {
         <div className="mt-2 flex items-center">
             <div className="flex flex-col">
                 <img draggable="false" className="w-34 lg:w-38" src={`/storage/${name}.png`} alt={name} />
-                <div className="flex gap-x-1">
+                <div className="mt-2 flex items-center gap-x-1">
                     {data?.types.map((type, index) => (
                         <div className="flex items-center" key={index}>
                             {type ? (
@@ -47,16 +47,22 @@ export default function PokemonData({ name, data }: PokemonDataProps) {
                         </div>
                     ))}
                 </div>
-                <a className="mt-2 flex items-center text-xs hover:underline" target="_blank" href={`https://pokemondb.net/pokedex/${name}`}>
+            </div>
+
+            <div className="flex flex-col">
+                <ul className="text-xs">
+                    {data?.bst.map((stat, index) => (
+                        <BaseStat key={index} category={index} stat={stat} />
+                    ))}
+                </ul>
+                <a
+                    className="mt-2 flex items-center self-end text-xs hover:underline"
+                    target="_blank"
+                    href={`https://pokemondb.net/pokedex/${name}`}
+                >
                     Pokedex <ExternalLink className="ml-0.5" size={14} />
                 </a>
             </div>
-
-            <ul className="text-xs">
-                {data?.bst.map((stat, index) => (
-                    <BaseStat key={index} category={index} stat={stat} />
-                ))}
-            </ul>
         </div>
     );
 }

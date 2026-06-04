@@ -32,6 +32,12 @@ class PairController extends Controller
             return back()->withErrors(['samePrimaryType' => 'Both Pokémon cannot share the same primary type.']);
         }
 
+        $location = $request->location ?: null;
+
+        if ($location !== null && Pair::where('save_id', $save->id)->where('location', $location)->exists()) {
+            return back()->withErrors(['location' => 'A pair has already been caught at this location.']);
+        }
+
         $pair = Pair::create([
             'save_id' => $save->id,
             'player_one_pokemon_name' => $request->playerOnePokemon,
@@ -42,6 +48,7 @@ class PairController extends Controller
             'player_one_pokemon_secondary_type' => $pokemonOneTypes[1],
             'player_two_pokemon_primary_type' => $pokemonTwoTypes[0],
             'player_two_pokemon_secondary_type' => $pokemonTwoTypes[1],
+            'location' => $location,
             'is_alive' => 1,
         ]);
 
@@ -69,6 +76,12 @@ class PairController extends Controller
             return back()->withErrors(['samePrimaryType' => 'Both Pokémon cannot share the same primary type.']);
         }
 
+        $location = $request->location ?: null;
+
+        if ($location !== null && Pair::where('save_id', $save->id)->where('location', $location)->where('id', '!=', $pair->id)->exists()) {
+            return back()->withErrors(['location' => 'A pair has already been caught at this location.']);
+        }
+
         $pair->update([
             'player_one_pokemon_name' => $request->playerOnePokemon ?? $pair->player_one_pokemon_name,
             'player_two_pokemon_name' => $request->playerTwoPokemon ?? $pair->player_two_pokemon_name,
@@ -78,6 +91,7 @@ class PairController extends Controller
             'player_one_pokemon_secondary_type' => $pokemonOneTypes[1],
             'player_two_pokemon_primary_type' => $pokemonTwoTypes[0],
             'player_two_pokemon_secondary_type' => $pokemonTwoTypes[1],
+            'location' => $location,
             'is_alive' => $request->isAlive ? 1 : 0,
         ]);
 

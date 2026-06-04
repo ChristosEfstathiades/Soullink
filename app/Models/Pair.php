@@ -17,6 +17,7 @@ class Pair extends Model
         'player_one_pokemon_secondary_type',
         'player_two_pokemon_primary_type',
         'player_two_pokemon_secondary_type',
+        'location',
         'is_alive',
     ];
 

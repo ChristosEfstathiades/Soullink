@@ -30,6 +30,7 @@ interface PokemonBoxProps {
     unavailableTypes: string[];
     highlightAvailablePairs: boolean;
     partyPairs: (PokemonPairType | null)[];
+    locationOptions: { value: string; label: string }[];
 }
 
 export default function PokemonBox({
@@ -44,6 +45,7 @@ export default function PokemonBox({
     highlightAvailablePairs,
     partyPairs,
     setPartyPairs,
+    locationOptions,
 }: PokemonBoxProps) {
     const [open, setOpen] = useState(false);
     const { auth } = usePage<SharedData>().props;
@@ -53,6 +55,13 @@ export default function PokemonBox({
         appearance === 'dark' ||
         (appearance === 'system' && typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches);
     const selectStyles = buildSelectStyles(isDark);
+
+    const usedLocations = new Set(
+        [...livingBox, ...deathBox, ...partyPairs.filter((p): p is PokemonPairType => p !== null)]
+            .map((p) => p.location)
+            .filter((location): location is string => location !== null),
+    );
+    const availableLocationOptions = locationOptions.filter((option) => !usedLocations.has(option.value));
 
     function addToParty(event: React.MouseEvent<HTMLDivElement>, pair: PokemonPairType) {
         event.stopPropagation();
@@ -154,8 +163,25 @@ export default function PokemonBox({
                                             <InputError message={errors.playerTwoNickname} className="mt-2" />
                                         </div>
                                     </div>
+                                    <div className="flex flex-col items-center gap-2 px-4 pb-2">
+                                        <label htmlFor="location" className="text-sm">
+                                            Caught Location <span className="text-muted-foreground">(optional)</span>
+                                        </label>
+                                        <div className="w-1/2">
+                                            <Select
+                                                tabIndex={5}
+                                                isClearable
+                                                id="location"
+                                                name="location"
+                                                placeholder="Select a location..."
+                                                styles={selectStyles}
+                                                options={availableLocationOptions}
+                                            />
+                                        </div>
+                                        <InputError message={errors.location} className="mt-2 text-center" />
+                                    </div>
                                     <InputError message={errors.samePrimaryType} className="mb-2 text-center" />
-                                    <Button tabIndex={5} type="submit" className="self-center">
+                                    <Button tabIndex={6} type="submit" className="self-center">
                                         Add Pair
                                     </Button>
                                 </>

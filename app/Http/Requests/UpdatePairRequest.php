@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatePairRequest extends FormRequest
@@ -18,7 +19,7 @@ class UpdatePairRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -27,6 +28,7 @@ class UpdatePairRequest extends FormRequest
             'playerTwoPokemon' => 'nullable|string|max:255',
             'playerOneNickname' => 'nullable|string|max:12',
             'playerTwoNickname' => 'nullable|string|max:12',
+            'location' => 'nullable|string|max:255',
             'isAlive' => 'nullable|string',
         ];
     }
