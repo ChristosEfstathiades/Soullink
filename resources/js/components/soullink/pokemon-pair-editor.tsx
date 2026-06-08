@@ -81,13 +81,12 @@ export default function PokemonPairEditor({
         return (
             <section className="">
                 <div className="ml-2 flex flex-col items-center">
-                    <div className="flex w-full justify-between border-b border-black/20 px-4 pt-1 pb-2">
+                    <div className="flex w-full justify-between border-b border-black/20 px-4 pt-1 pb-2 dark:border-white/20">
                         <div className="text-center">
                             <h2 className="text-xl font-bold">
                                 {pair.player_one_pokemon_nickname ? pair.player_one_pokemon_nickname : pair.player_one_pokemon_name} and{' '}
                                 {pair.player_two_pokemon_nickname ? pair.player_two_pokemon_nickname : pair.player_two_pokemon_name}
                             </h2>
-                            {pair.location && <p className="text-sm text-muted-foreground">Caught at {pair.location}</p>}
                         </div>
                         <button className="cursor-pointer" onClick={() => setLoadedPair(null)}>
                             <X />
