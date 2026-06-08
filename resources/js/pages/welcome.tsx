@@ -160,7 +160,8 @@ export default function Welcome() {
             <footer className="mx-auto grid h-30 max-w-[85%] place-items-center">
                 <div className="flex flex-col items-center">
                     <a href="https://github.com/ChristosEfstathiades/Soullink" rel="noopener noreferrer" target="_blank">
-                        <img className="w-6" src="/storage/GitHub.svg" alt="" />
+                        <img className="w-6 dark:hidden" src="/storage/GitHub.svg" alt="GitHub" />
+                        <img className="hidden w-6 dark:block" src="/storage/GitHubWhite.svg" alt="GitHub" />
                     </a>
                     <p className="mt-2 flex items-center gap-1 text-xs text-[#333] dark:text-[#EDEDEC]">
                         Design & original content © Christos Efstathiades, 2025-2026. Source code licensed under the MIT License.
