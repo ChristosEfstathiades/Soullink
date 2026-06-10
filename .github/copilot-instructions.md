@@ -2,33 +2,24 @@
 
 ## Architecture Overview
 
-This is a Laravel 12 application with an Inertia.js-powered React SPA frontend. It's a Pokemon Soul Link tracker where users manage game saves with Pokemon pairs (one per player) that can be alive or dead.
+This is a client-only React SPA (no backend). It's a Pokemon Soul Link tracker where users manage game saves with Pokemon pairs (one per player) that can be alive or dead. All data lives in the browser's localStorage and can be exported/imported as JSON.
 
-- **Backend**: Laravel with Eloquent models (`User`, `Save`, `Pair`), controllers using Inertia rendering, policies for authorization, and a `PokemonService` that fetches data from PokeAPI.co.
-- **Frontend**: React + TypeScript + TailwindCSS + Radix UI components. Uses TanStack Query for data fetching and DnD Kit for drag-and-drop team building.
-- **Routing**: Laravel Wayfinder generates TypeScript route helpers (e.g., `import { index } from '@/routes/saves'`).
-- **Data Flow**: Controllers pass data to Inertia pages via props; components handle UI interactions with server-side mutations.
+- **Stack**: React 19 + TypeScript + Vite 7 + TailwindCSS v4 + Radix UI components + react-router-dom.
+- **Data layer**: `src/lib/storage.ts` — a localStorage-backed store (`soullink:data` key) exposing hooks (`useSaves`, `useSave`, `useSavePairs`) via `useSyncExternalStore`, plus mutators (`createSave`, `createPair`, `updatePair`, etc.) and JSON `exportData`/`importData`.
+- **PokeAPI**: `src/lib/pokemon.ts` fetches Pokemon data from pokeapi.co and applies per-save type-normalization settings.
+- **Routing**: react-router routes in `src/main.tsx` — `/` (welcome), `/saves` (dashboard), `/saves/:saveId` (tracker), `/settings/appearance`.
 
 ## Key Workflows
 
-- **Development**: Run `npm run dev` for Vite dev server; use `php artisan serve` for Laravel. Build with `npm run build`.
-- **Testing**: Use Pest (`./vendor/bin/pest`) for PHP tests; focus on feature tests with HTTP faking for PokeAPI calls.
+- **Development**: `npm run dev` for the Vite dev server. Build with `npm run build` (outputs `dist/`).
 - **Linting/Formatting**: `npm run lint` (ESLint) and `npm run format` (Prettier with Tailwind plugin).
 - **Type Checking**: `npm run types` for TypeScript.
 
 ## Project-Specific Conventions
 
-- **Pokemon Types**: Always use lowercase strings (e.g., 'fire', 'water'). Handle dual types as `[primary, secondary]` arrays, where secondary can be null.
-- **Save Settings**: Respect `swap_normal_flying_order` (swaps 'normal'/'flying' order) and `revert_fairy_typing` (changes fairy to normal for specific Pokemon in `PokemonService::$fairyPokemon`).
-- **Authorization**: Use Gates in controllers (e.g., `Gate::authorize('view', $save)`); policies exist for `Save` and `Pair` models.
-- **Component Structure**: Game-specific components in `resources/js/components/soullink/`; use Radix UI primitives from `ui/` subdirectory.
+- **Pokemon Types**: Always use lowercase strings (e.g., 'fire', 'water'). Handle dual types as `[primary, secondary]` tuples, where secondary can be null.
+- **Save Settings**: Respect `swap_normal_flying_order` (swaps 'normal'/'flying' order) and `revert_fairy_typing` (changes fairy to normal for specific Pokemon in `src/lib/pokemon.ts`).
+- **Soullink rule**: Both Pokemon in a pair cannot share the same primary type — enforced in `createPair`/`updatePair` (`samePrimaryType` error).
+- **Component Structure**: Game-specific components in `src/components/soullink/`; use Radix UI primitives from `ui/` subdirectory.
 - **Styling**: TailwindCSS with class-variance-authority for component variants; type colors defined in `pokemon-pair.tsx` for consistency.
-- **Error Handling**: Throw `RuntimeException` for PokeAPI failures with status codes; use Laravel's validation requests (e.g., `StoreSaveRequest`).
-
-## Examples
-
-- Fetching Pokemon types: `app/Services/PokemonService.php::fetchPokemonTypes()` - applies save settings after API call.
-- Rendering pages: Controllers return `Inertia::render('tracker', ['save' => $save, 'livingBox' => $alivePairs])`.
-- Route usage: `to_route('saves.show', $save)` in redirects; Wayfinder imports like `import { index } from '@/routes/saves'`.
-- Testing API calls: Fake PokeAPI responses in Pest tests using `Http::fake(['pokeapi.co/*' => Http::response($fakeData)])`.</content>
-  <parameter name="filePath">c:\xampp\htdocs\Projects\Soullink\.github\copilot-instructions.md
+- **Mutations**: Store mutators return `{ ok: true } | { ok: false, errors }` — surface `errors` via the `InputError` component in forms.

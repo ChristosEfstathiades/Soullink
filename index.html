@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+            name="description"
+            content="Soullink is a two player Pokemon Nuzlocke teambuilding tool. Use Soullink to keep track of your Pokemon Pairs and build the best possible combined team."
+        />
+        <meta
+            name="keywords"
+            content="pokemon,nuzlocke,soullink,2-player nuzlocke,two player nuzlocke,2 player nuzlocke,nuzlocke challenge,nuzlocke tracker,tracker,nuzlocke teambuilder,teambuilder,pokemon teambuilder,pokemon nuzlocke,nuzlocke challenge,pokemon challenge"
+        />
+
+        <!-- Apply the saved/system theme before first paint to avoid a flash -->
+        <script>
+            (function () {
+                const appearance = localStorage.getItem('appearance') || 'system';
+
+                if (appearance === 'dark' || (appearance === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark');
+                }
+            })();
+        </script>
+
+        <!-- Must stay in sync with the --background CSS variable values in app.css -->
+        <style>
+            html {
+                background-color: oklch(1 0 0);
+            }
+
+            html.dark {
+                background-color: #141616;
+            }
+        </style>
+
+        <title>Soullink</title>
+
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+        <link rel="preconnect" href="https://fonts.bunny.net" />
+
+        <!-- Preload the font CSS -->
+        <link rel="preload" href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600&display=swap" as="style" />
+
+        <!-- Load it non-blocking -->
+        <link
+            href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600&display=swap"
+            rel="stylesheet"
+            media="print"
+            onload="this.media='all'"
+        />
+        <noscript>
+            <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600&display=swap" rel="stylesheet" />
+        </noscript>
+
+        <link rel="preload" href="/storage/pc-box-backgrounds/0.png" as="image" />
+        <link rel="preload" href="/storage/deathbox.png" as="image" />
+    </head>
+    <body class="font-sans antialiased">
+        <div id="root"></div>
+        <script type="module" src="/src/main.tsx"></script>
+    </body>
+</html>

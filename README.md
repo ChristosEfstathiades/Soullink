@@ -8,10 +8,9 @@ A tracker and team-builder for the **Soullink Nuzlocke** challenge — two playe
 
 [**Live site → soullink.christosefstathiades.com**](https://soullink.christosefstathiades.com)
 
-![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20?logo=laravel&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
-![Inertia.js](https://img.shields.io/badge/Inertia.js-2-9553E9)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-7-646CFF?logo=vite&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-06B6D4?logo=tailwindcss&logoColor=white)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -33,7 +32,7 @@ Soullink takes care of the bookkeeping for you. Track every pair you catch, see 
 - **🔒 Lock & generate** — Lock the pairs you've already committed to, then let the app **generate full legal team suggestions** around them and import a team in one click.
 - **⚙️ Type normalization** — Per-save toggles for older-gen quirks: swap the Normal/Flying order, or revert retconned Fairy typings (Clefairy, Snubbull and Togepi lines) back to their original types.
 - **🎨 Custom PC box wallpaper** — Pick a background for your box, just like in the real games.
-- **🔐 Per-user saves** — Run multiple Soullinks at once. Every save is private to its owner.
+- **💾 Local-first saves with JSON export/import** — No accounts, no server. Your saves live in your browser's `localStorage`, and you can export everything as a JSON file to back it up or move it to another device/share it with your soullink partner.
 
 ## Screenshots
 
@@ -49,27 +48,37 @@ Soullink takes care of the bookkeeping for you. Track every pair you catch, see 
 
 ## How it works
 
-Soullink is built on the **Laravel React starter kit** and renders entirely through Inertia — there's no separate JSON API, every response is a server-driven page.
+Soullink is a **client-only React SPA** — there's no backend and no database.
 
-- **Domain model** — A `Save` is one Soullink run (two player names + normalization settings). Each `Save` has many `Pair`s, and a `Pair` stores both players' Pokémon, nicknames, types, and an `is_alive` flag. The "no shared primary type" rule is enforced server-side when a pair is created or edited.
-- **Pokémon data** — A single `PokemonService` is the only thing that talks to PokéAPI (batched with `Http::pool`), and all type lookups run through one place so the normalization toggles apply consistently.
-- **Team state** — The six-slot party you're assembling lives in the browser's `localStorage`; only the pairs themselves are persisted server-side.
-- **Authorization** — Policies gate every action by ownership, so users can only ever read and delete their own saves and pairs.
+- **Data layer** — All saves and pairs are kept in `localStorage` under a single key, managed by a small store (`src/lib/storage.ts`) that React components subscribe to via `useSyncExternalStore`. The "no shared primary type" rule and unique-catch-location rule are enforced in the store's `createPair`/`updatePair` mutators.
+- **Pokémon data** — `src/lib/pokemon.ts` is the only thing that talks to PokéAPI, and all type lookups run through one place so the per-save normalization toggles apply consistently.
+- **Team state** — The six-slot party you're assembling and your locked pairs also live in `localStorage`, keyed per save.
+- **Export/import** — The dashboard can download every save (with its pairs) as a JSON file and import such files back, appending them as new saves.
+
+## Getting started
+
+```bash
+npm install
+npm run dev      # Vite dev server at http://localhost:5173
+npm run build    # production build into dist/
+```
+
+Other scripts: `npm run lint` (ESLint), `npm run types` (TypeScript), `npm run format` (Prettier), `npm run preview` (serve the production build).
+
+> **Note:** the Pokémon sprites and other image assets served from `public/storage/` are not part of this repository (they are not MIT-licensed — see below) and must be supplied separately.
 
 ## Built with
 
 | Layer | Tech |
 | --- | --- |
-| Backend | Laravel 13 · PHP 8.3 · SQLite |
-| Frontend | React 19 · TypeScript · Inertia.js 2 · Tailwind CSS v4 |
-| Tooling | Vite 7 · Wayfinder (typed routes) · ESLint · Prettier · Pint |
-| Testing | Pest 4 |
-| Data | [PokéAPI](https://pokeapi.co/) |
-| UI | shadcn/Radix primitives · dnd-kit · Embla carousel · lucide-react |
+| Frontend | React 19 · TypeScript · react-router · Tailwind CSS v4 |
+| Tooling | Vite 7 · ESLint · Prettier |
+| Data | [PokéAPI](https://pokeapi.co/) · browser `localStorage` |
+| UI | shadcn/Radix primitives · Embla carousel · lucide-react |
 
 ## License
 
-The source code in this repository is released under the [MIT License](LICENSE). This covers the **application code only** — Pokémon sprites, names, and other Pokémon assets bundled in this repo are not included and remain the property of their respective owners.
+The source code in this repository is released under the [MIT License](LICENSE). This covers the **application code only** — Pokémon sprites, names, and other Pokémon assets are not included and remain the property of their respective owners.
 
 ## Credits
 
