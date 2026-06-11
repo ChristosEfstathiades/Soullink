@@ -13,8 +13,16 @@ const prefersDark = () => {
 const applyTheme = (appearance: Appearance) => {
     const isDark = appearance === 'dark' || (appearance === 'system' && prefersDark());
 
+    const style = document.createElement('style');
+    style.textContent = '*,*::before,*::after{transition:none!important}';
+    document.head.appendChild(style);
+
     document.documentElement.classList.toggle('dark', isDark);
     document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
+
+    // Force a reflow so the theme applies before transitions are re-enabled
+    window.getComputedStyle(document.documentElement).opacity;
+    requestAnimationFrame(() => requestAnimationFrame(() => style.remove()));
 };
 
 const mediaQuery = () => {
