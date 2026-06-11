@@ -1,4 +1,3 @@
-import AppearanceTabs from '@/components/appearance-tabs';
 import HeadingSmall from '@/components/heading-small';
 import PCBoxBackgroundOptions from '@/components/soullink/pc-box-background-options';
 import { useDocumentTitle } from '@/hooks/use-document-title';
@@ -21,8 +20,6 @@ export default function Appearance() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <SettingsLayout>
                 <div className="space-y-6">
-                    <HeadingSmall title="Appearance settings" description="Update your appearance settings" />
-                    <AppearanceTabs />
                     <HeadingSmall title="PC box wallpaper" description="Change the wallpaper of your PC Box" />
                     <PCBoxBackgroundOptions />
                 </div>
