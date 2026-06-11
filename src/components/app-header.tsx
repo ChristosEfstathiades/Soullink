@@ -1,12 +1,14 @@
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { Icon } from '@/components/icon';
 import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList, navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useAppearance } from '@/hooks/use-appearance';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem } from '@/types';
-import { Menu, SaveAll, Settings } from 'lucide-react';
+import { Menu, Monitor, Moon, SaveAll, Settings, Sun } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
@@ -25,8 +27,12 @@ interface AppHeaderProps {
     breadcrumbs?: BreadcrumbItem[];
 }
 
+const themeIcons = { light: Sun, dark: Moon, system: Monitor };
+
 export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const { pathname } = useLocation();
+    const { appearance, updateAppearance } = useAppearance();
+    const ThemeIcon = themeIcons[appearance];
     return (
         <>
             <div className="border-sidebar-border/80">
@@ -91,6 +97,28 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                     </div>
 
                     <div className="ml-auto flex items-center space-x-2">
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="icon" className="h-9 w-9">
+                                    <ThemeIcon className="size-5 opacity-80" />
+                                    <span className="sr-only">Toggle theme</span>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuItem onClick={() => updateAppearance('light')}>
+                                    <Sun className="mr-2 h-4 w-4" />
+                                    Light
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => updateAppearance('dark')}>
+                                    <Moon className="mr-2 h-4 w-4" />
+                                    Dark
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => updateAppearance('system')}>
+                                    <Monitor className="mr-2 h-4 w-4" />
+                                    System
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                         <TooltipProvider delayDuration={0}>
                             <Tooltip>
                                 <TooltipTrigger asChild>
