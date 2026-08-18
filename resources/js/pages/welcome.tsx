@@ -52,7 +52,7 @@ export default function Welcome() {
                 </header>
                 <section className="flex flex-col">
                     <div className="flex flex-col items-center text-center">
-                        <h3 className="dark:text-[#EDEDEC]">Make Teambuilding Quick and Easy with</h3>
+                        <h3 className="dark:text-[#EDEDEC]">Teambuilding is Quick and Easy with</h3>
                         <div className="flex items-center">
                             <img src="/storage/pokeball.svg" alt="App Logo" className="w-8 sm:w-10" />
                             <img src="/storage/fontbolt.png" alt="App Name" className="h-14 sm:h-24" />
