@@ -1,26 +1,6 @@
+import PokemonPairCard, { PairActionButton } from '@/components/soullink/pokemon-pair-card';
 import { type PokemonPairType } from '@/types';
 import { Plus } from 'lucide-react';
-
-const typeColors: { [key: string]: string } = {
-    normal: '#A8A77A',
-    fire: '#EE8130',
-    water: '#6390F0',
-    electric: '#F7D02C',
-    grass: '#7AC74C',
-    ice: '#96D9D6',
-    fighting: '#C22E28',
-    poison: '#A33EA1',
-    ground: '#E2BF65',
-    flying: '#A98FF3',
-    psychic: '#F95587',
-    bug: '#A6B91A',
-    rock: '#B6A136',
-    ghost: '#735797',
-    dragon: '#6F35FC',
-    dark: '#705746',
-    steel: '#B7B7CE',
-    fairy: '#D685AD',
-};
 
 export default function PokemonPair({
     pair,
@@ -37,59 +17,23 @@ export default function PokemonPair({
     highlightAvailablePairs?: boolean;
     addToParty: (event: React.MouseEvent<HTMLDivElement>, pair: PokemonPairType) => void;
 }) {
-    const playerOneColor = typeColors[pair.player_one_pokemon_primary_type] || '#FFFFFF';
-    const playerTwoColor = typeColors[pair.player_two_pokemon_primary_type] || '#FFFFFF';
-
-    function highlightedPair() {
-        return !(
-            (unavailableTypes.includes(pair.player_one_pokemon_primary_type) || unavailableTypes.includes(pair.player_two_pokemon_primary_type)) &&
-            highlightAvailablePairs
-        );
-    }
+    const isUnavailable =
+        unavailableTypes.includes(pair.player_one_pokemon_primary_type) || unavailableTypes.includes(pair.player_two_pokemon_primary_type);
 
     return (
-        <div
+        <PokemonPairCard
+            pair={pair}
             onClick={() => setLoadedPair && setLoadedPair(pair)}
-            className="group relative flex shrink-0 rounded-4xl shadow-2xl transition hover:scale-105"
-            style={{ display: viewDeathBox ? 'none' : '', opacity: highlightedPair() ? 1 : 0.4 }}
+            className="group shadow-2xl transition hover:scale-105"
+            style={{ display: viewDeathBox ? 'none' : '', opacity: isUnavailable && highlightAvailablePairs ? 0.4 : 1 }}
         >
-            {/* Gradient background layer */}
-            <div
-                className="absolute inset-0 rounded-4xl opacity-100"
-                style={{
-                    background: `linear-gradient(to right, ${playerOneColor}, ${playerTwoColor})`,
-                }}
-            />
-            <div
-                style={{
-                    opacity:
-                        unavailableTypes.includes(pair.player_one_pokemon_primary_type) ||
-                        unavailableTypes.includes(pair.player_two_pokemon_primary_type)
-                            ? 0.3
-                            : 0.85,
-                    display: !pair.is_alive ? 'none' : '',
-                }}
+            <PairActionButton
+                style={{ opacity: isUnavailable ? 0.3 : 0.85, display: !pair.is_alive ? 'none' : '' }}
                 onClick={(event) => addToParty(event, pair)}
-                className="absolute right-0 bottom-0 z-49 cursor-pointer rounded-full bg-white p-0.5 sm:hidden sm:group-hover:block"
+                className="bg-white p-0.5"
             >
                 <Plus color="red" />
-            </div>
-
-            {/* Pokémon images layer */}
-            <div className="relative z-10 flex w-full items-center justify-between">
-                <img
-                    draggable="false"
-                    className="w-13.5 lg:w-18"
-                    src={`/storage/${pair.player_one_pokemon_name}.png`}
-                    alt={pair.player_one_pokemon_name}
-                />
-                <img
-                    draggable="false"
-                    className="w-13.5 lg:w-18"
-                    src={`/storage/${pair.player_two_pokemon_name}.png`}
-                    alt={pair.player_two_pokemon_name}
-                />
-            </div>
-        </div>
+            </PairActionButton>
+        </PokemonPairCard>
     );
 }

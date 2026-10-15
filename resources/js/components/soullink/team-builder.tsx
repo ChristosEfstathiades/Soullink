@@ -1,5 +1,6 @@
 import GeneratedTeams from '@/components/soullink/generated-teams';
 import PokemonParty from '@/components/soullink/pokemon-party';
+import { moveNullsToEnd } from '@/lib/party';
 import { type PokemonPairType } from '@/types';
 import { useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
@@ -8,9 +9,8 @@ interface TeamBuilderProps {
     livingBox: PokemonPairType[];
     partyPairs: (PokemonPairType | null)[];
     setPartyPairs: (pairs: (PokemonPairType | null)[]) => void;
-    setUnavailableTypes: (types: string[]) => void;
     removePartyPairs: () => void;
-    unavailableTypes: string[];
+    setLoadedPair: (pair: PokemonPairType) => void;
     save: {
         id: number;
         name: string;
@@ -111,20 +111,7 @@ function generateTeams(pokemon: PokemonPairType[], lockedPairs: number[], target
     return solutions;
 }
 
-const moveNullsToEnd = (arr: (PokemonPairType | null)[]): (PokemonPairType | null)[] => [
-    ...arr.filter((x): x is PokemonPairType => x !== null),
-    ...arr.filter((x) => x === null),
-];
-
-export default function TeamBuilder({
-    save,
-    livingBox,
-    partyPairs,
-    setPartyPairs,
-    setUnavailableTypes,
-    unavailableTypes,
-    removePartyPairs,
-}: TeamBuilderProps) {
+export default function TeamBuilder({ save, livingBox, partyPairs, setPartyPairs, removePartyPairs, setLoadedPair }: TeamBuilderProps) {
     const [lockedPairs, setLockedPairs] = useLocalStorage<number[]>(`LockedPairs-${save.name}-${save.id}`, []);
     const [generatedTeams, setGeneratedTeams] = useState<PokemonPairType[][]>([]);
 
@@ -132,9 +119,6 @@ export default function TeamBuilder({
         event.stopPropagation();
         const newPartyPairs = moveNullsToEnd(partyPairs.map((p) => (p && p.id === pair.id ? null : p)));
         setPartyPairs(newPartyPairs);
-        setUnavailableTypes(
-            unavailableTypes.filter((type) => type !== pair.player_one_pokemon_primary_type && type !== pair.player_two_pokemon_primary_type),
-        );
         setLockedPairs(lockedPairs.filter((id) => id !== pair.id));
     }
 
@@ -149,21 +133,24 @@ export default function TeamBuilder({
 
     function importTeamToParty(team: PokemonPairType[]) {
         removePartyPairs();
-        const types: string[] = [];
         const newPartyPairs = Array(6).fill(null);
         team.forEach((pair: PokemonPairType) => {
             const emptyIndex = newPartyPairs.findIndex((p) => p === null);
             newPartyPairs[emptyIndex] = pair;
-            types.push(pair.player_one_pokemon_primary_type, pair.player_two_pokemon_primary_type);
         });
         setPartyPairs(newPartyPairs);
-        setUnavailableTypes(types);
     }
 
     return (
         <section className="mr-4 flex min-w-39 grow flex-col items-center lg:min-w-48">
             <h2 className="h-8 text-center text-2xl font-bold">Party</h2>
-            <PokemonParty lockedPairs={lockedPairs} setLockedPairs={setLockedPairs} removeFromParty={removeFromParty} partyPairs={partyPairs} />
+            <PokemonParty
+                lockedPairs={lockedPairs}
+                setLockedPairs={setLockedPairs}
+                removeFromParty={removeFromParty}
+                setLoadedPair={setLoadedPair}
+                partyPairs={partyPairs}
+            />
             <GeneratedTeams importTeamToParty={importTeamToParty} teams={generatedTeams} displayGeneratedTeams={displayGeneratedTeams} />
         </section>
     );

@@ -3,6 +3,7 @@ import PokemonPairEditor from '@/components/soullink/pokemon-pair-editor';
 import TeamBuilder from '@/components/soullink/team-builder';
 import { useAppearance } from '@/hooks/use-appearance';
 import AppLayout from '@/layouts/app-layout';
+import { partyPrimaryTypes, syncPartyWithBox } from '@/lib/party';
 import { index } from '@/routes/saves';
 import { type BreadcrumbItem, type PokemonPairType } from '@/types';
 import { Head } from '@inertiajs/react';
@@ -27,16 +28,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-function currentPartyPairTypes(partyPairs: (PokemonPairType | null)[]): string[] {
-    const types: string[] = [];
-    partyPairs.forEach((pair) => {
-        if (pair) {
-            types.push(pair.player_one_pokemon_primary_type, pair.player_two_pokemon_primary_type);
-        }
-    });
-    return types;
-}
-
 function formatLocationName(name: string): string {
     return name
         .split('-')
@@ -49,10 +40,16 @@ export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
     const [locationOptions, setLocationOptions] = useState<{ value: string; label: string }[]>([]);
     const [loadedPair, setLoadedPair] = useState<PokemonPairType | null>(null);
     const [viewDeathBox, setViewDeathBox] = useState(false);
-    const [partyPairs, setPartyPairs, removePartyPairs] = useLocalStorage<(PokemonPairType | null)[]>(`${save.name}-${save.id}`, Array(6).fill(null));
-    const [unavailableTypes, setUnavailableTypes] = useState<string[]>(currentPartyPairTypes(partyPairs));
+    const [storedPartyPairs, setPartyPairs, removePartyPairs] = useLocalStorage<(PokemonPairType | null)[]>(
+        `${save.name}-${save.id}`,
+        Array(6).fill(null),
+    );
+    const partyPairs = syncPartyWithBox(storedPartyPairs, livingBox);
+    const unavailableTypes = partyPrimaryTypes(partyPairs);
     const [highlightAvailablePairs, setHighlightAvailablePairs] = useState(false);
     const filteredBox = livingBox.filter((p) => !partyPairs.some((slot) => slot?.id === p.id));
+    // loadedPair is a snapshot from when it was clicked, so show the latest server copy (null once deleted).
+    const editorPair = loadedPair && ([...livingBox, ...deathBox].find((p) => p.id === loadedPair.id) ?? null);
     const { appearance } = useAppearance();
 
     useEffect(() => {
@@ -104,9 +101,8 @@ export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
             <TeamBuilder
                 removePartyPairs={removePartyPairs}
                 save={save}
-                unavailableTypes={unavailableTypes}
-                setUnavailableTypes={setUnavailableTypes}
                 setPartyPairs={setPartyPairs}
+                setLoadedPair={setLoadedPair}
                 livingBox={livingBox}
                 partyPairs={partyPairs}
             />
@@ -143,7 +139,6 @@ export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
                     </button>
                 </div>
                 <PokemonBox
-                    setUnavailableTypes={setUnavailableTypes}
                     highlightAvailablePairs={highlightAvailablePairs}
                     unavailableTypes={unavailableTypes}
                     setLoadedPair={setLoadedPair}
@@ -169,7 +164,7 @@ export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
                 </div>
             </section>
 
-            <PokemonPairEditor setLoadedPair={setLoadedPair} saveID={save.id} pair={loadedPair} pokemonNames={pokemonNames} locationOptions={locationOptions} />
+            <PokemonPairEditor setLoadedPair={setLoadedPair} saveID={save.id} pair={editorPair} pokemonNames={pokemonNames} locationOptions={locationOptions} />
         </AppLayout>
     );
 }

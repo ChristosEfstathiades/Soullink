@@ -18,7 +18,6 @@ interface PokemonBoxProps {
     deathBox: PokemonPairType[];
     setLoadedPair: (pair: PokemonPairType) => void;
     setPartyPairs: (pairs: (PokemonPairType | null)[]) => void;
-    setUnavailableTypes: (types: string[]) => void;
     pokemonNames: string[];
     viewDeathBox: boolean;
     save: {
@@ -34,7 +33,6 @@ interface PokemonBoxProps {
 }
 
 export default function PokemonBox({
-    setUnavailableTypes,
     pokemonNames,
     save,
     setLoadedPair,
@@ -76,7 +74,6 @@ export default function PokemonBox({
             const newPartyPairs = [...partyPairs];
             newPartyPairs[emptyIndex] = pair;
             setPartyPairs(newPartyPairs);
-            setUnavailableTypes([...unavailableTypes, pair.player_one_pokemon_primary_type, pair.player_two_pokemon_primary_type]);
         }
     }
     function test() {
