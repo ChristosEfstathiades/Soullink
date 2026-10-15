@@ -94,7 +94,14 @@ export default function PokemonPairEditor({
                     </div>
                     <PokemonData name={pair.player_one_pokemon_name} data={pokemonData?.pokemon_one!} />
                     <PokemonData name={pair.player_two_pokemon_name} data={pokemonData?.pokemon_two!} />
-                    <Form resetOnSuccess className="flex flex-col items-center justify-around" method="put" action={update([saveID, pair.id])}>
+                    {/* key remounts the form per pair, so react-select values and typed input don't carry over */}
+                    <Form
+                        key={pair.id}
+                        resetOnSuccess
+                        className="flex flex-col items-center justify-around"
+                        method="put"
+                        action={update([saveID, pair.id])}
+                    >
                         {({ errors }) => (
                             <>
                                 <div className="flex flex-row">
@@ -144,7 +151,6 @@ export default function PokemonPairEditor({
                                         <div className="flex w-1/2 flex-col gap-2">
                                             <Label htmlFor="location">Caught Location</Label>
                                             <Select
-                                                key={pair.id}
                                                 tabIndex={5}
                                                 isClearable
                                                 id="location"
