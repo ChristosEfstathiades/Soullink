@@ -113,12 +113,11 @@ class PokemonService
 
     public function applySettings($types, $pokemonName, Save $save): array
     {
-        if ($save->swap_normal_flying_order) {
-            $types = $this->swapNormalFlyingOrder($types);
-        }
-
         if ($save->revert_fairy_typing) {
             $types = $this->revertFairyTyping($types, $pokemonName);
+        }
+        if ($save->swap_normal_flying_order) {
+            $types = $this->swapNormalFlyingOrder($types);
         }
 
         return $types;
