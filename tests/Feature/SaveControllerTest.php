@@ -89,3 +89,44 @@ it('forbids deleting a save owned by another user', function () {
 
     $this->assertDatabaseHas('saves', ['id' => $save->id]);
 });
+
+it('lets an owner rename their save and players', function () {
+    $user = User::factory()->create();
+    $save = makeSave($user);
+
+    $this->actingAs($user)
+        ->put(route('saves.update', $save), [
+            'name' => 'Renamed Run',
+            'p1' => 'Red',
+            'p2' => '',
+        ])
+        ->assertRedirect();
+
+    $this->assertDatabaseHas('saves', [
+        'id' => $save->id,
+        'name' => 'Renamed Run',
+        'player_one_name' => 'Red',
+        'player_two_name' => null,
+    ]);
+});
+
+it('requires a name when updating a save', function () {
+    $user = User::factory()->create();
+    $save = makeSave($user);
+
+    $this->actingAs($user)
+        ->put(route('saves.update', $save), ['name' => ''])
+        ->assertSessionHasErrors('name');
+
+    $this->assertDatabaseHas('saves', ['id' => $save->id, 'name' => 'Test Run']);
+});
+
+it('forbids updating a save owned by another user', function () {
+    $save = makeSave(User::factory()->create());
+
+    $this->actingAs(User::factory()->create())
+        ->put(route('saves.update', $save), ['name' => 'Hijacked'])
+        ->assertForbidden();
+
+    $this->assertDatabaseHas('saves', ['id' => $save->id, 'name' => 'Test Run']);
+});

@@ -1,6 +1,6 @@
 import GeneratedTeams from '@/components/soullink/generated-teams';
 import PokemonParty from '@/components/soullink/pokemon-party';
-import { moveNullsToEnd } from '@/lib/party';
+import { moveNullsToEnd, readLegacyStorage } from '@/lib/party';
 import { type PokemonPairType } from '@/types';
 import { useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
@@ -112,7 +112,9 @@ function generateTeams(pokemon: PokemonPairType[], lockedPairs: number[], target
 }
 
 export default function TeamBuilder({ save, livingBox, partyPairs, setPartyPairs, removePartyPairs, setLoadedPair }: TeamBuilderProps) {
-    const [lockedPairs, setLockedPairs] = useLocalStorage<number[]>(`LockedPairs-${save.name}-${save.id}`, []);
+    const [lockedPairs, setLockedPairs] = useLocalStorage<number[]>(`locked-pairs-${save.id}`, () =>
+        readLegacyStorage(`LockedPairs-${save.name}-${save.id}`, []),
+    );
     const [generatedTeams, setGeneratedTeams] = useState<PokemonPairType[][]>([]);
 
     function removeFromParty(event: React.MouseEvent<HTMLDivElement>, pair: PokemonPairType) {

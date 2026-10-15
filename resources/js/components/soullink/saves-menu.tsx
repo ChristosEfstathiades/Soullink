@@ -1,5 +1,6 @@
 import { destroy, store } from '@/actions/App/Http/Controllers/SaveController';
 import InputError from '@/components/input-error';
+import EditSaveDialog from '@/components/soullink/edit-save-dialog';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -98,6 +99,7 @@ export default function SavesMenu({ saves }: { saves: any[] }) {
                         <Link prefetch className="flex grow items-center py-2 pl-3 group-hover:text-[#3B4CCA]" href={`/saves/${save.id}`}>
                             <Save className="mr-1"></Save> {save.name}
                         </Link>
+                        <EditSaveDialog save={save} />
                         <Dialog>
                             <DialogTrigger className="cursor-pointer py-2 pr-3 pl-2 transition-colors hover:text-[#CC0000]">
                                 <Trash2 size={24} />

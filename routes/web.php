@@ -15,7 +15,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::resource('saves', SaveController::class)->only([
-        'store', 'destroy', 'show', 'index'
+        'store', 'destroy', 'show', 'index', 'update'
     ]);
 
     Route::resource('saves.pairs', PairController::class)->only([

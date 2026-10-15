@@ -3,7 +3,7 @@ import PokemonPairEditor from '@/components/soullink/pokemon-pair-editor';
 import TeamBuilder from '@/components/soullink/team-builder';
 import { useAppearance } from '@/hooks/use-appearance';
 import AppLayout from '@/layouts/app-layout';
-import { partyPrimaryTypes, syncPartyWithBox } from '@/lib/party';
+import { partyPrimaryTypes, readLegacyStorage, syncPartyWithBox } from '@/lib/party';
 import { index } from '@/routes/saves';
 import { type BreadcrumbItem, type PokemonPairType } from '@/types';
 import { Head } from '@inertiajs/react';
@@ -40,9 +40,8 @@ export default function Tracker({ save, livingBox, deathBox }: TrackerProps) {
     const [locationOptions, setLocationOptions] = useState<{ value: string; label: string }[]>([]);
     const [loadedPair, setLoadedPair] = useState<PokemonPairType | null>(null);
     const [viewDeathBox, setViewDeathBox] = useState(false);
-    const [storedPartyPairs, setPartyPairs, removePartyPairs] = useLocalStorage<(PokemonPairType | null)[]>(
-        `${save.name}-${save.id}`,
-        Array(6).fill(null),
+    const [storedPartyPairs, setPartyPairs, removePartyPairs] = useLocalStorage<(PokemonPairType | null)[]>(`party-${save.id}`, () =>
+        readLegacyStorage(`${save.name}-${save.id}`, Array(6).fill(null)),
     );
     const partyPairs = syncPartyWithBox(storedPartyPairs, livingBox);
     const unavailableTypes = partyPrimaryTypes(partyPairs);

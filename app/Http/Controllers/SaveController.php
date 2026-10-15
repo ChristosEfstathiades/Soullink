@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSaveRequest;
+use App\Http\Requests\UpdateSaveRequest;
 use App\Models\Pair;
 use App\Models\Save;
 use Illuminate\Support\Facades\Gate;
@@ -55,6 +56,20 @@ class SaveController extends Controller
             'livingBox' => $alivePairs,
             'deathBox' => $deadBox,
         ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateSaveRequest $request, Save $save)
+    {
+        $save->update([
+            'name' => $request->name,
+            'player_one_name' => $request->p1,
+            'player_two_name' => $request->p2,
+        ]);
+
+        return back();
     }
 
     /**
