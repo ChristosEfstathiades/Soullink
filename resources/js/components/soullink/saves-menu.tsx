@@ -1,7 +1,16 @@
-import { store } from '@/actions/App/Http/Controllers/SaveController';
+import { destroy, store } from '@/actions/App/Http/Controllers/SaveController';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -85,19 +94,36 @@ export default function SavesMenu({ saves }: { saves: any[] }) {
             <div className="mt-4 flex flex-col gap-2 text-center">
                 <p className="text-center">Load Save</p>
                 {saves.map((save) => (
-                    <Link
-                        prefetch
-                        className="group flex min-w-3xs justify-between rounded-sm px-3 py-2 transition-colors hover:bg-accent md:min-w-sm"
-                        href={`/saves/${save.id}`}
-                        key={save.id}
-                    >
-                        <div className="flex items-center group-hover:text-[#3B4CCA]">
+                    <div className="group flex min-w-3xs items-center rounded-sm transition-colors hover:bg-accent md:min-w-sm" key={save.id}>
+                        <Link prefetch className="flex grow items-center py-2 pl-3 group-hover:text-[#3B4CCA]" href={`/saves/${save.id}`}>
                             <Save className="mr-1"></Save> {save.name}
-                        </div>
-                        <Link className="cursor-pointer transition-colors hover:text-[#CC0000]" method="delete" href={`/saves/${save.id}`}>
-                            <Trash2 size={24} />
                         </Link>
-                    </Link>
+                        <Dialog>
+                            <DialogTrigger className="cursor-pointer py-2 pr-3 pl-2 transition-colors hover:text-[#CC0000]">
+                                <Trash2 size={24} />
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>Are you sure?</DialogTitle>
+                                    <DialogDescription>"{save.name}" and all of its pairs will be permanently deleted.</DialogDescription>
+                                </DialogHeader>
+                                <Form {...destroy(save.id)}>
+                                    {({ processing }) => (
+                                        <DialogFooter className="gap-2">
+                                            <DialogClose asChild>
+                                                <Button variant="secondary" type="button">
+                                                    No
+                                                </Button>
+                                            </DialogClose>
+                                            <Button variant="destructive" type="submit" disabled={processing}>
+                                                Yes
+                                            </Button>
+                                        </DialogFooter>
+                                    )}
+                                </Form>
+                            </DialogContent>
+                        </Dialog>
+                    </div>
                 ))}
             </div>
         </section>
