@@ -109,7 +109,7 @@ export default function SavesMenu({ saves }: { saves: any[] }) {
                                     <DialogTitle>Are you sure?</DialogTitle>
                                     <DialogDescription>"{save.name}" and all of its pairs will be permanently deleted.</DialogDescription>
                                 </DialogHeader>
-                                <Form {...destroy(save.id)}>
+                                <Form action={destroy(save.id)}>
                                     {({ processing }) => (
                                         <DialogFooter className="gap-2">
                                             <DialogClose asChild>

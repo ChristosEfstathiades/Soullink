@@ -29,7 +29,7 @@ export default function EditSaveDialog({ save }: EditSaveDialogProps) {
                 <DialogHeader>
                     <DialogTitle>Edit Save</DialogTitle>
                 </DialogHeader>
-                <Form {...update(save.id)} onSuccess={() => setOpen(false)} disableWhileProcessing className="flex flex-col gap-2">
+                <Form action={update(save.id)} onSuccess={() => setOpen(false)} disableWhileProcessing className="flex flex-col gap-2">
                     {({ errors }) => (
                         <>
                             <Label htmlFor="name">Save Name: </Label>
