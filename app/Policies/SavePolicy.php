@@ -37,7 +37,7 @@ class SavePolicy
      */
     public function update(User $user, Save $save): bool
     {
-        return false;
+        return $user->id === $save->user_id;
     }
 
     /**
